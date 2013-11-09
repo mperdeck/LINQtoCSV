@@ -27,10 +27,8 @@ namespace LINQtoCSV
         /// <param name="stream">
         /// The data will be read from this stream.
         /// </param>
-        /// <param name="cultureInfo">
-        /// If the culture of the input data is different from the current culture,
-        /// pass the input culture here. For example, if you are in Australia and the data
-        /// is from the US, pass in "en-US". 
+        /// <param name="fileDescription">
+        /// Additional information how the input file is to be interpreted, such as the culture of the input dates.
         /// </param>
         /// <returns>
         /// Values read from the stream or file.
@@ -67,15 +65,16 @@ namespace LINQtoCSV
         /// <typeparam name="T"></typeparam>
         /// <param name="fileName">
         /// Name of the file associated with the stream.
-        /// null if there is no such file.
-        /// Used solely when throwing an exception.
+        /// 
+        /// If this is not null, a file is opened with this name.
+        /// If this is null, the method attempts to read from the passed in stream.
         /// </param>
         /// <param name="stream">
-        /// All data is read from this stream.
+        /// All data is read from this stream, unless fileName is not null.
         /// 
         /// This is a StreamReader rather then a TextReader,
         /// because we need to be able to seek back to the start of the
-        /// stream, and you can't do that with a TextReader (or s StringReader).
+        /// stream, and you can't do that with a TextReader (or StringReader).
         /// </param>
         /// <param name="fileDescription"></param>
         /// <returns></returns>

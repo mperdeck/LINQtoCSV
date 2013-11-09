@@ -6,9 +6,6 @@ using System.Reflection;
 
 namespace LINQtoCSV
 {
-    /// <summary>
-    /// Summary description for FieldMapper
-    /// </summary>
     internal class FieldMapper<T> 
     {
         protected class TypeFieldInfo : IComparable<TypeFieldInfo>
