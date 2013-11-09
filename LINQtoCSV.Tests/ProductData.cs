@@ -64,16 +64,16 @@ namespace LINQtoCSV.Tests
         {
             Assert.AreNotEqual(other, null);
 
-            Assert.AreEqual(name, other.name, "name");
-            Assert.AreEqual(startDate, other.startDate, "startDate");
-            Assert.AreEqual(launchTime, other.launchTime, "launchTime");
-            Assert.AreEqual(weight, other.weight, "weight");
-            Assert.AreEqual(nbrAvailable, other.nbrAvailable, "nbrAvailable");
-            Assert.AreEqual(shopsAvailable, other.shopsAvailable, "shopsAvailable");
-            Assert.AreEqual(hexProductCode, other.hexProductCode, "hexProductCode");
-            Assert.AreEqual(onsale, other.onsale, "onsale");
-            Assert.AreEqual(retailPrice, other.retailPrice, "retailPrice");
-            Assert.AreEqual(description, other.description, "description");
+            Assert.AreEqual(other.name, name, "name");
+            Assert.AreEqual(other.startDate, startDate, "startDate");
+            Assert.AreEqual(other.launchTime, launchTime, "launchTime");
+            Assert.AreEqual(other.weight, weight, "weight");
+            Assert.AreEqual(other.nbrAvailable, nbrAvailable, "nbrAvailable");
+            Assert.AreEqual(other.shopsAvailable, shopsAvailable, "shopsAvailable");
+            Assert.AreEqual(other.hexProductCode, hexProductCode, "hexProductCode");
+            Assert.AreEqual(other.onsale, onsale, "onsale");
+            Assert.AreEqual(other.retailPrice, retailPrice, "retailPrice");
+            Assert.AreEqual(other.description, description, "description");
         }
     }
 }
