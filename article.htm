@@ -1,6 +1,6 @@
 
 <ul class="download">
-<li><a href="linqtocsv.zip">Download source and sample code - 43.2 KB</a> </li>
+<li><a href="https://github.com/mperdeck/LINQtoCSV">Source and sample code</a> </li>
 <li><a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a> </li>
 </ul>
 
@@ -57,35 +57,16 @@
 <h2><a id="Requirements"></a>Requirements</h2>
 
 <ul>
-<li>To compile the library, you need a C# 2008 compiler, such as Visual Studio 2008 or Visual C# 2008 Express Edition. </li>
 
-<li>To run the library code, you need to have the .NET 3.5 framework installed. </li>
+<li>To compile the library, you need a C# 2010 compiler, such as Visual Studio 2010 or Visual C# 2010 Express Edition. </li>
+
+<li>To run the library code, you need to have the .NET 4.0 framework installed. </li>
 </ul>
 
 <h2><a id="Installation"></a>Installation</h2>
 <p>
-<small>These instructions apply to the download with sources and sample code. The NuGet package installs itself.</small>
+Simply install the <a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a>.
 </p>
-
-<ol>
-<li>Download the zip file with the source code, and unzip in a directory. </li>
-
-<li>Open the <em>Code\LINQtoCSV.sln</em> file in Visual Studio. </li>
-
-<li>You'll find that the sources are organized in a solution, with these elements: 
-<ol type="a">
-<li>Project LINQtoCSV is the actual library. </li>
-
-<li>Project SampleCode has the sample code shown in this article. </li>
-
-<li>Project TestConsoleApplication is a working console application that exercises most of the features of the library. The code is heavily documented. </li>
-
-<li>The directory <em>TestFiles</em> within the TestConsoleApplication project contains test files - both CSV and tab delimited, and with both US and international (Dutch) dates and numbers. </li>
-</ol>
-</li>
-
-<li>Compile the solution. This will produce a <em>LINQtoCSV.dll</em> file in the <em>Code\LINQtoCSV\bin</em> directory. You'll need that file to use the library in your own projects. </li>
-</ol>
 
 <h2>Quick Start<a id="How_to_use"></a></h2>
 
@@ -184,7 +165,7 @@ var productsByName =
 // or ...
 foreach (Product item in products) { .... }</pre>
 
-<p>You'll find this same code in the SampleCode project in the <a href="#Installation">sources</a>. <a id="writing_to_a_file"></a></p>
+<p>You'll find this same code in the SampleCode project in the <a href="https://github.com/mperdeck/LINQtoCSV">sources</a>. <a id="writing_to_a_file"></a></p>
 
 <h3>Writing to a file</h3>
 
