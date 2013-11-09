@@ -7,7 +7,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQtoCSV", "LINQtoCSV\LINQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCode", "SampleCode\SampleCode.csproj", "{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQtoCSV.Tests", "LINQtoCSV.Tests\LINQtoCSV.Tests.csproj", "{04EE17CD-E7B3-4D58-BF84-E553F5332A14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23664B5F-ED48-4718-94B7-C1A65CDA45EE}"
+	ProjectSection(SolutionItems) = preProject
+		LINQtoCSV.vsmdi = LINQtoCSV.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LINQtoCSV.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -25,6 +37,10 @@ Global
 		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,7 +17,7 @@ namespace TestConsoleApplication
             // The input files are meant to test the library code, so have lots of weird cases.
 
             // ----
-            // Read comma delimited file with names in first line, US-English culture, comma delimited. 
+            // Read comma delimited file with names in first line, US-English culture. 
             // Fields do not have to have CsvColumn attribute.
 
             CsvContext cc = new CsvContext();
