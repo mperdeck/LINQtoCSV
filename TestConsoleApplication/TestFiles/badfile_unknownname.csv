@@ -1,0 +1,8 @@
+﻿name,        weight,       unknown_field_name, launchTime,               nbrAvailable,onsale,shopsAvailable,    code,  price,    description
+moonbuggy,   34.184,       5/23/08,   5-May-2009 4:11 pm,       1205,        true,  "Paris, New York", 1F,    $540.12,  newly launced product
+"mouse trap",45E-5,        1/2/1985,  "7 August 1988, 0:00 am", "4,030",     FALSE, "This field has
+a newline", 100, "$78,300", "This field has quotes(""), and
+two newlines
+and a quoted ""string"""
+dog house,    "45,230,990",29 Feb 2004, 8/1/10,                  -56,        True,   ,,                 FF10, "12,008"
+ 

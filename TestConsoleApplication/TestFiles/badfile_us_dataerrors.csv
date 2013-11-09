@@ -1,0 +1,9 @@
+﻿name,        startDate, launchTime,                weight,       shopsAvailable,    code,  price,   onsale, description
+moonbuggy,   23/5/08,   5-May-2009 4:11 pm,       ,              "Paris, New York", 1F,    $540.12, 1,      newly launched product
+"mouse trap",1/2/1985,  "7 Augustus 1988, 0:00 am",45E-5,        "This field has
+a newline",                                                                                      10xx0, "$78.300",FALSE, "This field has quotes(""), and
+two newlines
+and a quoted ""string"""
+dog house,   29 Feb 2004, 8/1/10,                  "45,23
+0,990",""                        
+ 

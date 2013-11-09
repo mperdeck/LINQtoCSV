@@ -1,0 +1,6 @@
+﻿moonbuggy	5/23/2008	05 May 16:11:00	034.184	Paris, New York	31	$540.12	True	newly launched product
+mouse trap	1/2/1985	07 Aug 00:00:00	000.000	"This field has
+a newline"	256	$78,300.00	False	"This field has quotes(""), and
+two newlines
+and a quoted ""string"""
+dog house	2/29/2004	01 Jan 00:00:00	45,230,990.000	""	65296	$12,008.00	True	
