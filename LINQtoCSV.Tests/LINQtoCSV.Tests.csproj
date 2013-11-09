@@ -49,6 +49,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvContextWriteTests.cs" />
     <Compile Include="CsvContextReadTests.cs" />
     <Compile Include="IAssertable.cs" />
     <Compile Include="ProductData.cs" />

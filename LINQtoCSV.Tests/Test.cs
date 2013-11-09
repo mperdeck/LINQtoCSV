@@ -101,5 +101,31 @@ namespace LINQtoCSV.Tests
             cc.Write(values, stream, fileDescription);
             return stream.ToString();
         }
+
+        /// <summary>
+        /// Executes a Write and tests whether it outputs the expected records.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the input elements.
+        /// </typeparam>
+        /// <param name="values">
+        /// The collection of input elements.
+        /// </param>
+        /// <param name="fileDescription">
+        /// Passed directly to write.
+        /// </param>
+        /// <param name="expected">
+        /// Expected output.
+        /// </param>
+        public void AssertWrite<T>(IEnumerable<T> values, CsvFileDescription fileDescription, string expected) where T : class
+        {
+            string actual = TestWrite<T>(values, fileDescription);
+            Assert.AreEqual(NormalizeString(actual), NormalizeString(expected));
+        }
+
+        public string NormalizeString(string s)
+        {
+            return s.Replace("\r\n", "\n");
+        }
     }
 }
