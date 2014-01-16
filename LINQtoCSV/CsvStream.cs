@@ -103,13 +103,17 @@ namespace LINQtoCSV
                 bool moreAvailable = GetNextItem(ref item, itemLength);
                 if (charactersLength != null)
                 {
-                    moreAvailable = moreAvailable && charactersLength.Count() > i + 1;
-
-                    if (!moreAvailable)
+                    if (!(charactersLength.Count() > i + 1))
                     {
+                        if (moreAvailable)
+                        {
+                            row.Add(new DataRowItem(item, startingLineNbr));
+                        }
+
                         if (!EOL)
                         {
                             AdvanceToEndOfLine();
+                            moreAvailable = false;
                         }
                     }
                 }
@@ -176,6 +180,13 @@ namespace LINQtoCSV
             int cnt = 0;
             while (true)
             {
+                if (itemLength.HasValue && cnt >= itemLength.Value)
+                {
+                    itemString = item.ToString();
+                    return true;
+                }
+
+
                 char c = GetNextChar(true);
                 cnt++;
 
@@ -207,12 +218,6 @@ namespace LINQtoCSV
                 }
 
                 // ---------
-
-                if (itemLength.HasValue && cnt >= itemLength.Value)
-                {
-                    itemString = item.ToString();
-                    return true;
-                }
 
                 if ((postdata || !quoted) && (itemLength == null && c == m_SeparatorChar))
                 {
