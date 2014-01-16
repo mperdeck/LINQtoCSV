@@ -89,6 +89,7 @@ namespace LINQtoCSV
 
         public bool IgnoreMissingColumns { get; set; }
         public bool UseFieldIndexForReadingData { get; set; }
+        public bool UseOutputFormatForParsingCsvValue { get; set; }
 
 
         // ---------------
@@ -105,6 +106,7 @@ namespace LINQtoCSV
 
             NoSeparatorChar = false;
             UseFieldIndexForReadingData = false;
+            UseOutputFormatForParsingCsvValue = false;
         }
     }
 }

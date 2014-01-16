@@ -89,15 +89,18 @@ namespace LINQtoCSV
 
             if (tfi.parseNumberMethod == null)
             {
-                tfi.parseExactMethod = tfi.fieldType.GetMethod("ParseExact",
-                    new Type[] {typeof (string), typeof (string), typeof (IFormatProvider)});
-            }
+                if (m_fileDescription.UseOutputFormatForParsingCsvValue)
+                {
+                    tfi.parseExactMethod = tfi.fieldType.GetMethod("ParseExact",
+                        new Type[] {typeof (string), typeof (string), typeof (IFormatProvider)});
+                }
 
-            tfi.typeConverter = null;
-            if (tfi.parseExactMethod == null)
-            {
-                tfi.typeConverter =
-                    TypeDescriptor.GetConverter(tfi.fieldType);
+                tfi.typeConverter = null;
+                if (tfi.parseExactMethod == null)
+                {
+                    tfi.typeConverter =
+                        TypeDescriptor.GetConverter(tfi.fieldType);
+                }
             }
 
             // -----
