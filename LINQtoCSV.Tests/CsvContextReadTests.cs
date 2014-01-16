@@ -10,6 +10,42 @@ namespace LINQtoCSV.Tests
     public class CsvContextReadTests : Test
     {
         [TestMethod()]
+        public void GoodFileNoSeparatorCharUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                NoSeparatorChar = true,
+                FirstLineHasColumnNames = false,
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+@"AAAAAAAA34.18405/23/08\n
+BBBBBBBB10.31105/12/12\n
+CCCCCCCC12.00012/23/08";
+
+            var expected = new[] {
+                new ProductDataSpecificFieldIndex() {
+                    name = "AAAAAAAA", weight = 34.184, startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "BBBBBBBB", weight = 10.311, startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "CCCCCCCC", weight = 12.000, startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+
+        [TestMethod()]
         public void GoodFileCommaDelimitedNamesInFirstLineUSEnglish()
         {
             // Arrange
