@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace LINQtoCSV
@@ -83,9 +84,11 @@ namespace LINQtoCSV
         /// True if a row was returned in parameter "row".
         /// False if no row returned. In that case, you're at the end of the file.
         /// </returns>
-        public bool ReadRow(ref IDataRow row)
+        public bool ReadRow(ref IDataRow row, List<int> charactersLength = null)
         {
             row.Clear();
+
+            int i = 0;
 
             while (true)
             {
@@ -95,12 +98,30 @@ namespace LINQtoCSV
 
                 string item = null;
 
-                bool moreAvailable = GetNextItem(ref item);
+                int? itemLength = charactersLength == null ? (int?)null : charactersLength.Skip(i).First();
+
+                bool moreAvailable = GetNextItem(ref item, itemLength);
+                if (charactersLength != null)
+                {
+                    moreAvailable = moreAvailable && charactersLength.Count() > i + 1;
+
+                    if (!moreAvailable)
+                    {
+                        if (!EOL)
+                        {
+                            AdvanceToEndOfLine();
+                        }
+                    }
+                }
+
                 if (!moreAvailable)
                 {
                     return (row.Count > 0);
                 }
+
                 row.Add(new DataRowItem(item, startingLineNbr));
+
+                i++;
             }
         }
 
@@ -108,7 +129,35 @@ namespace LINQtoCSV
         private bool EOL = false;
         private bool previousWasCr = false;
 
-        private bool GetNextItem(ref string itemString)
+        private void AdvanceToEndOfLine()
+        {
+            while (true)
+            {
+                char c = GetNextChar(true);
+
+                if (EOS)
+                    break;
+
+                if (c == '\x0D') //'\r'
+                {
+                    m_lineNbr++;
+                    previousWasCr = true;
+
+                    // we are at the end of the line, eat newline characters and exit
+                    EOL = true;
+                    if (c == '\x0D' && GetNextChar(false) == '\x0A')
+                    {
+                        // new line sequence is 0D0A
+                        GetNextChar(true);
+                    }
+                    EOL = false;
+
+                    break;
+                }
+            }
+        }
+
+        private bool GetNextItem(ref string itemString, int? itemLength = null)
         {
             itemString = null;
             if (EOL)
@@ -124,9 +173,12 @@ namespace LINQtoCSV
             bool postdata = false;
             StringBuilder item = new StringBuilder();
 
+            int cnt = 0;
             while (true)
             {
                 char c = GetNextChar(true);
+                cnt++;
+
                 if (EOS)
                 {
                     if (itemFound) { itemString = item.ToString(); }
@@ -144,7 +196,7 @@ namespace LINQtoCSV
                     m_lineNbr++;
                 }
 
-                if (c == '\x0D')
+                if (c == '\x0D') //'\r'
                 {
                     m_lineNbr++;
                     previousWasCr = true;
@@ -156,7 +208,13 @@ namespace LINQtoCSV
 
                 // ---------
 
-                if ((postdata || !quoted) && c == m_SeparatorChar)
+                if (itemLength.HasValue && cnt >= itemLength.Value)
+                {
+                    itemString = item.ToString();
+                    return true;
+                }
+
+                if ((postdata || !quoted) && (itemLength == null && c == m_SeparatorChar))
                 {
                     // end of item, return
                     if (itemFound) { itemString = item.ToString(); }

@@ -22,6 +22,8 @@ namespace LINQtoCSV
         // the tab character ('\t').
         public char SeparatorChar { get; set; }
 
+        public bool NoSeparatorChar { get; set; }
+
         // Only used when writing a file
         //
         // If true, all fields are quoted whatever their content.
@@ -85,6 +87,9 @@ namespace LINQtoCSV
         public Encoding TextEncoding { get; set; }
         public bool DetectEncodingFromByteOrderMarks { get; set; }
 
+        public bool IgnoreMissingColumns { get; set; }
+        public bool UseFieldIndexForReadingData { get; set; }
+
 
         // ---------------
 
@@ -97,6 +102,9 @@ namespace LINQtoCSV
             SeparatorChar = ',';
             TextEncoding = Encoding.UTF8;
             DetectEncodingFromByteOrderMarks = true;
+
+            NoSeparatorChar = false;
+            UseFieldIndexForReadingData = false;
         }
     }
 }
