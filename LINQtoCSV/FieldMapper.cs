@@ -30,6 +30,7 @@ namespace LINQtoCSV
 
             public TypeConverter typeConverter = null;
             public MethodInfo parseNumberMethod = null;
+            public MethodInfo parseExactMethod;
             public int charLength = 0;
 
             // ----
@@ -86,8 +87,14 @@ namespace LINQtoCSV
                 tfi.fieldType.GetMethod("Parse",
                     new Type[] { typeof(String), typeof(NumberStyles), typeof(IFormatProvider) });
 
-            tfi.typeConverter = null;
             if (tfi.parseNumberMethod == null)
+            {
+                tfi.parseExactMethod = tfi.fieldType.GetMethod("ParseExact",
+                    new Type[] {typeof (string), typeof (string), typeof (IFormatProvider)});
+            }
+
+            tfi.typeConverter = null;
+            if (tfi.parseExactMethod == null)
             {
                 tfi.typeConverter =
                     TypeDescriptor.GetConverter(tfi.fieldType);
@@ -503,10 +510,20 @@ namespace LINQtoCSV
                         if (tfi.typeConverter != null)
                         {
                             objValue = tfi.typeConverter.ConvertFromString(
-                                            null,
-                                            m_fileDescription.FileCultureInfo,
-                                            value);
+                                           null,
+                                           m_fileDescription.FileCultureInfo,
+                                           value);
                         }
+                        else if (tfi.parseExactMethod != null)
+                        {
+                            objValue =
+                                tfi.parseExactMethod.Invoke(
+                                    tfi.fieldType,
+                                    new Object[] { 
+                                    value, 
+                                    tfi.outputFormat, 
+                                    m_fileDescription.FileCultureInfo });
+                        }   
                         else if (tfi.parseNumberMethod != null)
                         {
                             objValue =
@@ -521,7 +538,7 @@ namespace LINQtoCSV
                         {
                             // No TypeConverter and no Parse method available.
                             // Try direct approach.
-                            objValue = value;
+                            objValue = value;                          
                         }
 
                         if (tfi.memberInfo is PropertyInfo)
