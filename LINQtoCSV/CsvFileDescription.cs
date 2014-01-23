@@ -88,6 +88,8 @@ namespace LINQtoCSV
 
         // ---------------
 
+        public bool IgnoreTrailingSeparatorChar { get; set; }
+
         public CsvFileDescription()
         {
             m_cultureInfo = CultureInfo.CurrentCulture;
@@ -97,6 +99,7 @@ namespace LINQtoCSV
             SeparatorChar = ',';
             TextEncoding = Encoding.UTF8;
             DetectEncodingFromByteOrderMarks = true;
+            IgnoreTrailingSeparatorChar = false;
         }
     }
 }

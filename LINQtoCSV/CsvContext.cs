@@ -128,7 +128,7 @@ namespace LINQtoCSV
 
             // ----------
 
-            CsvStream cs = new CsvStream(stream, null,fileDescription.SeparatorChar);
+            CsvStream cs = new CsvStream(stream, null, fileDescription.SeparatorChar, fileDescription.IgnoreTrailingSeparatorChar);
             
             // If we're reading raw data rows, instantiate a T so we return objects
             // of the type specified by the caller.
@@ -259,7 +259,7 @@ namespace LINQtoCSV
             CsvFileDescription fileDescription) 
         {
             FieldMapper<T> fm = new FieldMapper<T>(fileDescription, fileName, true);
-            CsvStream cs = new CsvStream(null,stream, fileDescription.SeparatorChar);
+            CsvStream cs = new CsvStream(null, stream, fileDescription.SeparatorChar, fileDescription.IgnoreTrailingSeparatorChar);
 
             List<string> row = new List<string>();
 
