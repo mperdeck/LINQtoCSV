@@ -256,7 +256,7 @@ namespace LINQtoCSV
         /// Writes the field names given in T to row.
         /// </summary>
         /// 
-        public void WriteNames(ref List<string> row)
+        public void WriteNames(List<string> row)
         {
             row.Clear();
 
@@ -280,7 +280,7 @@ namespace LINQtoCSV
         /// ///////////////////////////////////////////////////////////////////////
         /// WriteObject
         /// 
-        public void WriteObject(T obj, ref List<string> row)
+        public void WriteObject(T obj, List<string> row)
         {
             row.Clear();
 
