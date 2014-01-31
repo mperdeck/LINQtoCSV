@@ -149,7 +149,7 @@ namespace LINQtoCSV
             try
             {
                 bool firstRow = true;
-                while (cs.ReadRow(ref row))
+                while (cs.ReadRow(row))
                 {
                     // Skip empty lines.
                     // Important. If there is a newline at the end of the last data line, the code
@@ -266,7 +266,7 @@ namespace LINQtoCSV
             // If first line has to carry the field names, write the field names now.
             if (fileDescription.FirstLineHasColumnNames)
             {
-                fm.WriteNames(ref row);
+                fm.WriteNames(row);
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
             }
 
@@ -275,7 +275,7 @@ namespace LINQtoCSV
             foreach (T obj in values)
             {
                 // Convert obj to row
-                fm.WriteObject(obj, ref row);
+                fm.WriteObject(obj, row);
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
             }
         }

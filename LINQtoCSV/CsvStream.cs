@@ -83,7 +83,7 @@ namespace LINQtoCSV
         /// True if a row was returned in parameter "row".
         /// False if no row returned. In that case, you're at the end of the file.
         /// </returns>
-        public bool ReadRow(ref IDataRow row)
+        public bool ReadRow(IDataRow row)
         {
             row.Clear();
 
