@@ -82,9 +82,7 @@ and a quoted ""string"""
                     name = "mouse trap", weight = 45E-5, startDate = new DateTime(1985, 1, 2), launchTime = new DateTime(1988, 8, 7, 0, 0, 0),
                     nbrAvailable = 0, onsale = false, shopsAvailable = @"This field has
 a newline", hexProductCode = 256, retailPrice = 78300M,
-                    description = @"This field has quotes(""), and
-two newlines
-and a quoted ""string"""
+                    description = @"This field has quotes(""), and" +"\r\n" + "two newlines\r\n" + @"and a quoted ""string"""
                 },
                 new ProductData {
                     name = "dog house", weight = 45230990, startDate = new DateTime(2004, 2, 29), launchTime = default(DateTime),
