@@ -148,8 +148,14 @@ namespace LINQtoCSV
 
             try
             {
+                List<int> charLengths = null;
+                if (!readingRawDataRows)
+                {
+                    charLengths = fm.GetCharLengths();
+                }
+
                 bool firstRow = true;
-                while (cs.ReadRow(ref row))
+                while (cs.ReadRow(ref row, charLengths))
                 {
                     // Skip empty lines.
                     // Important. If there is a newline at the end of the last data line, the code

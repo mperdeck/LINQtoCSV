@@ -20,6 +20,7 @@ namespace LINQtoCSV
         public int FieldIndex { get; set; }
         public NumberStyles NumberStyle { get; set; }
         public string OutputFormat { get; set; }
+        public int CharLength { get; set; }
 
         public CsvColumnAttribute()
         {
@@ -35,13 +36,16 @@ namespace LINQtoCSV
                     int fieldIndex, 
                     bool canBeNull,
                     string outputFormat,
-                    NumberStyles numberStyle)
+                    NumberStyles numberStyle,
+                    int charLength)
         {
             Name = name;
             FieldIndex = fieldIndex;
             CanBeNull = canBeNull;
             NumberStyle = numberStyle;
             OutputFormat = outputFormat;
+
+            CharLength = charLength;
         }
     }
 }

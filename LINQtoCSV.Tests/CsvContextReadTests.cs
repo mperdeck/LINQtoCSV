@@ -10,6 +10,191 @@ namespace LINQtoCSV.Tests
     public class CsvContextReadTests : Test
     {
         [TestMethod()]
+        public void GoodFileUsingOutputFormatForParsingDatesCharUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                SeparatorChar = ';',
+                FirstLineHasColumnNames = false,
+                UseOutputFormatForParsingCsvValue = true,                
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+                "AAAAAAAA;052308" + Environment.NewLine +
+                "BBBBBBBB;051212" + Environment.NewLine +
+                "CCCCCCCC;122308";
+
+            var expected = new[] {
+                new ProductDataParsingOutputFormat() {
+                    name = "AAAAAAAA", startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataParsingOutputFormat {
+                    name = "BBBBBBBB", startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataParsingOutputFormat {
+                    name = "CCCCCCCC",  startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+        [TestMethod()]
+        public void GoodFileNoSeparatorCharUseOutputFormatForParsingUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                NoSeparatorChar = true,
+                UseOutputFormatForParsingCsvValue = true,
+                FirstLineHasColumnNames = false,
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+@"AAAAAAAA34.18405/23/08\n
+BBBBBBBB10.31105/12/12\n
+CCCCCCCC12.00012/23/08";
+
+            var expected = new[] {
+                new ProductDataCharLength() {
+                    name = "AAAAAAAA", weight = 34.184, startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataCharLength {
+                    name = "BBBBBBBB", weight = 10.311, startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataCharLength {
+                    name = "CCCCCCCC", weight = 12.000, startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+        [TestMethod()]
+        public void GoodFileNoSeparatorCharUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                NoSeparatorChar = true,
+                UseOutputFormatForParsingCsvValue = false,
+                FirstLineHasColumnNames = false,
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+@"AAAAAAAA34.18405/23/08\n
+BBBBBBBB10.31105/12/12\n
+CCCCCCCC12.00012/23/08";
+
+            var expected = new[] {
+                new ProductDataCharLength() {
+                    name = "AAAAAAAA", weight = 34.184, startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataCharLength {
+                    name = "BBBBBBBB", weight = 10.311, startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataCharLength {
+                    name = "CCCCCCCC", weight = 12.000, startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+        [TestMethod()]
+        public void GoodFileCommaDelimitedUseFieldIndexForReadingDataCharUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                SeparatorChar = ',',
+                IgnoreMissingColumns = true,
+                UseFieldIndexForReadingData = true,
+                FirstLineHasColumnNames = false,
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+    "AAAAAAAA,__,34.184,05/23/08" + Environment.NewLine +
+    "BBBBBBBB,__,10.311,05/12/12" + Environment.NewLine +
+    "CCCCCCCC,__,12.000,12/23/08";
+
+            var expected = new[] {
+                new ProductDataSpecificFieldIndex() {
+                    name = "AAAAAAAA", weight = 34.184, startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "BBBBBBBB", weight = 10.311, startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "CCCCCCCC", weight = 12.000, startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+        [TestMethod()]
+        public void GoodFileCommaDelimitedUseFieldIndexForReadingDataCharUseOutputFormatForParsingUSEnglish()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                SeparatorChar = ',',
+                IgnoreMissingColumns = true,
+                UseOutputFormatForParsingCsvValue = true,
+
+                UseFieldIndexForReadingData = true,
+                FirstLineHasColumnNames = false,
+                EnforceCsvColumnAttribute = true, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+    "AAAAAAAA,__,34.184,05/23/08" + Environment.NewLine +
+    "BBBBBBBB,__,10.311,05/12/12" + Environment.NewLine +
+    "CCCCCCCC,__,12.000,12/23/08";
+
+            var expected = new[] {
+                new ProductDataSpecificFieldIndex() {
+                    name = "AAAAAAAA", weight = 34.184, startDate = new DateTime(2008, 5, 23),
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "BBBBBBBB", weight = 10.311, startDate = new DateTime(2012, 5, 12), 
+                },
+                new ProductDataSpecificFieldIndex {
+                    name = "CCCCCCCC", weight = 12.000, startDate = new DateTime(2008, 12, 23),
+                }
+            };
+
+            // Act and Assert
+
+            AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+
+        [TestMethod()]
         public void GoodFileCommaDelimitedNamesInFirstLineUSEnglish()
         {
             // Arrange

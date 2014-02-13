@@ -461,6 +461,10 @@ You can then access each individual field within each data row:
 <li><a href="#DetectEncodingFromByteOrderMarks"><code>DetectEncodingFromByteOrderMarks</code></a> </li>
 
 <li><a href="#MaximumNbrExceptions"><code>MaximumNbrExceptions</code></a> </li>
+
+<li><a href="#NoSeparatorChar"><code>NoSeparatorChar</code></a> </li>
+
+<li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
 </ul>
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
@@ -498,6 +502,40 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <p>The character used to separate fields in the file. This would be a comma for CSV files, or a '\t' for a tab delimited file.</p>
 
 <p>You can use any character you like, except for white space characters or the double quote (&quot;).</p>
+
+<h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
+
+<table class="articletable">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code lang="cs">bool</code></td>
+</tr>
+
+<tr>
+<td><strong>Default: </strong></td>
+
+<td>false</td>
+</tr>
+
+<tr>
+<td><strong>Applies to: </strong></td>
+
+<td>Reading (for the moment)</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">CsvFileDescription fd = new CsvFileDescription();
+fd.NoSeparatorChar = true;
+</pre>
+
+<p>When a CSV file doesnt contain a separator char we can specify for each type field the number of characters it takes in a line.</p>
+
+<p>The number of characters is specified using the CharLength property in the <a href="#CsvColumnAttribute"><code>CsvColumnAttribute</code></a> class.</p>
 
 <h3><a id="QuoteAllFields">QuoteAllFields</a></h3>
 
@@ -747,6 +785,8 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <li><a href="#OutputFormat"><code>OutputFormat</code></a> </li>
 
 <li><a href="#FieldIndex"><code>FieldIndex</code></a> </li>
+
+<li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
 </ul>
 
 <h3><a id="Name">Name</a></h3>
@@ -847,6 +887,79 @@ public DateTime LaunchDate { get; set; }</pre>
 <p>The <code>FieldIndex</code>s do not have to start at 1. They don't have to be consecutive. The <code>Read</code> and <code>Write</code> methods will simply assume that a field/property comes before some other field/property if its <code>FieldIndex</code> is lower.</p>
 
 <p><strong>Writing</strong> - The <code>Write</code> method uses the <code>FieldIndex</code> of each field or property to figure out in what order to write the data fields to the output file. Field and properties without <code>FieldIndex</code> get written last, in random order.</p>
+
+<h3><a name="CharLength"></a>CharLength</h3>
+
+<table cellpadding="3">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code>int</code></a></td>
+</tr>
+
+<tr>
+<td><strong>Default: </strong></td>
+
+<td><code>0</code></td>
+</tr>
+
+<tr>
+<td><strong>Applies to: </strong></td>
+
+<td>Reading only</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">
+CsvFileDescription.UseFieldIndexForReadingData = true;
+
+[CsvColumn(CharLength=12)]
+public string Name { get; set; }</pre>
+
+<p>Allows you to specify that the Name field has an item in the data row items which takes 12 characters in the data line.</p>
+
+<p>Used in combination with <pre lang="cs">UseFieldIndexForReadingData = true </pre> </p>
+
+<h3><a name="UseFieldIndexForReadingData"></a>UseFieldIndexForReadingData</h3>
+
+<table cellpadding="3">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code>bool</code></a></td>
+</tr>
+
+<tr>
+<td><strong>Default: </strong></td>
+
+<td><code>false</code></td>
+</tr>
+
+<tr>
+<td><strong>Applies to: </strong></td>
+
+<td>Reading only</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">
+CsvFileDescription.UseFieldIndexForReadingData = true;
+
+[CsvColumn(FieldIndex = 3)]
+public DateTime LaunchDate { get; set; }</pre>
+
+<p>Allows you to specify that the launchDate value is found at the specific index (2 - zero based index) in the data row items.</p>
+
+<p>By default, the values are read one by one in the data row items.</p>
+
 
 <h3><a name="NumberStyle"></a>NumberStyle</h3>
 
