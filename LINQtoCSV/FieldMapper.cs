@@ -17,6 +17,7 @@ namespace LINQtoCSV
             public NumberStyles inputNumberStyle = NumberStyles.Any;
             public string outputFormat = null;
             public bool hasColumnAttribute = false;
+            public bool hasIgnoreAttribute = false;
 
             public MemberInfo memberInfo = null;
             public Type fieldType = null;
@@ -115,7 +116,7 @@ namespace LINQtoCSV
 
             foreach (Object attribute in mi.GetCustomAttributes(typeof(CsvColumnAttribute), true))
             {
-                CsvColumnAttribute cca = (CsvColumnAttribute)attribute;
+                var cca = (CsvColumnAttribute)attribute;
 
                 if (!string.IsNullOrEmpty(cca.Name))
                 {
@@ -128,6 +129,13 @@ namespace LINQtoCSV
                 tfi.outputFormat = cca.OutputFormat;
                 tfi.inputNumberStyle = cca.NumberStyle;
                 tfi.charLength = cca.CharLength;
+            }
+
+            foreach (Object attribute in mi.GetCustomAttributes(typeof (IgnoreColumnAttribute), true))
+            {
+                var cca = (IgnoreColumnAttribute)attribute;
+
+                tfi.hasIgnoreAttribute = true;
             }
 
             // -----
@@ -450,6 +458,9 @@ namespace LINQtoCSV
             for (int i = 0; i < maxRowCount; i++)
             {
                 TypeFieldInfo tfi = m_IndexToInfo[i];
+
+                if (tfi.hasIgnoreAttribute)
+                    continue;
                 
                 if (m_fileDescription.EnforceCsvColumnAttribute &&
                         (!tfi.hasColumnAttribute))

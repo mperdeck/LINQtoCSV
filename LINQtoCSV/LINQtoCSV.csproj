@@ -84,6 +84,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="FieldMapper.cs" />
     <Compile Include="IDataRow.cs" />
+    <Compile Include="IgnoreColumnAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
