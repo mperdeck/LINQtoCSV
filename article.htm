@@ -503,40 +503,6 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
 <p>You can use any character you like, except for white space characters or the double quote (&quot;).</p>
 
-<h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
-
-<table class="articletable">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
-
-<td><code lang="cs">bool</code></td>
-</tr>
-
-<tr>
-<td><strong>Default: </strong></td>
-
-<td>false</td>
-</tr>
-
-<tr>
-<td><strong>Applies to: </strong></td>
-
-<td>Reading (for the moment)</td>
-</tr>
-</tbody>
-</table>
-
-<h4>Example:</h4>
-
-<pre lang="cs">CsvFileDescription fd = new CsvFileDescription();
-fd.NoSeparatorChar = true;
-</pre>
-
-<p>When a CSV file doesnt contain a separator char we can specify for each type field the number of characters it takes in a line.</p>
-
-<p>The number of characters is specified using the CharLength property in the <a href="#CsvColumnAttribute"><code>CsvColumnAttribute</code></a> class.</p>
-
 <h3><a id="QuoteAllFields">QuoteAllFields</a></h3>
 
 <table class="articletable">
@@ -767,6 +733,76 @@ fd.NoSeparatorChar = true;
 
 <p>For details about aggregated exceptions, see the <a href="#Error_Handling">error handling</a> section.</p>
 
+<h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
+
+<table class="articletable">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code lang="cs">bool</code></td>
+</tr>
+
+<tr>
+<td><strong>Default: </strong></td>
+
+<td>false</td>
+</tr>
+
+<tr>
+<td><strong>Applies to: </strong></td>
+
+<td>Reading</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">fd.NoSeparatorChar = true; // Fields are fixed width</pre>
+
+<p>
+Set this to true when the CSV file uses fixed width fields rather than separator characters.
+</p>
+
+<p>The number of characters is specified using the <a href="#CharLength">CharLength</a> property in the <a href="#CsvColumn_Attribute"><code>CsvColumnAttribute</code></a> class.</p>
+
+<h3><a name="UseFieldIndexForReadingData"></a>UseFieldIndexForReadingData</h3>
+
+<table cellpadding="3">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code>bool</code></a></td>
+</tr>
+
+<tr>
+<td><strong>Default: </strong></td>
+
+<td><code>false</code></td>
+</tr>
+
+<tr>
+<td><strong>Applies to: </strong></td>
+
+<td>Reading only</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">fd.UseFieldIndexForReadingData = true;</pre>
+
+<p>
+Modifies the behaviour of the
+<a href="#FieldIndex">FieldIndex</a> property of the
+ <a href="#CsvColumn_Attribute"><code>CsvColumnAttribute</code></a> class,
+ to make it suitable for fixed width fields.
+ See the description of the <a href="#FieldIndex">FieldIndex</a> property for details.
+</p>
+
 <h2>CsvColumn Attribute<a id="CsvColumn_Attribute"></a></h2>
 
 <p>As shown in the <a href="#How_to_use">Reading from a file</a> and <a href="#writing_to_a_file">Writing to a file</a> examples, you can decorate the public fields and properties of your data class with the <code>CsvColumn</code> attribute to specify such things as the output format for date and number fields.</p>
@@ -786,7 +822,7 @@ fd.NoSeparatorChar = true;
 
 <li><a href="#FieldIndex"><code>FieldIndex</code></a> </li>
 
-<li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
+<li><a href="#CharLength"><code>CharLength</code></a> </li>
 </ul>
 
 <h3><a id="Name">Name</a></h3>
@@ -880,13 +916,21 @@ public DateTime LaunchDate { get; set; }</pre>
 
 <p>This property is used for both reading and writing, but in slightly different ways.</p>
 
-<p><strong>Reading</strong> - The <code>Read</code> method needs to somehow associate data fields in the input file with field and properties in the data class. If the file has column names in the first record, that's easy - <code>Read</code> simply matches the column names with the names of the fields and properties in the data class.</p>
+<p><strong>Reading</strong> - The <code>Read</code> method needs to somehow associate data fields in the input file with fields and properties in the data class. If the file has column names in the first record, that's easy - <code>Read</code> simply matches the column names with the names of the fields and properties in the data class.</p>
 
 <p>However, if the file does not have column names in the first record, <code>Read</code> needs to look at the order of the data fields in the data records to match them with the fields and properties in the data class. Unfortunately though, the .NET framework does not provide a way to reliably retrieve that order from the class definition. So, you have to specify which field/property comes before which field/property by giving the fields and properties a <code>CsvColumn</code> attribute with the <code>FieldIndex</code> property.</p>
 
 <p>The <code>FieldIndex</code>s do not have to start at 1. They don't have to be consecutive. The <code>Read</code> and <code>Write</code> methods will simply assume that a field/property comes before some other field/property if its <code>FieldIndex</code> is lower.</p>
 
-<p><strong>Writing</strong> - The <code>Write</code> method uses the <code>FieldIndex</code> of each field or property to figure out in what order to write the data fields to the output file. Field and properties without <code>FieldIndex</code> get written last, in random order.</p>
+<p>
+When the 
+<a href="#UseFieldIndexForReadingData">UseFieldIndexForReadingData</a> property of the
+<a href="#CsvFileDescription">CsvFileDescription</a> class is true,
+<code>FieldIndex</code>
+specifies the specific index within the row of the value. This is 1 based, so if you set FieldIndex to 3, the value begins from the 3rd character.
+</p>
+
+<p><strong>Writing</strong> - The <code>Write</code> method uses the <code>FieldIndex</code> of each field or property to figure out in what order to write the data fields to the output file. Fields and properties without <code>FieldIndex</code> get written last, in random order.</p>
 
 <h3><a name="CharLength"></a>CharLength</h3>
 
@@ -915,50 +959,12 @@ public DateTime LaunchDate { get; set; }</pre>
 <h4>Example:</h4>
 
 <pre lang="cs">
-CsvFileDescription.UseFieldIndexForReadingData = true;
-
 [CsvColumn(CharLength=12)]
 public string Name { get; set; }</pre>
 
 <p>Allows you to specify that the Name field has an item in the data row items which takes 12 characters in the data line.</p>
 
 <p>Used in combination with <pre lang="cs">UseFieldIndexForReadingData = true </pre> </p>
-
-<h3><a name="UseFieldIndexForReadingData"></a>UseFieldIndexForReadingData</h3>
-
-<table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
-
-<td><code>bool</code></a></td>
-</tr>
-
-<tr>
-<td><strong>Default: </strong></td>
-
-<td><code>false</code></td>
-</tr>
-
-<tr>
-<td><strong>Applies to: </strong></td>
-
-<td>Reading only</td>
-</tr>
-</tbody>
-</table>
-
-<h4>Example:</h4>
-
-<pre lang="cs">
-CsvFileDescription.UseFieldIndexForReadingData = true;
-
-[CsvColumn(FieldIndex = 3)]
-public DateTime LaunchDate { get; set; }</pre>
-
-<p>Allows you to specify that the launchDate value is found at the specific index (2 - zero based index) in the data row items.</p>
-
-<p>By default, the values are read one by one in the data row items.</p>
 
 
 <h3><a name="NumberStyle"></a>NumberStyle</h3>
@@ -1701,6 +1707,14 @@ Added ability to read raw data rows.
 <td valign="top">18 Feb 2012</td>
 <td valign="top">
 Bug fix - CsvFileDescription now properly processed when reading from streams.
+</td>
+</tr>
+<tr>
+<td valign="top">1.3 </td>
+<td valign="top">14 Feb 2014</td>
+<td valign="top">
+Introduced fixed width columns.
+Courtesy of <a href="https://github.com/lvaleriu" target="_blank">lvaleriu</a>.
 </td>
 </tr>
 </tbody>
