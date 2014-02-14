@@ -16,9 +16,9 @@ namespace LINQtoCSV.Tests
             // Arrange
 
             List<ProductData> dataRows_Test = new List<ProductData>();
-            dataRows_Test.Add(new ProductData { retailPrice = 4.59M, name = "Wooden toy", startDate = DateTime.Parse("1/2/2008"), nbrAvailable = 67 });
+            dataRows_Test.Add(new ProductData { retailPrice = 4.59M, name = "Wooden toy", startDate = new DateTime(2008, 2, 1), nbrAvailable = 67 });
             dataRows_Test.Add(new ProductData { onsale = true, weight = 4.03, shopsAvailable = "Ashfield", description = "" });
-            dataRows_Test.Add(new ProductData { name = "Metal box", launchTime = DateTime.Parse("5/11/2009 4:50"), description = "Great\nproduct" });
+            dataRows_Test.Add(new ProductData { name = "Metal box", launchTime = new DateTime(2009, 11, 5, 4, 50, 0), description = "Great\nproduct" });
 
             CsvFileDescription fileDescription_namesNl2 = new CsvFileDescription
             {
