@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LINQtoCSV.Tests
 {
@@ -216,7 +217,7 @@ two newlines
 and a quoted """"string""""""
 dog house,    ""45,230,990"",29 Feb 2004, ,                  -56,        True,"""",                  FF10, ""12,008""";
 
-            var expected = new [] {
+            var expected = new[] {
                 new ProductData {
                     name = "moonbuggy", weight = 34.184, startDate = new DateTime(2008, 5, 23), launchTime = new DateTime(2009, 5, 5, 16, 11, 0),
                     nbrAvailable = 1205, onsale = true, shopsAvailable = "Paris, New York", hexProductCode = 31, retailPrice = 540.12M,
@@ -281,6 +282,140 @@ and a quoted ""string"""
             // Act and Assert
 
             AssertRead(testInput, fileDescription_nonamesNl, expected);
+        }
+
+        [TestMethod()]
+        public void GoodFileCommaDelimitedNamesInFirstLineUSEnglishAsParallel()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                SeparatorChar = ',', // default is ','
+                FirstLineHasColumnNames = true,
+                EnforceCsvColumnAttribute = false, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+@"name,        weight,       startDate, launchTime,               nbrAvailable,onsale,shopsAvailable,    code,  price,    description
+moonbuggy,   34.184,       5/23/08,   5-May-2009 4:11 pm,       1205,        true,  ""Paris, New York"", 1F,    $540.12,  newly launched product
+""mouse trap"",45E-5,        1/2/1985,  ""7 August 1988, 0:00 am"", ""4,030"",     FALSE, ""This field has
+a newline"", 100, ""$78,300"", ""This field has quotes(""""), and
+two newlines
+and a quoted """"string""""""
+dog house,    ""45,230,990"",29 Feb 2004, ,                  -56,        True,"""",                  FF10, ""12,008""";
+
+            var expected = new[] {
+                new ProductData {
+                    name = "moonbuggy", weight = 34.184, startDate = new DateTime(2008, 5, 23), launchTime = new DateTime(2009, 5, 5, 16, 11, 0),
+                    nbrAvailable = 1205, onsale = true, shopsAvailable = "Paris, New York", hexProductCode = 31, retailPrice = 540.12M,
+                    description = "newly launched product"
+                },
+                new ProductData {
+                    name = "mouse trap", weight = 45E-5, startDate = new DateTime(1985, 1, 2), launchTime = new DateTime(1988, 8, 7, 0, 0, 0),
+                    nbrAvailable = 4030, onsale = false, shopsAvailable = @"This field has
+a newline", hexProductCode = 256, retailPrice = 78300M,
+                    description = @"This field has quotes(""), and
+two newlines
+and a quoted ""string"""
+                },
+                new ProductData {
+                    name = "dog house", weight = 45230990, startDate = new DateTime(2004, 2, 29), launchTime = default(DateTime),
+                    nbrAvailable = -56, onsale = true, shopsAvailable = "", hexProductCode = 65296, retailPrice = 12008M,
+                    description = null
+                }
+            };
+
+            // Act and Assert
+
+            var inputs = new string[] { testInput, testInput, testInput };
+            var csvContext = new CsvContext();
+
+            var result = inputs
+                .AsParallel()
+                .SelectMany(f => csvContext.Read<ProductData>(StreamReaderFromString(f), fileDescription_namesUs))
+                .ToList();
+
+            AssertCollectionsEqual(result, expected.Concat(expected).Concat(expected));
+        }
+
+        [TestMethod()]
+        public void GoodFileCommaDelimitedNamesInFirstLineUSEnglishAsParallelDataRow()
+        {
+            // Arrange
+
+            CsvFileDescription fileDescription_namesUs = new CsvFileDescription
+            {
+                SeparatorChar = ',', // default is ','
+                FirstLineHasColumnNames = true,
+                EnforceCsvColumnAttribute = false, // default is false
+                FileCultureName = "en-US" // default is the current culture
+            };
+
+            string testInput =
+@"name,        weight,       startDate, launchTime,               nbrAvailable,onsale,shopsAvailable,    code,  price,    description
+moonbuggy,   34.184,       5/23/08,   5-May-2009 4:11 pm,       1205,        true,  ""Paris, New York"", 1F,    $540.12,  newly launched product
+""mouse trap"",45E-5,        1/2/1985,  ""7 August 1988, 0:00 am"", ""4,030"",     FALSE, ""This field has
+a newline"", 100, ""$78,300"", ""This field has quotes(""""), and
+two newlines
+and a quoted """"string""""""
+dog house,    ""45,230,990"",29 Feb 2004, ,                  -56,        True,"""",                  FF10, ""12,008""";
+
+            var expected = new List<DataRowAssertable> {
+                new DataRowAssertable {
+                    new DataRowItem("moonbuggy", 1),
+                    new DataRowItem("34.184", 1),       
+                    new DataRowItem("5/23/08", 1),   
+                    new DataRowItem("5-May-2009 4:11 pm", 1),       
+                    new DataRowItem("1205", 1),        
+                    new DataRowItem("true", 1),  
+                    new DataRowItem("\"Paris, New York\"", 1), 
+                    new DataRowItem("1F", 1),    
+                    new DataRowItem("$540.12", 1),  
+                    new DataRowItem("newly launched product", 1)
+                },
+                new DataRowAssertable {
+                    new DataRowItem("\"mouse trap\"", 2),
+                    new DataRowItem("45E-5", 2),        
+                    new DataRowItem("1/2/1985", 2),  
+                    new DataRowItem("\"7 August 1988, 0:00 am\"", 2), 
+                    new DataRowItem("\"4,030\"", 2),     
+                    new DataRowItem("FALSE", 2), 
+                    new DataRowItem(@"""This field has
+a newline""", 2), 
+                    new DataRowItem("100", 2), 
+                    new DataRowItem("\"$78,300\"", 2), 
+                    new DataRowItem(@"""This field has quotes(""""), and
+two newlines
+and a quoted """"string""""""", 2)
+                },
+                new DataRowAssertable {
+                    new DataRowItem("dog house", 3),
+                    new DataRowItem(@"""45,230,990""", 3),
+                    new DataRowItem("29 Feb 2004", 3),
+                    new DataRowItem("", 3),
+                    new DataRowItem("-56", 3),
+                    new DataRowItem("True", 3),
+                    new DataRowItem(@"""""", 3),
+                    new DataRowItem("FF10", 3),
+                    new DataRowItem(@"""12,008""", 3)
+                }
+            };
+
+            // Act and Assert
+
+            var inputs = new string[] { testInput };
+            var csvContext = new CsvContext();
+
+            var result = inputs
+                .AsParallel()
+                .SelectMany(f => csvContext.Read<DataRowAssertable>(StreamReaderFromString(f), fileDescription_namesUs))
+                .ToList();
+
+            var a = expected.ToList();
+
+            AssertCollectionsEqual(result, a);
         }
     }
 }
