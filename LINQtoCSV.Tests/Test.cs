@@ -120,12 +120,7 @@ namespace LINQtoCSV.Tests
         public void AssertWrite<T>(IEnumerable<T> values, CsvFileDescription fileDescription, string expected) where T : class
         {
             string actual = TestWrite<T>(values, fileDescription);
-            Assert.AreEqual(NormalizeString(actual), NormalizeString(expected));
-        }
-
-        public string NormalizeString(string s)
-        {
-            return s.Replace("\r\n", "\n");
+            Assert.AreEqual(Utils.NormalizeString(actual), Utils.NormalizeString(expected));
         }
     }
 }

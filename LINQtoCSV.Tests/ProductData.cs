@@ -73,7 +73,7 @@ namespace LINQtoCSV.Tests
             Assert.AreEqual(other.hexProductCode, hexProductCode, "hexProductCode");
             Assert.AreEqual(other.onsale, onsale, "onsale");
             Assert.AreEqual(other.retailPrice, retailPrice, "retailPrice");
-            Assert.AreEqual(other.description, description, "description");
+            Assert.AreEqual(Utils.NormalizeString(other.description), Utils.NormalizeString(description), "description");
         }
     }
 }

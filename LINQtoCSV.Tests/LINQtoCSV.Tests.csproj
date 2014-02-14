@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestDataRow.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LINQtoCSV\LINQtoCSV.csproj">
