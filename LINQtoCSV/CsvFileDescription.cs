@@ -90,11 +90,9 @@ namespace LINQtoCSV
         public bool IgnoreMissingColumns { get; set; }
         public bool UseFieldIndexForReadingData { get; set; }
         public bool UseOutputFormatForParsingCsvValue { get; set; }
-
+        public bool IgnoreTrailingSeparatorChar { get; set; }
 
         // ---------------
-
-        public bool IgnoreTrailingSeparatorChar { get; set; }
 
         public CsvFileDescription()
         {
