@@ -18,6 +18,7 @@ namespace LINQtoCSV
         private TextWriter m_outStream;
         private char m_SeparatorChar;
         private char[] m_SpecialChars;
+        private bool m_IgnoreTrailingSeparatorChar;
 
         // Current line number in the file. Only used when reading a file, not when writing a file.
         private int m_lineNbr;
@@ -25,11 +26,12 @@ namespace LINQtoCSV
         /// ///////////////////////////////////////////////////////////////////////
         /// CsvStream
         /// 
-        public CsvStream(TextReader inStream, TextWriter outStream, char SeparatorChar)
+        public CsvStream(TextReader inStream, TextWriter outStream, char SeparatorChar, bool IgnoreTrailingSeparatorChar)
         {
             m_instream = inStream;
             m_outStream = outStream;
             m_SeparatorChar = SeparatorChar;
+            m_IgnoreTrailingSeparatorChar = IgnoreTrailingSeparatorChar;
             m_SpecialChars = ("\"\x0A\x0D" + m_SeparatorChar.ToString()).ToCharArray();
             m_lineNbr = 1;
         }
@@ -221,6 +223,12 @@ namespace LINQtoCSV
 
                 if ((postdata || !quoted) && (itemLength == null && c == m_SeparatorChar))
                 {
+                    if (m_IgnoreTrailingSeparatorChar)
+                    {
+                        char nC = GetNextChar(false);
+                        if ((nC == '\x0A' || nC == '\x0D'))
+                            continue;
+                    }
                     // end of item, return
                     if (itemFound) { itemString = item.ToString(); }
                     return true;

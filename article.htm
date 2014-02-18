@@ -463,6 +463,7 @@ You can then access each individual field within each data row:
 <li><a href="#MaximumNbrExceptions"><code>MaximumNbrExceptions</code></a> </li>
 
 <li><a href="#NoSeparatorChar"><code>NoSeparatorChar</code></a> </li>
+<li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
 
 <li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
 </ul>
@@ -732,6 +733,40 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <p>To not have any limit and read the entire file no matter how many exceptions you get, set <code>AggregatedException</code> to -1.</p>
 
 <p>For details about aggregated exceptions, see the <a href="#Error_Handling">error handling</a> section.</p>
+
+<h3><a id="IgnoreTrailingSeparatorChar"></a>IgnoreTrailingSeparatorChar</h3>
+
+<table cellpadding="3">
+<tbody>
+<tr>
+<td><strong>Type:</strong></td>
+
+<td><code lang="cs">bool</code></td>
+</tr>
+
+<tr>
+<td><strong>Default:</strong></td>
+
+<td>false</td>
+</tr>
+
+<tr>
+<td><strong>Applies to:</strong></td>
+
+<td>Reading only</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Example:</h4>
+
+<pre lang="cs">fd.IgnoreTrailingSeparatorChar = true; // ignore separator character at the end of the line</pre>
+
+<p>Consider following file: </p>
+
+<p><code>column1;column2;column3;</code></p>
+
+<p>Though it's not a canonical representation of CSV file, <code>IgnoreTrailingSeparatorChar</code> property tells <code>Read</code> to ignore separator character at the end of the line.</p>
 
 <h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
 
