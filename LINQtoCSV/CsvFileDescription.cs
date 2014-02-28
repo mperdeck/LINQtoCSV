@@ -87,10 +87,14 @@ namespace LINQtoCSV
         public Encoding TextEncoding { get; set; }
         public bool DetectEncodingFromByteOrderMarks { get; set; }
 
-        public bool IgnoreMissingColumns { get; set; }
         public bool UseFieldIndexForReadingData { get; set; }
         public bool UseOutputFormatForParsingCsvValue { get; set; }
         public bool IgnoreTrailingSeparatorChar { get; set; }
+        
+        /// <summary>
+        /// If set to true, wil read only the fields specified as attributes, and will discard other fields in the CSV file
+        /// </summary>
+        public bool IgnoreUnknownColumns { get; set; }
 
         // ---------------
 
@@ -107,6 +111,7 @@ namespace LINQtoCSV
             NoSeparatorChar = false;
             UseFieldIndexForReadingData = false;
             UseOutputFormatForParsingCsvValue = false;
+            IgnoreUnknownColumns = false;
         }
     }
 }

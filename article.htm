@@ -465,7 +465,10 @@ You can then access each individual field within each data row:
 <li><a href="#NoSeparatorChar"><code>NoSeparatorChar</code></a> </li>
 
 <li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
-    <li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
+
+<li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
+
+<li><a href="#IgnoreUnknownColumns"><code>IgnoreUnknownColumns</code></a> </li>
 </ul>
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
@@ -837,6 +840,78 @@ Modifies the behaviour of the
 <p><code>column1;column2;column3;</code></p>
 
 <p>Though it's not a canonical representation of CSV file, <code>IgnoreTrailingSeparatorChar</code> property tells <code>Read</code> to ignore separator character at the end of the line.</p>
+
+<!-----------IgnoreUnknownColumns----------->
+<h3><a id="IgnoreUnknownColumns"></a>IgnoreUnknownColumns</h3>
+
+<table cellpadding="3">
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
+
+            <td><code lang="cs">bool</code></td>
+        </tr>
+
+        <tr>
+            <td><strong>Default:</strong></td>
+
+            <td>false</td>
+        </tr>
+
+        <tr>
+            <td><strong>Applies to:</strong></td>
+
+            <td>Reading only</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Example:</h4>
+
+There are cases where you don't need to read all the columns, but only a subset of them. Consider the following example of a CSV file containing a list of people:<br><br>
+
+<table cellspacing="0" cellpadding="5" border="1">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>City</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>John</td>
+            <td>Doe</td>
+            <td>15</td>
+            <td>Washington</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Jane</td>
+            <td>Doe</td>
+            <td>20</td>
+            <td>New York</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+Suppose you have the following class:
+<pre lang="cs">
+    class Person {
+        [CsvColumn(Name = "Name")]
+        public string Name { get ; set; }
+        [CsvColumn(Name = "Last Name")]
+        public string LastName { get; set; }
+        [CsvColumn(Name = "Age")]
+        public int Age { get; set; }
+    }
+</pre>
+If you set <pre lang="cs">fd.IgnoreTrailingSeparatorChar = true;</pre>
+
+then the fields <code>Id</code> and <code>City</code> will be ignored.
+
+<!---------------------------------------------->
 
 <h2>CsvColumn Attribute<a id="CsvColumn_Attribute"></a></h2>
 
