@@ -39,6 +39,10 @@ namespace LINQtoCSV
             {
                 return index.CompareTo(other.index);
             }
+
+            public override string ToString() {
+                return string.Format("Index: {0}, Name: {1}", index, name);
+            }
         }
 
         // -----------------------------
@@ -46,6 +50,11 @@ namespace LINQtoCSV
         // IndexToInfo is used to quickly translate the index of a field
         // to its TypeFieldInfo.
         protected TypeFieldInfo[] m_IndexToInfo = null;
+
+        /// <summary>
+        /// Contains a mapping between the CSV column indexes that will read and the property indexes in the business object.
+        /// </summary>
+        protected IDictionary<int, int> _mappingIndexes = new Dictionary<int, int>(); 
 
         // Used to build IndexToInfo
         protected Dictionary<string, TypeFieldInfo> m_NameToInfo = null;
@@ -191,6 +200,8 @@ namespace LINQtoCSV
 
             int nbrTypeFields = m_NameToInfo.Keys.Count;
             m_IndexToInfo = new TypeFieldInfo[nbrTypeFields];
+
+            _mappingIndexes = new Dictionary<int, int>();
             
             int i=0;
             foreach (KeyValuePair<string, TypeFieldInfo> kvp in m_NameToInfo)
@@ -371,6 +382,7 @@ namespace LINQtoCSV
                     bool writingFile)
             : base(fileDescription, fileName, writingFile)
         {
+
         }
 
 
@@ -392,25 +404,39 @@ namespace LINQtoCSV
             // the FieldIndex fields.
 
             // If there are more names in the file then fields in the type,
-            // one of the names will not be found, causing an exception.
+            // and IgnoreUnknownColumns is set to `false` one of the names will 
+            // not be found, causing an exception.
 
-            for (int i = 0; i < row.Count; i++)
-            {
-                if (!m_NameToInfo.ContainsKey(row[i].Value))
-                {
+            int currentNameIndex = 0;
+            for (int i = 0; i < row.Count; i++) {
+                if (!m_NameToInfo.ContainsKey(row[i].Value)) {
+                    //If we have to ignore this column
+                    if (m_fileDescription.IgnoreUnknownColumns) {
+                        continue;
+                    }
+
                     // name not found
-                    throw new NameNotInTypeException(typeof(T).ToString(), row[i].Value, m_fileName);
+                    throw new NameNotInTypeException(typeof (T).ToString(), row[i].Value, m_fileName);
                 }
 
                 // ----
 
-                m_IndexToInfo[i] = m_NameToInfo[row[i].Value];
+                //Map the column index in the CSV file with the column index of the business object.
+                _mappingIndexes.Add(i, currentNameIndex);
+                currentNameIndex++;
+            }
 
-                if (m_fileDescription.EnforceCsvColumnAttribute &&
-                    (!m_IndexToInfo[i].hasColumnAttribute))
-                {
+            //Loop to the 
+            for (int i = 0; i < row.Count; i++) {
+                if (!_mappingIndexes.ContainsKey(i)) {
+                    continue;
+                }
+
+                m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[row[i].Value];
+
+                if (m_fileDescription.EnforceCsvColumnAttribute && (!m_IndexToInfo[i].hasColumnAttribute)) {
                     // enforcing column attr, but this field/prop has no column attr.
-                    throw new MissingCsvColumnAttributeException(typeof(T).ToString(), row[i].Value, m_fileName);
+                    throw new MissingCsvColumnAttributeException(typeof (T).ToString(), row[i].Value, m_fileName);
                 }
             }
         }
@@ -433,24 +459,37 @@ namespace LINQtoCSV
         /// <param name="row"></param>
         /// <param name="firstRow"></param>
         /// <returns></returns>
-        public T ReadObject(IDataRow row, AggregatedException ae)
-        {
-            if (!m_fileDescription.IgnoreMissingColumns && row.Count > m_IndexToInfo.Length)
+        public T ReadObject(IDataRow row, AggregatedException ae) {
+            //If there are more columns than the required
+            if (row.Count > m_IndexToInfo.Length)
             {
-                // Too many fields
-                throw new TooManyDataFieldsException(typeof(T).ToString(), row[0].LineNbr, m_fileName);
+                //Are we ignoring unknown columns?
+                if (!m_fileDescription.IgnoreUnknownColumns) {
+                    // Too many fields
+                    throw new TooManyDataFieldsException(typeof (T).ToString(), row[0].LineNbr, m_fileName);
+                }
             }
 
             // -----
 
             T obj = new T();
 
-            int maxRowCount = Math.Min(row.Count, m_IndexToInfo.Length);
+            //If we will be using the mappings, we just iterate through all the cells in this row
+            int maxRowCount = _mappingIndexes.Count > 0 ? row.Count : Math.Min(row.Count, m_IndexToInfo.Length);
 
-            for (int i = 0; i < maxRowCount; i++)
-            {
-                TypeFieldInfo tfi = m_IndexToInfo[i];
-                
+            for (int i = 0; i < maxRowCount; i++) {
+                TypeFieldInfo tfi;
+                //If there is some index mapping generated and the IgnoreUnknownColums is `true`
+                if (m_fileDescription.IgnoreUnknownColumns && _mappingIndexes.Count > 0) {
+                    if (!_mappingIndexes.ContainsKey(i)) {
+                        continue;
+                    }
+                    tfi = m_IndexToInfo[_mappingIndexes[i]];
+                }
+                else {
+                    tfi = m_IndexToInfo[i];
+                }
+
                 if (m_fileDescription.EnforceCsvColumnAttribute &&
                         (!tfi.hasColumnAttribute))
                 {

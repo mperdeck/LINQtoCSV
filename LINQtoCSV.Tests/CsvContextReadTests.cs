@@ -125,7 +125,7 @@ CCCCCCCC12.00012/23/08";
             CsvFileDescription fileDescription_namesUs = new CsvFileDescription
             {
                 SeparatorChar = ',',
-                IgnoreMissingColumns = true,
+                IgnoreUnknownColumns = true,
                 UseFieldIndexForReadingData = true,
                 FirstLineHasColumnNames = false,
                 EnforceCsvColumnAttribute = true, // default is false
@@ -162,7 +162,7 @@ CCCCCCCC12.00012/23/08";
             CsvFileDescription fileDescription_namesUs = new CsvFileDescription
             {
                 SeparatorChar = ',',
-                IgnoreMissingColumns = true,
+                IgnoreUnknownColumns = true,
                 UseOutputFormatForParsingCsvValue = true,
 
                 UseFieldIndexForReadingData = true,
@@ -330,6 +330,42 @@ and a quoted ""string"""
             // Act and Assert
 
             AssertRead(testInput, fileDescription_namesUs, expected);
+        }
+
+        [TestMethod()]
+        public void FileWithUnknownColumns_ShouldDiscardColumns() {
+            var description = new CsvFileDescription
+                {
+                    SeparatorChar = ',',
+                    FirstLineHasColumnNames = true,
+                    IgnoreUnknownColumns = true,
+                };
+            
+            //The following input has 5 columns: Id | Name | Last Name | Age | City. Only the Name, Last Name and Age will be read.
+            
+            string input =
+@"Id,Name,Last Name,Age,City
+1,John,Doe,15,Washington
+2,Jane,Doe,20,New York
+";
+            var expected = new[]
+                {
+                    new Person
+                        {
+                            Name = "John",
+                            LastName = "Doe",
+                            Age = 15
+                        },
+                    new Person
+                        {
+                            Name = "Jane",
+                            LastName = "Doe",
+                            Age = 20
+                        },
+                };
+
+            AssertRead(input, description, expected);
+
         }
     }
 }
