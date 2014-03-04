@@ -1,34 +1,34 @@
 
 <ul class="download">
-<li><a href="https://github.com/mperdeck/LINQtoCSV">Source and sample code</a> </li>
-<li><a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a> </li>
+    <li><a href="https://github.com/mperdeck/LINQtoCSV">Source and sample code</a> </li>
+    <li><a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a> </li>
 </ul>
 
 <h2>Contents</h2>
 
 <ul>
-<li><a href="#Introduction">Introduction</a> </li>
+    <li><a href="#Introduction">Introduction</a> </li>
 
-<li><a href="#Requirements">Requirements</a> </li>
+    <li><a href="#Requirements">Requirements</a> </li>
 
-<li><a href="#Installation">Installation</a> </li>
+    <li><a href="#Installation">Installation</a> </li>
 
-<li><a href="#How_to_use">Quick Start</a> </li>
+    <li><a href="#How_to_use">Quick Start</a> </li>
 
-<li><a href="#Write_Overloads">Write Overloads</a> </li>
+    <li><a href="#Write_Overloads">Write Overloads</a> </li>
 
-<li><a href="#Read_Overloads">Read Overloads</a> </li>
-<li><a href="#ReadingRawDataRows">Reading Raw Data Rows</a> </li>
+    <li><a href="#Read_Overloads">Read Overloads</a> </li>
+    <li><a href="#ReadingRawDataRows">Reading Raw Data Rows</a> </li>
 
-<li><a href="#DeferredReading">Deferred Reading</a> </li>
+    <li><a href="#DeferredReading">Deferred Reading</a> </li>
 
-<li><a href="#CsvFileDescription">CsvFileDescription</a> </li>
+    <li><a href="#CsvFileDescription">CsvFileDescription</a> </li>
 
-<li><a href="#CsvColumn_Attribute">CsvColumn Attribute</a> </li>
+    <li><a href="#CsvColumn_Attribute">CsvColumn Attribute</a> </li>
 
-<li><a href="#Error_Handling">Error Handling</a> </li>
-<li><a href="#History">History</a></li>
-<li><a href="#Contribute">New Features and Bug Fixes</a></li>
+    <li><a href="#Error_Handling">Error Handling</a> </li>
+    <li><a href="#History">History</a></li>
+    <li><a href="#Contribute">New Features and Bug Fixes</a></li>
 </ul>
 
 <h2><a id="Introduction"></a>Introduction</h2>
@@ -36,37 +36,37 @@
 <p>This library makes it easy to use CSV files with LINQ queries. Its features include:</p>
 
 <ul>
-<li>Follows the <a target="_blank" href="http://www.creativyst.com/Doc/Articles/CSV/CSV01.htm">most common rules for CSV files</a>. Correctly handles data fields that contain commas and line breaks. </li>
+    <li>Follows the <a target="_blank" href="http://www.creativyst.com/Doc/Articles/CSV/CSV01.htm">most common rules for CSV files</a>. Correctly handles data fields that contain commas and line breaks. </li>
 
-<li>In addition to comma, most delimiting characters can be used, including tab for tab delimited fields. </li>
+    <li>In addition to comma, most delimiting characters can be used, including tab for tab delimited fields. </li>
 
-<li>Can be used with an <code>IEnumarable</code> of an anonymous class - which is often returned by a LINQ query. </li>
+    <li>Can be used with an <code>IEnumarable</code> of an anonymous class - which is often returned by a LINQ query. </li>
 
-<li>Supports deferred reading. </li>
+    <li>Supports deferred reading. </li>
 
-<li>Supports processing files with international date and number formats. </li>
+    <li>Supports processing files with international date and number formats. </li>
 
-<li>Supports different character encodings if you need them. </li>
+    <li>Supports different character encodings if you need them. </li>
 
-<li>Recognizes a wide variety of date and number formats when reading files. </li>
+    <li>Recognizes a wide variety of date and number formats when reading files. </li>
 
-<li>Provides fine control of date and number formats when writing files. </li>
+    <li>Provides fine control of date and number formats when writing files. </li>
 
-<li>Robust error handling, allowing you to quickly find and fix problems in large input files. </li>
+    <li>Robust error handling, allowing you to quickly find and fix problems in large input files. </li>
 </ul>
 
 <h2><a id="Requirements"></a>Requirements</h2>
 
 <ul>
 
-<li>To compile the library, you need a C# 2010 compiler or better, such as Visual Studio 2010 or Visual C# 2010 Express Edition. </li>
+    <li>To compile the library, you need a C# 2010 compiler or better, such as Visual Studio 2010 or Visual C# 2010 Express Edition. </li>
 
-<li>To run the library code, you need to have the .NET 4.0 framework installed. </li>
+    <li>To run the library code, you need to have the .NET 4.0 framework installed. </li>
 </ul>
 
 <h2><a id="Installation"></a>Installation</h2>
 <p>
-Simply install the <a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a>.
+    Simply install the <a href="http://nuget.org/List/Packages/LinqToCsv" target="_blank">NuGet package</a>.
 </p>
 
 <h2>Quick Start<a id="How_to_use"></a></h2>
@@ -74,73 +74,73 @@ Simply install the <a href="http://nuget.org/List/Packages/LinqToCsv" target="_b
 <h3>Reading from a file</h3>
 
 <ol>
-<li>In your project, add a reference to the <em>LINQtoCSV.dll</em> you generated during <a href="#Installation">Installation</a>. </li>
+    <li>In your project, add a reference to the <em>LINQtoCSV.dll</em> you generated during <a href="#Installation">Installation</a>. </li>
 
-<li>The file will be read into an <code>IEnumerable&lt;T&gt;</code>, where <code>T</code> is a data class that you define. The data records read from the file will be stored in objects of this data class. You could define a data class along these lines: 
+    <li>
+        The file will be read into an <code>IEnumerable&lt;T&gt;</code>, where <code>T</code> is a data class that you define. The data records read from the file will be stored in objects of this data class. You could define a data class along these lines:
 <pre lang="cs">using LINQtoCSV;
 using System;
-
 class Product
 {
     [CsvColumn(Name = &quot;ProductName&quot;, FieldIndex = 1)]
     public string Name { get; set; }
-
     [CsvColumn(FieldIndex = 2, OutputFormat = &quot;dd MMM HH:mm:ss&quot;)]
     public DateTime LaunchDate { get; set; }
-
     [CsvColumn(FieldIndex = 3, CanBeNull = false, OutputFormat = &quot;C&quot;)]
     public decimal Price { get; set; }
-
     [CsvColumn(FieldIndex = 4)]
     public string Country { get; set; }
-
     [CsvColumn(FieldIndex = 5)]
     public string Description { get; set; }
 }</pre>
 
-<p>With this definition, you could read into an <code>IEnumerable&lt;Product&gt;</code>.</p>
+        <p>With this definition, you could read into an <code>IEnumerable&lt;Product&gt;</code>.</p>
 
-<p>Although this example only uses properties, the library methods will recognize simple fields as well. Just make sure your fields/properties are public.</p>
+        <p>Although this example only uses properties, the library methods will recognize simple fields as well. Just make sure your fields/properties are public.</p>
 
-<p>The optional <code>CsvColumn</code> attribute allows you to specify whether a field/property is required, how it should be written to an output file, etc. Full details are available <a href="#CsvColumn_Attribute">here</a>.</p>
-</li>
+        <p>The optional <code>CsvColumn</code> attribute allows you to specify whether a field/property is required, how it should be written to an output file, etc. Full details are available <a href="#CsvColumn_Attribute">here</a>.</p>
+    </li>
 
-<li>Import the <code>LINQtoCSV</code> namespace at the top of the source file where you'll be reading the file: 
+    <li>
+        Import the <code>LINQtoCSV</code> namespace at the top of the source file where you'll be reading the file:
 <pre lang="cs">using LINQtoCSV;</pre>
-</li>
+    </li>
 
-<li>Create a <code>CsvFileDescription</code> object, and initialize it with details about the file that you're going to read. It will look like this: 
+    <li>
+        Create a <code>CsvFileDescription</code> object, and initialize it with details about the file that you're going to read. It will look like this:
 <pre lang="cs">CsvFileDescription inputFileDescription = new CsvFileDescription
 {
     SeparatorChar = ',', 
     FirstLineHasColumnNames = true
 };</pre>
 
-<p>This allows you to specify what character is used to separate data fields (comma, tab, etc.), whether the first record in the file holds column names, and a lot more (<a href="#CsvFileDescription">full details</a>).</p>
-</li>
+        <p>This allows you to specify what character is used to separate data fields (comma, tab, etc.), whether the first record in the file holds column names, and a lot more (<a href="#CsvFileDescription">full details</a>).</p>
+    </li>
 
-<li>Create a <code>CsvContext</code> object: 
+    <li>
+        Create a <code>CsvContext</code> object:
 <pre lang="cs">CsvContext cc = new CsvContext();</pre>
 
-<p>It is this object that exposes the <code>Read</code> and <code>Write</code> methods you'll use to read and write files.</p>
-</li>
+        <p>It is this object that exposes the <code>Read</code> and <code>Write</code> methods you'll use to read and write files.</p>
+    </li>
 
-<li>Read the file into an <code>IEnumerable&lt;T&gt;</code> using the <code>CsvContext</code> object's <code>Read</code> method, like this: 
+    <li>
+        Read the file into an <code>IEnumerable&lt;T&gt;</code> using the <code>CsvContext</code> object's <code>Read</code> method, like this:
 <pre lang="cs">IEnumerable&lt;Product&gt; products =
     cc.Read&lt;Product&gt;(&quot;products.csv&quot;, inputFileDescription);</pre>
 
-<p>This reads the file <em>products.csv</em> into the variable <code>products</code>, which is of type <code>IEnumerable&lt;Product&gt;</code>.</p>
-</li>
+        <p>This reads the file <em>products.csv</em> into the variable <code>products</code>, which is of type <code>IEnumerable&lt;Product&gt;</code>.</p>
+    </li>
 
-<li>You can now access <code>products</code> via a LINQ query, a <code lang="cs">foreach</code> loop, etc.: 
+    <li>
+        You can now access <code>products</code> via a LINQ query, a <code lang="cs">foreach</code> loop, etc.:
 <pre lang="sql">var productsByName =
     from p in products
     orderby p.Name
     select new { p.Name, p.LaunchDate, p.Price, p.Description };
-
 // or ...
 foreach (Product item in products) { .... }</pre>
-</li>
+    </li>
 </ol>
 
 <p>To make it easier to get an overview, here is the code again that reads from a file, but now in one go:</p>
@@ -150,19 +150,14 @@ foreach (Product item in products) { .... }</pre>
     SeparatorChar = ',', 
     FirstLineHasColumnNames = true
 };
-
 CsvContext cc = new CsvContext();
-
 IEnumerable&lt;Product&gt; products =
     cc.Read&lt;Product&gt;(&quot;products.csv&quot;, inputFileDescription);
-
 // Data is now available via variable products.
-
 var productsByName =
     from p in products
     orderby p.Name
     select new { p.Name, p.LaunchDate, p.Price, p.Description };
-
 // or ...
 foreach (Product item in products) { .... }</pre>
 
@@ -173,68 +168,69 @@ foreach (Product item in products) { .... }</pre>
 <p>This is very similar to <a href="#How_to_use">reading a file</a>.</p>
 
 <ol>
-<li>In your project, add a reference to <em>LINQtoCSV.dll</em>. </li>
+    <li>In your project, add a reference to <em>LINQtoCSV.dll</em>. </li>
 
-<li>The <code>Write</code> method takes a <code>IEnumerable&lt;T&gt;</code> and writes each object of type <code>T</code> in the <code>IEnumerable&lt;T&gt;</code> as a data record to the file. The definition of your data class could look like this: 
+    <li>
+        The <code>Write</code> method takes a <code>IEnumerable&lt;T&gt;</code> and writes each object of type <code>T</code> in the <code>IEnumerable&lt;T&gt;</code> as a data record to the file. The definition of your data class could look like this:
 <pre lang="cs">using LINQtoCSV;
 using System;
-
 class Product
 {
     [CsvColumn(Name = &quot;ProductName&quot;, FieldIndex = 1)]
     public string Name { get; set; }
-
     [CsvColumn(FieldIndex = 2, OutputFormat = &quot;dd MMM HH:mm:ss&quot;)]
     public DateTime LaunchDate { get; set; }
-
     [CsvColumn(FieldIndex = 3, CanBeNull = false, OutputFormat = &quot;C&quot;)]
     public decimal Price { get; set; }
-
     [CsvColumn(FieldIndex = 4)]
     public string Country { get; set; }
-
     [CsvColumn(FieldIndex = 5)]
     public string Description { get; set; }
 }</pre>
 
-<p>The optional <a href="#CsvColumn_Attribute"><code>CsvColumn</code></a> attribute allows you to specify such things as what date and number formats to use when writing each data field. Details for all CsvColumn properties (<code>CanBeNull</code>, <code>OutputFormat</code>, etc.) are available <a href="#CsvColumn_Attribute">here</a>.</p>
+        <p>The optional <a href="#CsvColumn_Attribute"><code>CsvColumn</code></a> attribute allows you to specify such things as what date and number formats to use when writing each data field. Details for all CsvColumn properties (<code>CanBeNull</code>, <code>OutputFormat</code>, etc.) are available <a href="#CsvColumn_Attribute">here</a>.</p>
 
-<p>Although this example only uses properties, you can also use simple fields.</p>
+        <p>Although this example only uses properties, you can also use simple fields.</p>
 
-<p>The <code>Write</code> method will happily use an anonymous type for <code>T</code>, so you can write the output of a LINQ query right to a file. In that case, you obviously won't define <code>T</code> yourself. <a href="#WriteAnonymous">Later on</a>, you'll see an example of this.</p>
-</li>
+        <p>The <code>Write</code> method will happily use an anonymous type for <code>T</code>, so you can write the output of a LINQ query right to a file. In that case, you obviously won't define <code>T</code> yourself. <a href="#WriteAnonymous">Later on</a>, you'll see an example of this.</p>
+    </li>
 
-<li>Import the <code>LINQtoCSV</code> namespace at the top of the source file where you'll be writing the file: 
+    <li>
+        Import the <code>LINQtoCSV</code> namespace at the top of the source file where you'll be writing the file:
 <pre lang="cs">using LINQtoCSV;</pre>
-</li>
+    </li>
 
-<li>Make sure the data is stored in an object that implements <code>IEnumerable&lt;T&gt;</code>, such as a <code>List&lt;T&gt;</code>, or the <code>IEnumerable&lt;T&gt;</code> returned by the <code>Read</code> method. 
+    <li>
+        Make sure the data is stored in an object that implements <code>IEnumerable&lt;T&gt;</code>, such as a <code>List&lt;T&gt;</code>, or the <code>IEnumerable&lt;T&gt;</code> returned by the <code>Read</code> method.
 <pre lang="cs">List&lt;Product&gt; products2 = new List&lt;Product&gt;();
 // Fill the list with products
 // ...</pre>
-</li>
+    </li>
 
-<li>Create a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object, and initialize it with details about the file you will be writing, along these lines: 
+    <li>
+        Create a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object, and initialize it with details about the file you will be writing, along these lines:
 <pre lang="cs">CsvFileDescription outputFileDescription = new CsvFileDescription
 {
     SeparatorChar = '\t', // tab delimited
     FirstLineHasColumnNames = false, // no column names in first record
     FileCultureName = &quot;nl-NL&quot; // use formats used in The Netherlands
 };</pre>
-</li>
+    </li>
 
-<li>Create a <code>CsvContext</code> object: 
+    <li>
+        Create a <code>CsvContext</code> object:
 <pre lang="cs">CsvContext cc = new CsvContext();</pre>
-</li>
+    </li>
 
-<li>Invoke the <code>Write</code> method exposed by the <code>CsvContext</code> object to write the contents of your <code>IEnumerable&lt;T&gt;</code> to a file: 
+    <li>
+        Invoke the <code>Write</code> method exposed by the <code>CsvContext</code> object to write the contents of your <code>IEnumerable&lt;T&gt;</code> to a file:
 <pre lang="cs">cc.Write(
     products2,
     &quot;products2.csv&quot;,
     outputFileDescription);</pre>
 
-<p>This writes the <code>Product</code> objects in the variable <code>products2</code> to the file &quot;<em>products2.csv</em>&quot;.</p>
-</li>
+        <p>This writes the <code>Product</code> objects in the variable <code>products2</code> to the file &quot;<em>products2.csv</em>&quot;.</p>
+    </li>
 </ol>
 
 <p>Here is the code again that writes a file, but now in one go:</p>
@@ -242,16 +238,13 @@ class Product
 <pre lang="cs">List&lt;Product&gt; products2 = new List&lt;Product&gt;();
 // Fill the list with products
 // ...
-
 CsvFileDescription outputFileDescription = new CsvFileDescription
 {
     SeparatorChar = '\t', // tab delimited
     FirstLineHasColumnNames = false, // no column names in first record
     FileCultureName = &quot;nl-NL&quot; // use formats used in The Netherlands
 };
-
 CsvContext cc = new CsvContext();
-
 cc.Write(
     products2,
     &quot;products2.csv&quot;,
@@ -265,16 +258,13 @@ cc.Write(
 {
 .....
 };
-
 CsvContext cc = new CsvContext();
-
 // LINQ query returning IEnumerable of anonymous type
 // into productsNetherlands
 var productsNetherlands =
     from p in products
     where p.Country == &quot;Netherlands&quot;
     select new { p.Name, p.LaunchDate, p.Price, p.Description };
-
 // Write contents of productsNetherlands to file
 cc.Write(
     productsNetherlands,
@@ -286,49 +276,49 @@ cc.Write(
 <h2><a id="Write_Overloads"></a>CsvContext.Write Overloads</h2>
 
 <ul class="method">
-<li><code lang="cs">Write&lt;T&gt;(IEnumerable&lt;T&gt; values, string fileName)</code> </li>
+    <li><code lang="cs">Write&lt;T&gt;(IEnumerable&lt;T&gt; values, string fileName)</code> </li>
 
-<li><code lang="cs">Write&lt;T&gt;(IEnumerable&lt;T&gt; values, string fileName, CsvFileDescription fileDescription)</code> </li>
+    <li><code lang="cs">Write&lt;T&gt;(IEnumerable&lt;T&gt; values, string fileName, CsvFileDescription fileDescription)</code> </li>
 
-<li><code>Write&lt;T&gt;(IEnumerable&lt;T&gt; values, TextWriter stream)</code> </li>
+    <li><code>Write&lt;T&gt;(IEnumerable&lt;T&gt; values, TextWriter stream)</code> </li>
 
-<li><code>Write&lt;T&gt;(IEnumerable&lt;T&gt; values, TextWriter stream, CsvFileDescription fileDescription)</code> </li>
+    <li><code>Write&lt;T&gt;(IEnumerable&lt;T&gt; values, TextWriter stream, CsvFileDescription fileDescription)</code> </li>
 </ul>
 
 <p>Some interesting facts about these overloads:</p>
 
 <ul>
-<li>None of the overloads return a value. </li>
+    <li>None of the overloads return a value. </li>
 
-<li>Unlike the <code>Read</code> method, <code>Write</code> does not require that <code>T</code> has a parameterless constructor. </li>
+    <li>Unlike the <code>Read</code> method, <code>Write</code> does not require that <code>T</code> has a parameterless constructor. </li>
 
-<li>Overloads that take a stream write the data to the stream. Those that take a file name write the data to the file. </li>
+    <li>Overloads that take a stream write the data to the stream. Those that take a file name write the data to the file. </li>
 
-<li>Overloads that do not take a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object simply create one themselves, using the default values for the <code>CsvFileDescription</code> properties. </li>
+    <li>Overloads that do not take a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object simply create one themselves, using the default values for the <code>CsvFileDescription</code> properties. </li>
 </ul>
 
 <h2><a id="Read_Overloads"></a>CsvContext.Read Overloads</h2>
 
 <ul class="method">
-<li><code lang="cs">Read&lt;T&gt;(string fileName)</code> </li>
+    <li><code lang="cs">Read&lt;T&gt;(string fileName)</code> </li>
 
-<li><code lang="cs">Read&lt;T&gt;(string fileName, CsvFileDescription fileDescription)</code> </li>
+    <li><code lang="cs">Read&lt;T&gt;(string fileName, CsvFileDescription fileDescription)</code> </li>
 
-<li><code>Read&lt;T&gt;(StreamReader stream)</code> </li>
+    <li><code>Read&lt;T&gt;(StreamReader stream)</code> </li>
 
-<li><code>Read&lt;T&gt;(StreamReader stream, CsvFileDescription fileDescription)</code> </li>
+    <li><code>Read&lt;T&gt;(StreamReader stream, CsvFileDescription fileDescription)</code> </li>
 </ul>
 
 <p>Some interesting facts about these overloads:</p>
 
 <ul>
-<li>Each overload returns an <code>IEnumerable&lt;T&gt;</code>. </li>
+    <li>Each overload returns an <code>IEnumerable&lt;T&gt;</code>. </li>
 
-<li><code>T</code> must have a parameterless constructor. If you do not define a constructor for <code>T</code>, the compiler will generate a parameterless constructor for you. </li>
+    <li><code>T</code> must have a parameterless constructor. If you do not define a constructor for <code>T</code>, the compiler will generate a parameterless constructor for you. </li>
 
-<li>Overloads that take a stream read the data from the stream. Those that take a file name read the data from the file. However, see the section on <a href="#DeferredReading">deferred reading</a>. </li>
+    <li>Overloads that take a stream read the data from the stream. Those that take a file name read the data from the file. However, see the section on <a href="#DeferredReading">deferred reading</a>. </li>
 
-<li>Overloads that do not take a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object simply create one themselves, using the default values for the <code>CsvFileDescription</code> properties. </li>
+    <li>Overloads that do not take a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> object simply create one themselves, using the default values for the <code>CsvFileDescription</code> properties. </li>
 </ul>
 
 
@@ -336,26 +326,23 @@ cc.Write(
 <h2><a id="ReadingRawDataRows"></a>Reading Raw Data Rows</h2>
 
 <p>
-Sometimes it's easier to read the raw data fields from the CSV file, instead of having them processed into objects by the library.
-For example if different rows can have different formats, or if you don't know at compile time which field is going to hold what data.
+    Sometimes it's easier to read the raw data fields from the CSV file, instead of having them processed into objects by the library.
+    For example if different rows can have different formats, or if you don't know at compile time which field is going to hold what data.
 </p>
 
 <p>
-You can make this happen by having your type T implement the interface <code>IDataRow</code>. 
-This interface is included in the library, so you don't have to write it yourself.
-It essentially just describes a collection of <code>DataRowItem</code> objects:
+    You can make this happen by having your type T implement the interface <code>IDataRow</code>.
+    This interface is included in the library, so you don't have to write it yourself.
+    It essentially just describes a collection of <code>DataRowItem</code> objects:
 </p>
 <pre lang="cs">public interface IDataRow
 {
     // Number of data row items in the row.
     int Count { get; }
-
     // Clear the collection of data row items.
     void Clear();
-
     // Add a data row item to the collection.
     void Add(DataRowItem item);
-
     // Allows you to access each data row item with an array index, such as
     // row[i]
     DataRowItem this[int index] { get; set; }
@@ -363,34 +350,32 @@ It essentially just describes a collection of <code>DataRowItem</code> objects:
 </pre>
 
 <p>
-The <code>DataRowItem</code> class is also defined in the library. It describes each individual field within a data row:
+    The <code>DataRowItem</code> class is also defined in the library. It describes each individual field within a data row:
 </p>
 <pre lang="cs">public class DataRowItem
 {
     ...
     // Line number of the field
     public int LineNbr  { get { ... } }
-
     // Value of the field
     public string Value { get { ... } }
 }
 </pre>
 <p>
-The line number is included in the <code>DataRowItem</code> class, because data rows can span multiple lines.
+    The line number is included in the <code>DataRowItem</code> class, because data rows can span multiple lines.
 </p>
 
 <p>
-The easiest way to create a class that implements <code>IDataRow</code> is to derive it from <code>List&lt;DataRowItem&gt;</code>:
+    The easiest way to create a class that implements <code>IDataRow</code> is to derive it from <code>List&lt;DataRowItem&gt;</code>:
 </p>
 
 <pre lang="cs">using LINQtoCSV;
-
 internal class MyDataRow : List&lt;DataRowItem&gt;, IDataRow
 {
 }
 </pre>
 <p>
-Now you can read the CSV file into a collection of <code>MyDataRow</code> objects:
+    Now you can read the CSV file into a collection of <code>MyDataRow</code> objects:
 </p>
 
 <pre lang="cs">IEnumerable&lt;MyDataRow&gt; products =
@@ -398,17 +383,15 @@ Now you can read the CSV file into a collection of <code>MyDataRow</code> object
 </pre>
 
 <p>
-You can then access each individual field within each data row:
+    You can then access each individual field within each data row:
 </p>
 
 <pre lang="cs">foreach (MyDataRow dataRow in products)
 {
     string firstFieldValue = dataRow[0].Value;
     int firstFieldLineNbr = dataRow[0].LineNbr;
-
     string secondFieldValue = dataRow[1].Value;
     int secondFieldLineNbr = dataRow[1].LineNbr;
-
     ...
 }
 </pre>
@@ -420,21 +403,21 @@ You can then access each individual field within each data row:
 <p>Here is how the <code>Read</code> overloads implement deferred reading:</p>
 
 <ul>
-<li>When you invoke the <code>Read</code> method (which returns an <code>IEnumerable&lt;T&gt;</code>), no data is read yet. If using a file, the file is not yet opened. </li>
+    <li>When you invoke the <code>Read</code> method (which returns an <code>IEnumerable&lt;T&gt;</code>), no data is read yet. If using a file, the file is not yet opened. </li>
 
-<li>When the Enumerator is retrieved from the <code>IEnumerable&lt;T&gt;</code> (for example, when starting a <code lang="cs">foreach</code> loop), the file is opened for reading. If using a stream, the stream is rewound (seek to start of the stream). </li>
+    <li>When the Enumerator is retrieved from the <code>IEnumerable&lt;T&gt;</code> (for example, when starting a <code lang="cs">foreach</code> loop), the file is opened for reading. If using a stream, the stream is rewound (seek to start of the stream). </li>
 
-<li>Each time you retrieve a new object from the Enumerator (for example, while looping through a <code lang="cs">foreach</code>), a new record is read from the file or stream. </li>
+    <li>Each time you retrieve a new object from the Enumerator (for example, while looping through a <code lang="cs">foreach</code>), a new record is read from the file or stream. </li>
 
-<li>When you close the Enumerator (for example, when a <code lang="cs">foreach</code> ends or when you break out of it), the file is closed. If using a stream, the stream is left unchanged. </li>
+    <li>When you close the Enumerator (for example, when a <code lang="cs">foreach</code> ends or when you break out of it), the file is closed. If using a stream, the stream is left unchanged. </li>
 </ul>
 
 <p>This means that:</p>
 
 <ul>
-<li>If reading from a file, the file will be open for reading while you're accessing the <code>IEnumerable&lt;T&gt;</code> in a <code lang="cs">foreach</code> loop. </li>
+    <li>If reading from a file, the file will be open for reading while you're accessing the <code>IEnumerable&lt;T&gt;</code> in a <code lang="cs">foreach</code> loop. </li>
 
-<li>The file can be updated in between accesses. You could access the <code>IEnumerable&lt;T&gt;</code> in a <code lang="cs">foreach</code> loop, then update the file, then access the <code>IEnumerable&lt;T&gt;</code> again in a <code lang="cs">foreach</code> loop to pick up the new data, etc. You only need to call <code>Read</code> once at the beginning, to get the <code>IEnumerable&lt;T&gt;</code>. </li>
+    <li>The file can be updated in between accesses. You could access the <code>IEnumerable&lt;T&gt;</code> in a <code lang="cs">foreach</code> loop, then update the file, then access the <code>IEnumerable&lt;T&gt;</code> again in a <code lang="cs">foreach</code> loop to pick up the new data, etc. You only need to call <code>Read</code> once at the beginning, to get the <code>IEnumerable&lt;T&gt;</code>. </li>
 </ul>
 
 <h2>CsvFileDescription<a id="CsvFileDescription"></a></h2>
@@ -446,60 +429,59 @@ You can then access each individual field within each data row:
 <p>A <code>CsvFileDescription</code> object has these properties:</p>
 
 <ul class="property">
-<li><a href="#SeparatorChar"><code>SeparatorChar</code></a> </li>
+    <li><a href="#SeparatorChar"><code>SeparatorChar</code></a> </li>
 
-<li><a href="#QuoteAllFields"><code>QuoteAllFields</code></a> </li>
+    <li><a href="#QuoteAllFields"><code>QuoteAllFields</code></a> </li>
 
-<li><a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> </li>
+    <li><a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> </li>
 
-<li><a href="#EnforceCsvColumnAttribute"><code>EnforceCsvColumnAttribute</code></a> </li>
+    <li><a href="#EnforceCsvColumnAttribute"><code>EnforceCsvColumnAttribute</code></a> </li>
 
-<li><a href="#FileCultureName"><code>FileCultureName</code></a> </li>
+    <li><a href="#FileCultureName"><code>FileCultureName</code></a> </li>
 
-<li><a href="#TextEncoding"><code>TextEncoding</code></a> </li>
+    <li><a href="#TextEncoding"><code>TextEncoding</code></a> </li>
 
-<li><a href="#DetectEncodingFromByteOrderMarks"><code>DetectEncodingFromByteOrderMarks</code></a> </li>
+    <li><a href="#DetectEncodingFromByteOrderMarks"><code>DetectEncodingFromByteOrderMarks</code></a> </li>
 
-<li><a href="#MaximumNbrExceptions"><code>MaximumNbrExceptions</code></a> </li>
+    <li><a href="#MaximumNbrExceptions"><code>MaximumNbrExceptions</code></a> </li>
 
-<li><a href="#NoSeparatorChar"><code>NoSeparatorChar</code></a> </li>
+    <li><a href="#NoSeparatorChar"><code>NoSeparatorChar</code></a> </li>
 
-<li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
+    <li><a href="#UseFieldIndexForReadingData"><code>UseFieldIndexForReadingData</code></a> </li>
 
-<li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
+    <li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
 
-<li><a href="#IgnoreUnknownColumns"><code>IgnoreUnknownColumns</code></a> </li>
+    <li><a href="#IgnoreUnknownColumns"><code>IgnoreUnknownColumns</code></a> </li>
 </ul>
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">char</code></td>
-</tr>
+            <td><code lang="cs">char</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td>','</td>
-</tr>
+            <td>','</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
 
 <pre lang="cs">CsvFileDescription fd = new CsvFileDescription();
 fd.SeparatorChar = '\t'; // use tab delimited file
-
 CsvContext cc = new CsvContext();
 cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
@@ -510,25 +492,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a id="QuoteAllFields">QuoteAllFields</a></h3>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code lang="cs">false</code></td>
-</tr>
+            <td><code lang="cs">false</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to:</strong></td>
+        <tr>
+            <td><strong>Applies to:</strong></td>
 
-<td>Writing only</td>
-</tr>
-</tbody>
+            <td>Writing only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -542,25 +524,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a name="FirstLineHasColumnNames">FirstLineHasColumnNames</a></h3>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default:</strong></td>
+        <tr>
+            <td><strong>Default:</strong></td>
 
-<td><code lang="cs">true</code></td>
-</tr>
+            <td><code lang="cs">true</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -574,25 +556,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a name="EnforceCsvColumnAttribute"></a>EnforceCsvColumnAttribute</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code lang="cs">false</code></td>
-</tr>
+            <td><code lang="cs">false</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -606,25 +588,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a name="FileCultureName"></a>FileCultureName</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">string</code></td>
-</tr>
+            <td><code lang="cs">string</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td>current system setting</td>
-</tr>
+            <td>current system setting</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -640,25 +622,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a id="TextEncoding"></a>TextEncoding</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.text.encoding.aspx"><code>Encoding</code></a></td>
-</tr>
+            <td><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.text.encoding.aspx"><code>Encoding</code></a></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code>Encoding.UTF8</code></td>
-</tr>
+            <td><code>Encoding.UTF8</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -674,25 +656,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3>DetectEncodingFromByteOrderMarks<a id="DetectEncodingFromByteOrderMarks"></a></h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default:</strong></td>
+        <tr>
+            <td><strong>Default:</strong></td>
 
-<td><code lang="cs">true</code></td>
-</tr>
+            <td><code lang="cs">true</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -706,25 +688,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a id="MaximumNbrExceptions"></a>MaximumNbrExceptions</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">int</code></td>
-</tr>
+            <td><code lang="cs">int</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default:</strong></td>
+        <tr>
+            <td><strong>Default:</strong></td>
 
-<td>100</td>
-</tr>
+            <td>100</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to:</strong></td>
+        <tr>
+            <td><strong>Applies to:</strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -740,25 +722,25 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td>false</td>
-</tr>
+            <td>false</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading</td>
-</tr>
-</tbody>
+            <td>Reading</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -766,7 +748,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <pre lang="cs">fd.NoSeparatorChar = true; // Fields are fixed width</pre>
 
 <p>
-Set this to true when the CSV file uses fixed width fields rather than separator characters.
+    Set this to true when the CSV file uses fixed width fields rather than separator characters.
 </p>
 
 <p>The number of characters is specified using the <a href="#CharLength">CharLength</a> property in the <a href="#CsvColumn_Attribute"><code>CsvColumnAttribute</code></a> class.</p>
@@ -774,25 +756,25 @@ Set this to true when the CSV file uses fixed width fields rather than separator
 <h3><a name="UseFieldIndexForReadingData"></a>UseFieldIndexForReadingData</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code>bool</code></a></td>
-</tr>
+            <td><code>bool</code></a></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code>false</code></td>
-</tr>
+            <td><code>false</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -800,11 +782,11 @@ Set this to true when the CSV file uses fixed width fields rather than separator
 <pre lang="cs">fd.UseFieldIndexForReadingData = true;</pre>
 
 <p>
-Modifies the behaviour of the
-<a href="#FieldIndex">FieldIndex</a> property of the
- <a href="#CsvColumn_Attribute"><code>CsvColumnAttribute</code></a> class,
- to make it suitable for fixed width fields.
- See the description of the <a href="#FieldIndex">FieldIndex</a> property for details.
+    Modifies the behaviour of the
+    <a href="#FieldIndex">FieldIndex</a> property of the
+    <a href="#CsvColumn_Attribute"><code>CsvColumnAttribute</code></a> class,
+    to make it suitable for fixed width fields.
+    See the description of the <a href="#FieldIndex">FieldIndex</a> property for details.
 </p>
 
 <h3><a id="IgnoreTrailingSeparatorChar"></a>IgnoreTrailingSeparatorChar</h3>
@@ -867,9 +849,9 @@ Modifies the behaviour of the
 </table>
 
 <h4>Example:</h4>
-
-There are cases where you don't need to read all the columns, but only a subset of them. Consider the following example of a CSV file containing a list of people:<br><br>
-
+<p>
+    There are cases where you don't need to read all the columns, but only a subset of them. Consider the following example of a CSV file containing a list of people:
+</p>
 <table cellspacing="0" cellpadding="5" border="1">
     <tbody>
         <tr>
@@ -907,9 +889,16 @@ Suppose you have the following class:
         public int Age { get; set; }
     }
 </pre>
-If you set <pre lang="cs">fd.IgnoreTrailingSeparatorChar = true;</pre>
+<p>
+    Note that the input file has columns &quot;Id&quot; and &quot;City&quot; which are not listed in the class. This discrepancy would normally cause an exception.
+</p>
+<p>
+    However, if you set <pre lang="cs">fd.IgnoreUnknownColumns = true;</pre>
 
-then the fields <code>Id</code> and <code>City</code> will be ignored.
+then the columns &quot;Id&quot; and &quot;City&quot; will be ignored without an exception.
+</p>
+
+
 
 <!---------------------------------------------->
 
@@ -922,41 +911,41 @@ then the fields <code>Id</code> and <code>City</code> will be ignored.
 <p>The <code>CsvColumn</code> attribute has these properties:</p>
 
 <ul class="property">
-<li><a href="#Name"><code>Name</code></a> </li>
+    <li><a href="#Name"><code>Name</code></a> </li>
 
-<li><a href="#CanBeNull"><code>CanBeNull</code></a> </li>
+    <li><a href="#CanBeNull"><code>CanBeNull</code></a> </li>
 
-<li><a href="#NumberStyle"><code>NumberStyle</code></a> </li>
+    <li><a href="#NumberStyle"><code>NumberStyle</code></a> </li>
 
-<li><a href="#OutputFormat"><code>OutputFormat</code></a> </li>
+    <li><a href="#OutputFormat"><code>OutputFormat</code></a> </li>
 
-<li><a href="#FieldIndex"><code>FieldIndex</code></a> </li>
+    <li><a href="#FieldIndex"><code>FieldIndex</code></a> </li>
 
-<li><a href="#CharLength"><code>CharLength</code></a> </li>
+    <li><a href="#CharLength"><code>CharLength</code></a> </li>
 </ul>
 
 <h3><a id="Name">Name</a></h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">string</code></td>
-</tr>
+            <td><code lang="cs">string</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default:</strong></td>
+        <tr>
+            <td><strong>Default:</strong></td>
 
-<td>Name of the field or property</td>
-</tr>
+            <td>Name of the field or property</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to:</strong></td>
+        <tr>
+            <td><strong>Applies to:</strong></td>
 
-<td>Reading and Writing</td>
-</tr>
-</tbody>
+            <td>Reading and Writing</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -969,25 +958,25 @@ public DateTime LaunchDate { get; set; }</pre>
 <h3><a id="CanBeNull">CanBeNull</a></h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code lang="cs">true</code></td>
-</tr>
+            <td><code lang="cs">true</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <pre lang="cs">[CsvColumn(CanBeNull = false)]
@@ -998,25 +987,25 @@ public DateTime LaunchDate { get; set; }</pre>
 <h3><a id="FieldIndex">FieldIndex</a></h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">bool</code></td>
-</tr>
+            <td><code lang="cs">bool</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default:</strong></td>
+        <tr>
+            <td><strong>Default:</strong></td>
 
-<td><code>Int32.MaxValue</code></td>
-</tr>
+            <td><code>Int32.MaxValue</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to:</strong></td>
+        <tr>
+            <td><strong>Applies to:</strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -1033,11 +1022,11 @@ public DateTime LaunchDate { get; set; }</pre>
 <p>The <code>FieldIndex</code>s do not have to start at 1. They don't have to be consecutive. The <code>Read</code> and <code>Write</code> methods will simply assume that a field/property comes before some other field/property if its <code>FieldIndex</code> is lower.</p>
 
 <p>
-When the 
-<a href="#UseFieldIndexForReadingData">UseFieldIndexForReadingData</a> property of the
-<a href="#CsvFileDescription">CsvFileDescription</a> class is true,
-<code>FieldIndex</code>
-specifies the specific index within the row of the value. This is 1 based, so if you set FieldIndex to 3, the value begins from the 3rd character.
+    When the
+    <a href="#UseFieldIndexForReadingData">UseFieldIndexForReadingData</a> property of the
+    <a href="#CsvFileDescription">CsvFileDescription</a> class is true,
+    <code>FieldIndex</code>
+    specifies the specific index within the row of the value. This is 1 based, so if you set FieldIndex to 3, the value begins from the 3rd character.
 </p>
 
 <p><strong>Writing</strong> - The <code>Write</code> method uses the <code>FieldIndex</code> of each field or property to figure out in what order to write the data fields to the output file. Fields and properties without <code>FieldIndex</code> get written last, in random order.</p>
@@ -1045,25 +1034,25 @@ specifies the specific index within the row of the value. This is 1 based, so if
 <h3><a name="CharLength"></a>CharLength</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code>int</code></a></td>
-</tr>
+            <td><code>int</code></a></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code>0</code></td>
-</tr>
+            <td><code>0</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading only</td>
-</tr>
-</tbody>
+            <td>Reading only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -1080,25 +1069,25 @@ public string Name { get; set; }</pre>
 <h3><a name="NumberStyle"></a>NumberStyle</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.globalization.numberstyles.aspx"><code>NumberStyles</code></a></td>
-</tr>
+            <td><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.globalization.numberstyles.aspx"><code>NumberStyles</code></a></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td><code>NumberStyles.Any</code></td>
-</tr>
+            <td><code>NumberStyles.Any</code></td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Reading of numeric fields only</td>
-</tr>
-</tbody>
+            <td>Reading of numeric fields only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -1113,25 +1102,25 @@ public DateTime LaunchDate { get; set; }</pre>
 <h3><a id="OutputFormat"></a>OutputFormat</h3>
 
 <table cellpadding="3">
-<tbody>
-<tr>
-<td><strong>Type:</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
 
-<td><code lang="cs">string</code></td>
-</tr>
+            <td><code lang="cs">string</code></td>
+        </tr>
 
-<tr>
-<td><strong>Default: </strong></td>
+        <tr>
+            <td><strong>Default: </strong></td>
 
-<td>&quot;G&quot;</td>
-</tr>
+            <td>&quot;G&quot;</td>
+        </tr>
 
-<tr>
-<td><strong>Applies to: </strong></td>
+        <tr>
+            <td><strong>Applies to: </strong></td>
 
-<td>Writing only</td>
-</tr>
-</tbody>
+            <td>Writing only</td>
+        </tr>
+    </tbody>
 </table>
 
 <h4>Example:</h4>
@@ -1151,49 +1140,51 @@ public DateTime LaunchDate { get; set; }</pre>
 <p>Then, the final value written to the output file will be &quot;11/23/08&quot; if you use US dates (<code>FileCultureName</code> is set to &quot;en-US&quot;), but &quot;23/11/08&quot; if you use German dates (<code>FileCultureName</code> is set to &quot;de-DE&quot;).</p>
 
 <ul>
-<li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.aspx">Format Codes for DateTime</a> </li>
+    <li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.aspx">Format Codes for DateTime</a> </li>
 
-<li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/dwhawy9k.aspx">Standard Numeric Format Strings</a> </li>
+    <li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/dwhawy9k.aspx">Standard Numeric Format Strings</a> </li>
 
-<li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/0c899ak8.aspx">Custom Numeric Format Strings</a> </li>
+    <li><a target="_blank" href="http://msdn2.microsoft.com/en-us/library/0c899ak8.aspx">Custom Numeric Format Strings</a> </li>
 </ul>
 
 <h2><a id="Error_Handling"></a>Error Handling</h2>
 
 <ul>
-<li><a href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx">Exception</a> 
-<ul>
-<li><code>LINQtoCSVException</code> 
-<ul>
-<li><a href="#BadStreamException"><code>BadStreamException</code></a> </li>
+    <li>
+        <a href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx">Exception</a>
+        <ul>
+            <li>
+                <code>LINQtoCSVException</code>
+                <ul>
+                    <li><a href="#BadStreamException"><code>BadStreamException</code></a> </li>
 
-<li><a href="#CsvColumnAttributeRequiredException"><code>CsvColumnAttributeRequiredException</code></a> </li>
+                    <li><a href="#CsvColumnAttributeRequiredException"><code>CsvColumnAttributeRequiredException</code></a> </li>
 
-<li><a href="#DuplicateFieldIndexException"><code>DuplicateFieldIndexException</code></a> </li>
+                    <li><a href="#DuplicateFieldIndexException"><code>DuplicateFieldIndexException</code></a> </li>
 
-<li><a href="#RequiredButMissingFieldIndexException"><code>RequiredButMissingFieldIndexException</code></a> </li>
+                    <li><a href="#RequiredButMissingFieldIndexException"><code>RequiredButMissingFieldIndexException</code></a> </li>
 
-<li><a href="#ToBeWrittenButMissingFieldIndexException"><code>ToBeWrittenButMissingFieldIndexException</code></a> </li>
+                    <li><a href="#ToBeWrittenButMissingFieldIndexException"><code>ToBeWrittenButMissingFieldIndexException</code></a> </li>
 
-<li><a href="#NameNotInTypeException"><code>NameNotInTypeException</code></a> </li>
+                    <li><a href="#NameNotInTypeException"><code>NameNotInTypeException</code></a> </li>
 
-<li><a href="#MissingCsvColumnAttributeException"><code>MissingCsvColumnAttributeException</code></a> </li>
+                    <li><a href="#MissingCsvColumnAttributeException"><code>MissingCsvColumnAttributeException</code></a> </li>
 
-<li><a href="#TooManyDataFieldsException"><code>TooManyDataFieldsException</code></a> </li>
+                    <li><a href="#TooManyDataFieldsException"><code>TooManyDataFieldsException</code></a> </li>
 
-<li><a href="#TooManyNonCsvColumnDataFieldsException"><code>TooManyNonCsvColumnDataFieldsException</code></a> </li>
+                    <li><a href="#TooManyNonCsvColumnDataFieldsException"><code>TooManyNonCsvColumnDataFieldsException</code></a> </li>
 
-<li><a href="#MissingFieldIndexException"><code>MissingFieldIndexException</code></a> </li>
+                    <li><a href="#MissingFieldIndexException"><code>MissingFieldIndexException</code></a> </li>
 
-<li><a href="#MissingRequiredFieldException"><code>MissingRequiredFieldException</code></a> </li>
+                    <li><a href="#MissingRequiredFieldException"><code>MissingRequiredFieldException</code></a> </li>
 
-<li><a href="#WrongDataFormatException"><code>WrongDataFormatException</code></a> </li>
+                    <li><a href="#WrongDataFormatException"><code>WrongDataFormatException</code></a> </li>
 
-<li><a href="#AggregatedException"><code>AggregatedException</code></a> </li>
-</ul>
-</li>
-</ul>
-</li>
+                    <li><a href="#AggregatedException"><code>AggregatedException</code></a> </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
 </ul>
 
 <p>When the <code>Read</code> and <code>Write</code> methods detect an error situation, they throw an exception with all information you need to solve the problem. As you would expect, all exceptions are derived from the .NET class <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>.</p>
@@ -1225,33 +1216,26 @@ public DateTime LaunchDate { get; set; }</pre>
     // show errorMessage to user
     // .....
 }
-
 public static void ReadFileWithExceptionHandling()
 {
     try
     {
         CsvContext cc = new CsvContext();
-
         CsvFileDescription inputFileDescription = new CsvFileDescription
         {
             MaximumNbrExceptions = 50
             // limit number of aggregated exceptions to 50
         };
-
         IEnumerable&lt;Product&gt; products =
             cc.Read&lt;Product&gt;(&quot;products.csv&quot;, inputFileDescription);
-
         // Do data processing
         // ...........
-
     }
     catch(AggregatedException ae)
     {
         // Process all exceptions generated while processing the file
-
         List&lt;Exception&gt; innerExceptionsList =
             (List&lt;Exception&gt;)ae.Data[&quot;InnerExceptionsList&quot;];
-
         foreach (Exception e in innerExceptionsList)
         {
             ShowErrorMessage(e.Message);
@@ -1261,18 +1245,13 @@ public static void ReadFileWithExceptionHandling()
     {
         // name of the class used with the Read method - in this case &quot;Product&quot;
         string typeName = Convert.ToString(dfie.Data[&quot;TypeName&quot;]);
-
         // Names of the two fields or properties that have the same FieldIndex
         string fieldName = Convert.ToString(dfie.Data[&quot;FieldName&quot;]);
         string fieldName2 = Convert.ToString(dfie.Data[&quot;FieldName2&quot;]);
-
         // Actual FieldIndex that the two fields have in common
         int commonFieldIndex = Convert.ToInt32(dfie.Data[&quot;Index&quot;]);
-
         // Do some processing with this information
         // .........
-
-
         // Inform user of error situation
         ShowErrorMessage(dfie.Message);
     }
@@ -1301,43 +1280,43 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the offending fields/properties</td>
-</tr>
+            <td>Name of the class with the offending fields/properties</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td rowspan="2"><code lang="cs">string</code></td>
+            <td rowspan="2"><code lang="cs">string</code></td>
 
-<td rowspan="2">Fields or properties with a duplicate <code>FieldIndex</code></td>
-</tr>
+            <td rowspan="2">Fields or properties with a duplicate <code>FieldIndex</code></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName2&quot;]</code></td>
-</tr>
+        <tr>
+            <td><code>Data[&quot;FieldName2&quot;]</code></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;Index&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;Index&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Common <code>FieldIndex</code></td>
-</tr>
-</tbody>
+            <td>Common <code>FieldIndex</code></td>
+        </tr>
+    </tbody>
 </table>
 
 <p>Thrown when two or more fields or properties have the same <a href="#FieldIndex"><code>FieldIndex</code></a>.</p>
@@ -1347,31 +1326,31 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the offending field/property</td>
-</tr>
+            <td>Name of the class with the offending field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Field or property without <code>FieldIndex</code></td>
-</tr>
-</tbody>
+            <td>Field or property without <code>FieldIndex</code></td>
+        </tr>
+    </tbody>
 </table>
 
 <p>When there are no column names in the first record in the file (<a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> is <code lang="cs">false</code>), each required field (<a href="#CanBeNull"><code>CanBeNull</code></a> attribute set to <code lang="cs">false</code>) must have a <a href="#FieldIndex"><code>FieldIndex</code></a> attribute, otherwise it cannot be read from the file.</p>
@@ -1381,31 +1360,31 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the offending field/property</td>
-</tr>
+            <td>Name of the class with the offending field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Field or property without <code>FieldIndex</code></td>
-</tr>
-</tbody>
+            <td>Field or property without <code>FieldIndex</code></td>
+        </tr>
+    </tbody>
 </table>
 
 <p>When writing a file without column names in the first record, you will want to make sure that the data fields appear in each line in a well defined order. If that order were random, it would be impossible for some other program to reliably process the file.</p>
@@ -1417,39 +1396,39 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class missing the field/property</td>
-</tr>
+            <td>Name of the class missing the field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Field or property that isn't found</td>
-</tr>
+            <td>Field or property that isn't found</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>If the <code>Read</code> method is given a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> with <a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> as <code lang="cs">true</code>, and one of the column names in the first record in the file does not match a field or property, it throws a <code>NameNotInTypeException</code>.</p>
@@ -1459,39 +1438,39 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the offending field/property</td>
-</tr>
+            <td>Name of the class with the offending field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Field or property without <code>CsvColumn</code> attribute</td>
-</tr>
+            <td>Field or property without <code>CsvColumn</code> attribute</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>The <code>Read</code> method may throw this exception when it is given a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> with both <a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> and <a href="#EnforceCsvColumnAttribute"><code>EnforceCsvColumnAttribute</code></a> as <code lang="cs">true</code>. When <code>Read</code> reads the column names from the first record, one of those column names may match a field or property that doesn't have a <code>CsvColumn</code> attribute, even though only fields and properties with a <code>CsvColumn</code> attribute can be used. When that happens, <code>Read</code> throws a <code>MissingCsvColumnAttributeException</code>.</p>
@@ -1501,39 +1480,39 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the data class</td>
-</tr>
+            <td>Name of the data class</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;LineNbr&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;LineNbr&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Line in the input file with an excess data field</td>
-</tr>
+            <td>Line in the input file with an excess data field</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>Thrown when a record in the input file has more data fields than there are public fields and properties in the data class.</p>
@@ -1543,39 +1522,39 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the data class</td>
-</tr>
+            <td>Name of the data class</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;LineNbr&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;LineNbr&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Line in the input file with an excess data field</td>
-</tr>
+            <td>Line in the input file with an excess data field</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>When only fields or properties that have a <code>CsvColumn</code> attribute are used (<code>Read</code> is given a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> with <a href="#EnforceCsvColumnAttribute"><code>EnforceCsvColumnAttribute</code></a> as <code lang="cs">true</code>), and a record in the input file has more data fields than there are fields and properties with the <code>CsvColumn</code> attribute, a <code>TooManyNonCsvColumnDataFieldsException</code> is thrown.</p>
@@ -1585,39 +1564,39 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the data class</td>
-</tr>
+            <td>Name of the data class</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;LineNbr&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;LineNbr&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Line with offending field</td>
-</tr>
+            <td>Line with offending field</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>If there are no column names in the first record of the input file (<code>Read</code> is given a <a href="#CsvFileDescription"><code>CsvFileDescription</code></a> with <a href="#FirstLineHasColumnNames"><code>FirstLineHasColumnNames</code></a> as <code lang="cs">false</code>), then <code>Read</code> relies on the <a href="#FieldIndex"><code>FieldIndex</code></a> of the fields and properties in the data class to match them with the data fields in the file.</p>
@@ -1629,47 +1608,47 @@ public static void ReadFileWithExceptionHandling()
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the required field/property</td>
-</tr>
+            <td>Name of the class with the required field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the required field/property</td>
-</tr>
+            <td>Name of the required field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;LineNbr&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;LineNbr&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Line where missing field should have been</td>
-</tr>
+            <td>Line where missing field should have been</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>Thrown when a record from the input file does not have a value for a required field or property (<a href="#CanBeNull"><code>CanBeNull</code></a> property of the <a href="#CsvColumn"><code>CsvColumn</code></a> attribute set to <code lang="cs">false</code>).</p>
@@ -1696,55 +1675,55 @@ abc,   ,def</pre>
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the class with the field/property</td>
-</tr>
+            <td>Name of the class with the field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the field/property</td>
-</tr>
+            <td>Name of the field/property</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FieldValue&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FieldValue&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>The offending data value</td>
-</tr>
+            <td>The offending data value</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;LineNbr&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;LineNbr&quot;]</code></td>
 
-<td><code lang="cs">int</code></td>
+            <td><code lang="cs">int</code></td>
 
-<td>Line with offending data value</td>
-</tr>
+            <td>Line with offending data value</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
-</tbody>
+            <td>Name of the input file</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>Thrown when a field has the wrong format. For example, a numeric field with the value &quot;abc&quot;.</p>
@@ -1754,39 +1733,39 @@ abc,   ,def</pre>
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
 <table class="articletable">
-<tbody>
-<tr>
-<td><strong>Property</strong></td>
+    <tbody>
+        <tr>
+            <td><strong>Property</strong></td>
 
-<td><strong>Type</strong></td>
+            <td><strong>Type</strong></td>
 
-<td><strong>Description</strong></td>
-</tr>
+            <td><strong>Description</strong></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;TypeName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;TypeName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the data class used by <code>Read</code></td>
-</tr>
+            <td>Name of the data class used by <code>Read</code></td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;FileName&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;FileName&quot;]</code></td>
 
-<td><code lang="cs">string</code></td>
+            <td><code lang="cs">string</code></td>
 
-<td>Name of the input file</td>
-</tr>
+            <td>Name of the input file</td>
+        </tr>
 
-<tr>
-<td><code>Data[&quot;InnerExceptionsList&quot;]</code></td>
+        <tr>
+            <td><code>Data[&quot;InnerExceptionsList&quot;]</code></td>
 
-<td><code>List&lt;Exception&gt;</code></td>
+            <td><code>List&lt;Exception&gt;</code></td>
 
-<td>List of <code>Exception</code>s</td>
-</tr>
-</tbody>
+            <td>List of <code>Exception</code>s</td>
+        </tr>
+    </tbody>
 </table>
 
 <p>Used to aggregate exceptions generated while reading a file (<a href="#AggregatingExceptions">more details</a>)<a id="FileCultureName"></a>.</p>
@@ -1794,55 +1773,63 @@ abc,   ,def</pre>
 <h2><a id="History"></a>History</h2>
 
 <table cellspacing="0" cellpadding="5" border="1">
-<tbody>
-<tr>
-<th>Version</th>
-<th>Released</th>
-<th>Description</th>
-</tr>
-<tr>
-<td valign="top">1.0 </td>
-<td valign="top">11 Apr 2008 </td>
-<td valign="top">Initial release. </td>
-</tr>
-<tr>
-<td valign="top">1.1 </td>
-<td valign="top">19 Sep 2011</td>
-<td valign="top">
-Added ability to read raw data rows.
-</td>
-</tr>
-<tr>
-<td valign="top">1.2 </td>
-<td valign="top">18 Feb 2012</td>
-<td valign="top">
-Bug fix - CsvFileDescription now properly processed when reading from streams.
-</td>
-</tr>
-<tr>
-<td valign="top">1.3 </td>
-<td valign="top">14 Feb 2014</td>
-<td valign="top">
-Introduced fixed width columns.
-Courtesy of <a href="https://github.com/lvaleriu" target="_blank">lvaleriu</a>.
-</td>
-</tr>
-    <tr>
-        <td valign="top">1.4 </td>
-        <td valign="top">18 Feb 2014</td>
-        <td valign="top">
-            Introduced option to ignore trailing separator character.
-            Courtesy of <a href="https://github.com/romansp" target="_blank">Roman</a>.
-        </td>
-    </tr>
-</tbody>
+    <tbody>
+        <tr>
+            <th>Version</th>
+            <th>Released</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td valign="top">1.0 </td>
+            <td valign="top">11 Apr 2008 </td>
+            <td valign="top">Initial release. </td>
+        </tr>
+        <tr>
+            <td valign="top">1.1 </td>
+            <td valign="top">19 Sep 2011</td>
+            <td valign="top">
+                Added ability to read raw data rows.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">1.2 </td>
+            <td valign="top">18 Feb 2012</td>
+            <td valign="top">
+                Bug fix - CsvFileDescription now properly processed when reading from streams.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">1.3 </td>
+            <td valign="top">14 Feb 2014</td>
+            <td valign="top">
+                Introduced fixed width columns.
+                Courtesy of <a href="https://github.com/lvaleriu" target="_blank">lvaleriu</a>.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">1.4 </td>
+            <td valign="top">18 Feb 2014</td>
+            <td valign="top">
+                Introduced option to ignore trailing separator character.
+                Courtesy of <a href="https://github.com/romansp" target="_blank">Roman</a>.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">1.5</td>
+            <td valign="top">4 Mar 2014</td>
+            <td valign="top">
+                Introduced option to ignore unused columns in the input file.
+                Courtesy of <a href="https://github.com/omederos" target="_blank">Oscar Mederos</a>.
+            </td>
+        </tr>
+    </tbody>
 </table>
 
 <h2><a id="Contribute"></a>New Features and Bug Fixes</h2>
 <p>
-If you found a bug or have an idea for a new feature, please feel free contribute to this project.
-Details:
-<a href="github.com/mperdeck/LINQtoCSV">https://github.com/mperdeck/LINQtoCSV</a>
+    If you found a bug or have an idea for a new feature, please feel free contribute to this project.
+    Details:
+    <a href="github.com/mperdeck/LINQtoCSV">https://github.com/mperdeck/LINQtoCSV</a>
 </p>
 
 
