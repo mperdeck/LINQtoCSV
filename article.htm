@@ -456,7 +456,7 @@ internal class MyDataRow : List&lt;DataRowItem&gt;, IDataRow
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Type:</strong></td>
@@ -491,7 +491,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
 <h3><a id="QuoteAllFields">QuoteAllFields</a></h3>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Type:</strong></td>
@@ -523,7 +523,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
 <h3><a name="FirstLineHasColumnNames">FirstLineHasColumnNames</a></h3>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Type:</strong></td>
@@ -721,7 +721,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
 <h3><a id="NoSeparatorChar">NoSeparatorChar</a></h3>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Type:</strong></td>
@@ -823,7 +823,6 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 
 <p>Though it's not a canonical representation of CSV file, <code>IgnoreTrailingSeparatorChar</code> property tells <code>Read</code> to ignore separator character at the end of the line.</p>
 
-<!-----------IgnoreUnknownColumns----------->
 <h3><a id="IgnoreUnknownColumns"></a>IgnoreUnknownColumns</h3>
 
 <table cellpadding="3">
@@ -852,7 +851,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <p>
     There are cases where you don't need to read all the columns, but only a subset of them. Consider the following example of a CSV file containing a list of people:
 </p>
-<table cellspacing="0" cellpadding="5" border="1">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <th>Id</th>
@@ -880,14 +879,15 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <br>
 Suppose you have the following class:
 <pre lang="cs">
-    class Person {
-        [CsvColumn(Name = "Name")]
-        public string Name { get ; set; }
-        [CsvColumn(Name = "Last Name")]
-        public string LastName { get; set; }
-        [CsvColumn(Name = "Age")]
-        public int Age { get; set; }
-    }
+class Person 
+{
+    [CsvColumn(Name = "Name")]
+    public string Name { get ; set; }
+    [CsvColumn(Name = "Last Name")]
+    public string LastName { get; set; }
+    [CsvColumn(Name = "Age")]
+    public int Age { get; set; }
+}
 </pre>
 <p>
     Note that the input file has columns &quot;Id&quot; and &quot;City&quot; which are not listed in the class. This discrepancy would normally cause an exception.
@@ -895,12 +895,10 @@ Suppose you have the following class:
 <p>
     However, if you set <pre lang="cs">fd.IgnoreUnknownColumns = true;</pre>
 
-then the columns &quot;Id&quot; and &quot;City&quot; will be ignored without an exception.
+    then the columns &quot;Id&quot; and &quot;City&quot; will be ignored without an exception.
 </p>
 
 
-
-<!---------------------------------------------->
 
 <h2>CsvColumn Attribute<a id="CsvColumn_Attribute"></a></h2>
 
@@ -1279,7 +1277,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1325,7 +1323,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1359,7 +1357,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1395,7 +1393,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1437,7 +1435,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1479,7 +1477,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1521,7 +1519,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1563,7 +1561,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1607,7 +1605,7 @@ public static void ReadFileWithExceptionHandling()
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1674,7 +1672,7 @@ abc,   ,def</pre>
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1732,7 +1730,7 @@ abc,   ,def</pre>
 
 <p><strong>Additional Properties</strong> - This exception exposes the same properties as <a target="_blank" href="http://msdn2.microsoft.com/en-us/library/system.exception.aspx"><code>Exception</code></a>, plus these additional properties:</p>
 
-<table class="articletable">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <td><strong>Property</strong></td>
@@ -1772,7 +1770,7 @@ abc,   ,def</pre>
 
 <h2><a id="History"></a>History</h2>
 
-<table cellspacing="0" cellpadding="5" border="1">
+<table cellspacing="5" cellpadding="0" border="0">
     <tbody>
         <tr>
             <th>Version</th>
