@@ -27,7 +27,7 @@ For features, show why it would be useful to the wider community.
 
 Introducing a new feature involves more than simply coding the new feature. For every new feature, the following needs to be done:
 * Code the feature (obviously);
-* Update the documentation in the article.htm file;
+* Update the documentation in the article.htm file, including the history section at the end;
 * Add unit tests to the LINQtoCSV project, to ensure future code changes don't break your feature.
 
 
