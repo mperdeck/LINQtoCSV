@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -95,6 +96,11 @@ namespace LINQtoCSV
         /// If set to true, wil read only the fields specified as attributes, and will discard other fields in the CSV file
         /// </summary>
         public bool IgnoreUnknownColumns { get; set; }
+
+        /// <summary>
+        /// If not null, will only write fields included in the list
+        /// </summary>
+        public string[] FieldsToIncludeInOutput { get; set; }
 
         // ---------------
 

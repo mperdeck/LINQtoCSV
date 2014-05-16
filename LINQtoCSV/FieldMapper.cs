@@ -282,7 +282,7 @@ namespace LINQtoCSV
         /// Writes the field names given in T to row.
         /// </summary>
         /// 
-        public void WriteNames(List<string> row)
+        public void WriteNames(List<string> row, HashSet<string> fieldsToInclude)
         {
             row.Clear();
 
@@ -296,9 +296,10 @@ namespace LINQtoCSV
                     continue;
                 }
 
-                // ----
-
-                row.Add(tfi.name);
+                if (fieldsToInclude == null || fieldsToInclude.Contains(tfi.name))
+                {
+                    row.Add(tfi.name);
+                }
             }
         }
 
@@ -306,7 +307,7 @@ namespace LINQtoCSV
         /// ///////////////////////////////////////////////////////////////////////
         /// WriteObject
         /// 
-        public void WriteObject(T obj, List<string> row)
+        public void WriteObject(T obj, List<string> row, HashSet<string> fieldsToInclude)
         {
             row.Clear();
 
@@ -319,6 +320,8 @@ namespace LINQtoCSV
                 {
                     continue;
                 }
+
+
 
                 // ----
 
@@ -355,7 +358,10 @@ namespace LINQtoCSV
 
                 // -----
 
-                row.Add(resultString);
+                if (fieldsToInclude == null || fieldsToInclude.Contains(tfi.name))
+                {
+                    row.Add(resultString);
+                }
             }
         }
     }

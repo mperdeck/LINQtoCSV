@@ -266,13 +266,13 @@ namespace LINQtoCSV
         {
             FieldMapper<T> fm = new FieldMapper<T>(fileDescription, fileName, true);
             CsvStream cs = new CsvStream(null, stream, fileDescription.SeparatorChar, fileDescription.IgnoreTrailingSeparatorChar);
-
+            HashSet<string> fieldsToInclude = fileDescription.FieldsToIncludeInOutput != null ? new HashSet<string>(fileDescription.FieldsToIncludeInOutput) : null;
             List<string> row = new List<string>();
 
             // If first line has to carry the field names, write the field names now.
             if (fileDescription.FirstLineHasColumnNames)
             {
-                fm.WriteNames(row);
+                fm.WriteNames(row, fieldsToInclude);
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
             }
 
@@ -281,7 +281,7 @@ namespace LINQtoCSV
             foreach (T obj in values)
             {
                 // Convert obj to row
-                fm.WriteObject(obj, row);
+                fm.WriteObject(obj, row, fieldsToInclude);
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
             }
         }
