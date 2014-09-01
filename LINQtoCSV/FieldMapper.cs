@@ -410,6 +410,14 @@ namespace LINQtoCSV
 
             int currentNameIndex = 0;
             for (int i = 0; i < row.Count; i++) {
+                if (row[i].Value == null) {
+                    if (m_fileDescription.IgnoreTrailingEmptyColumns) {
+                        break;                        
+                    }
+
+                    throw new EmptyNameException();
+                }
+
                 if (!m_NameToInfo.ContainsKey(row[i].Value)) {
                     //If we have to ignore this column
                     if (m_fileDescription.IgnoreUnknownColumns) {

@@ -137,6 +137,17 @@ namespace LINQtoCSV
     /// Exceptions related to reading column names from file
 
     /// <summary>
+    /// Thrown when the file has a column without a name
+    /// </summary>
+    public class EmptyNameException : LINQtoCSVException
+    {
+        public EmptyNameException() :
+            base("The input file has a column without a name in the first record which is not allowed when FirstLineHasColumnNames is set to true.")
+        {
+        }
+    }
+
+    /// <summary>
     /// Thrown when the file has a column name without a counterpart in the data class definition
     /// </summary>
     public class NameNotInTypeException : LINQtoCSVException

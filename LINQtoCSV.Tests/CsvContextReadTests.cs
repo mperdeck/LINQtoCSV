@@ -367,5 +367,42 @@ and a quoted ""string"""
             AssertRead(input, description, expected);
 
         }
+
+        [TestMethod()]
+        public void FileWithTrailingEmptyColumns_ShouldDiscardColumns()
+        {
+            var description = new CsvFileDescription {
+                SeparatorChar = ',',
+                FirstLineHasColumnNames = true,
+                IgnoreUnknownColumns = true,
+                IgnoreTrailingEmptyColumns = true
+            };
+
+            //The following input has 5 columns: Id | Name | Last Name | Age | City. Only the Name, Last Name and Age will be read.
+
+            string input =
+@"Id,Name,Last Name,Age,City, , , ,,,,
+1,John,Doe,15,Washington, , , , , 
+2,Jane,Doe,20,New York,, , ,
+";
+            var expected = new[]
+                {
+                    new Person
+                        {
+                            Name = "John",
+                            LastName = "Doe",
+                            Age = 15
+                        },
+                    new Person
+                        {
+                            Name = "Jane",
+                            LastName = "Doe",
+                            Age = 20
+                        },
+                };
+
+            AssertRead(input, description, expected);
+
+        }
     }
 }
