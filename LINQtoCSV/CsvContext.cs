@@ -179,6 +179,9 @@ namespace LINQtoCSV
                             if (readingRawDataRows)
                             {
                                 obj = row as T;
+
+                                // Do not reuse the row since it's cleared in ReadRow.
+                                row = new T() as IDataRow;
                             }
                             else
                             {

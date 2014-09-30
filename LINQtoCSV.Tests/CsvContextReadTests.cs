@@ -1,8 +1,11 @@
-﻿using LINQtoCSV;
+﻿using System.Linq;
+using System.Text;
+using LINQtoCSV;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using TestConsoleApplication;
 
 namespace LINQtoCSV.Tests
 {
@@ -366,6 +369,30 @@ and a quoted ""string"""
 
             AssertRead(input, description, expected);
 
+        }
+
+        [TestMethod]
+        public void ShouldBeAbleToReadRawDataAsOutlinedInDocs()
+        {
+            var description = new CsvFileDescription
+            {
+                SeparatorChar = ',',
+                FirstLineHasColumnNames = true
+            };
+
+            const string input =
+@"Id,Name,Last Name,Age,City
+1,John,Doe,15,Washington
+2,Jane,Doe,20,New York
+";
+            const string expected = "1,John,Doe,15,Washington\n2,Jane,Doe,20,New York";
+            var context = new CsvContext();
+            using (var reader = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(input))))
+            {
+                var rows = context.Read<TestDataRow>(reader, description).ToList();
+                var rowsStringRep = string.Join("\n", rows.Select(row => string.Join(",", row.Select(item => item.Value))));
+                Assert.AreEqual(expected, rowsStringRep);
+            }
         }
     }
 }
