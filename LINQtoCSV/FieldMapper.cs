@@ -1,46 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
 namespace LINQtoCSV
 {
-    internal class FieldMapper<T> 
+    internal class FieldMapper<T>
     {
         protected class TypeFieldInfo : IComparable<TypeFieldInfo>
         {
             public int index = CsvColumnAttribute.mc_DefaultFieldIndex;
-            public string name = null;
+            public string name;
             public bool canBeNull = true;
             public NumberStyles inputNumberStyle = NumberStyles.Any;
-            public string outputFormat = null;
+            public DateTimeStyles inputDateTimeStyle = DateTimeStyles.AssumeUniversal | DateTimeStyles.AllowWhiteSpaces;
+            public string outputFormat;
             public bool hasColumnAttribute = false;
 
-            public MemberInfo memberInfo = null;
-            public Type fieldType = null;
+            public MemberInfo memberInfo;
+            public Type fieldType;
 
-            // parseNumberMethod will remain null if the property is not a numeric type.
-            // This would be the case for DateTime, Boolean, String and custom types.
-            // In those cases, just use a TypeConverter.
-            //
-            // DateTime and Boolean also have Parse methods, but they don't provide
-            // functionality that TypeConverter doesn't give you.
-
-            public TypeConverter typeConverter = null;
-            public MethodInfo parseNumberMethod = null;
+            public MethodInfo parseNumberMethod;
+            public MethodInfo parseBoolMethod;
+            public MethodInfo parseDateTimeMethod;
             public MethodInfo parseExactMethod;
             public int charLength = 0;
-
-            // ----
 
             public int CompareTo(TypeFieldInfo other)
             {
                 return index.CompareTo(other.index);
             }
 
-            public override string ToString() 
+            public override string ToString()
             {
                 return string.Format("Index: {0}, Name: {1}", index, name);
             }
@@ -55,15 +47,12 @@ namespace LINQtoCSV
         /// <summary>
         /// Contains a mapping between the CSV column indexes that will read and the property indexes in the business object.
         /// </summary>
-        protected IDictionary<int, int> _mappingIndexes = new Dictionary<int, int>(); 
+        protected IDictionary<int, int> _mappingIndexes = new Dictionary<int, int>();
 
         // Used to build IndexToInfo
         protected Dictionary<string, TypeFieldInfo> m_NameToInfo = null;
 
         protected CsvFileDescription m_fileDescription;
-
-        // Only used when throwing an exception
-        protected string m_fileName;
 
         // -----------------------------
         // AnalyzeTypeField
@@ -95,21 +84,28 @@ namespace LINQtoCSV
 
             tfi.parseNumberMethod =
                 tfi.fieldType.GetMethod("Parse",
-                    new Type[] { typeof(String), typeof(NumberStyles), typeof(IFormatProvider) });
+                    new Type[] { typeof(string), typeof(NumberStyles), typeof(IFormatProvider) });
 
             if (tfi.parseNumberMethod == null)
             {
-                if (m_fileDescription.UseOutputFormatForParsingCsvValue)
-                {
-                    tfi.parseExactMethod = tfi.fieldType.GetMethod("ParseExact",
-                        new Type[] {typeof (string), typeof (string), typeof (IFormatProvider)});
-                }
+                tfi.parseDateTimeMethod =
+                    tfi.fieldType.GetMethod("Parse",
+                        new Type[] { typeof(string), typeof(IFormatProvider), typeof(DateTimeStyles) });
 
-                tfi.typeConverter = null;
-                if (tfi.parseExactMethod == null)
+                if (tfi.parseDateTimeMethod == null)
                 {
-                    tfi.typeConverter =
-                        TypeDescriptor.GetConverter(tfi.fieldType);
+                    tfi.parseBoolMethod =
+                        tfi.fieldType.GetMethod("Parse",
+                            new Type[] { typeof(string) });
+
+                    if (tfi.parseBoolMethod == null)
+                    {
+                        if (m_fileDescription.UseOutputFormatForParsingCsvValue)
+                        {
+                            tfi.parseExactMethod = tfi.fieldType.GetMethod("ParseExact",
+                                new Type[] { typeof(string), typeof(string), typeof(IFormatProvider) });
+                        }
+                    }
                 }
             }
 
@@ -118,12 +114,11 @@ namespace LINQtoCSV
 
             tfi.index = CsvColumnAttribute.mc_DefaultFieldIndex;
             tfi.name = mi.Name;
-            tfi.inputNumberStyle = NumberStyles.Any;
             tfi.outputFormat = "";
             tfi.hasColumnAttribute = false;
             tfi.charLength = 0;
 
-            foreach (Object attribute in mi.GetCustomAttributes(typeof(CsvColumnAttribute), true))
+            foreach (object attribute in mi.GetCustomAttributes(typeof(CsvColumnAttribute), true))
             {
                 CsvColumnAttribute cca = (CsvColumnAttribute)attribute;
 
@@ -137,10 +132,9 @@ namespace LINQtoCSV
                 tfi.canBeNull = cca.CanBeNull;
                 tfi.outputFormat = cca.OutputFormat;
                 tfi.inputNumberStyle = cca.NumberStyle;
+                tfi.inputDateTimeStyle = cca.DateTimeStyle;
                 tfi.charLength = cca.CharLength;
             }
-
-            // -----
 
             if (allCsvColumnFieldsMustHaveFieldIndex &&
                 tfi.hasColumnAttribute &&
@@ -160,8 +154,6 @@ namespace LINQtoCSV
                                 tfi.name);
             }
 
-            // -----
-
             return tfi;
         }
 
@@ -169,7 +161,7 @@ namespace LINQtoCSV
         // AnalyzeType
         //
         protected void AnalyzeType(
-                        Type type, 
+                        Type type,
                         bool allRequiredFieldsMustHaveFieldIndex,
                         bool allCsvColumnFieldsMustHaveFieldIndex)
         {
@@ -178,22 +170,19 @@ namespace LINQtoCSV
             // ------
             // Initialize NameToInfo
 
-            foreach (MemberInfo mi in type.GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static ))
+            // Only process field and property members.
+            foreach (MemberInfo mi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Cast<MemberInfo>()
+                .Union(type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)))
             {
-                // Only process field and property members.
-                if ((mi.MemberType == MemberTypes.Field) ||
-                    (mi.MemberType == MemberTypes.Property))
-                {
-                    // Note that the compiler does not allow fields and/or properties
-                    // with the same name as some other field or property.
-                    TypeFieldInfo tfi = 
-                        AnalyzeTypeField(
-                                mi, 
-                                allRequiredFieldsMustHaveFieldIndex,
-                                allCsvColumnFieldsMustHaveFieldIndex);
+                // Note that the compiler does not allow fields and/or properties
+                // with the same name as some other field or property.
+                TypeFieldInfo tfi =
+                    AnalyzeTypeField(
+                            mi,
+                            allRequiredFieldsMustHaveFieldIndex,
+                            allCsvColumnFieldsMustHaveFieldIndex);
 
-                    m_NameToInfo[tfi.name] = tfi;
-                }
+                m_NameToInfo[tfi.name] = tfi;
             }
 
             // -------
@@ -203,22 +192,22 @@ namespace LINQtoCSV
             m_IndexToInfo = new TypeFieldInfo[nbrTypeFields];
 
             _mappingIndexes = new Dictionary<int, int>();
-            
-            int i=0;
+
+            int i = 0;
             foreach (KeyValuePair<string, TypeFieldInfo> kvp in m_NameToInfo)
             {
                 m_IndexToInfo[i++] = kvp.Value;
             }
 
-            // Sort by FieldIndex. Fields without FieldIndex will 
+            // Sort by FieldIndex. Fields without FieldIndex will
             // be sorted towards the back, because their FieldIndex
             // is Int32.MaxValue.
             //
-            // The sort order is important when reading a file that 
+            // The sort order is important when reading a file that
             // doesn't have the field names in the first line, and when
-            // writing a file. 
+            // writing a file.
             //
-            // Note that for reading from a file with field names in the 
+            // Note that for reading from a file with field names in the
             // first line, method ReadNames reworks IndexToInfo.
 
             Array.Sort(m_IndexToInfo);
@@ -228,11 +217,11 @@ namespace LINQtoCSV
             // However, allow gaps in the FieldIndex range, to make it easier to later insert
             // fields in the range.
 
-            int lastFieldIndex = Int32.MinValue;
+            int lastFieldIndex = int.MinValue;
             string lastName = "";
-            foreach(TypeFieldInfo tfi in m_IndexToInfo)
+            foreach (TypeFieldInfo tfi in m_IndexToInfo)
             {
-                if ((tfi.index == lastFieldIndex) && 
+                if ((tfi.index == lastFieldIndex) &&
                     (tfi.index != CsvColumnAttribute.mc_DefaultFieldIndex))
                 {
                     throw new DuplicateFieldIndexException(
@@ -249,12 +238,12 @@ namespace LINQtoCSV
 
         /// ///////////////////////////////////////////////////////////////////////
         /// FieldMapper
-        /// 
+        ///
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="fileDescription"></param>
-        public FieldMapper(CsvFileDescription fileDescription, string fileName, bool writingFile)
+        public FieldMapper(CsvFileDescription fileDescription, bool writingFile)
         {
             if ((!fileDescription.FirstLineHasColumnNames) &&
                 (!fileDescription.EnforceCsvColumnAttribute))
@@ -265,23 +254,22 @@ namespace LINQtoCSV
             // ---------
 
             m_fileDescription = fileDescription;
-            m_fileName = fileName;
 
             m_NameToInfo = new Dictionary<string, TypeFieldInfo>();
 
             AnalyzeType(
-                typeof(T), 
+                typeof(T),
                 !fileDescription.FirstLineHasColumnNames,
                 writingFile && !fileDescription.FirstLineHasColumnNames);
         }
 
         /// ///////////////////////////////////////////////////////////////////////
         /// WriteNames
-        /// 
+        ///
         /// <summary>
         /// Writes the field names given in T to row.
         /// </summary>
-        /// 
+        ///
         public void WriteNames(List<string> row)
         {
             row.Clear();
@@ -296,16 +284,13 @@ namespace LINQtoCSV
                     continue;
                 }
 
-                // ----
-
                 row.Add(tfi.name);
             }
         }
 
-
         /// ///////////////////////////////////////////////////////////////////////
         /// WriteObject
-        /// 
+        ///
         public void WriteObject(T obj, List<string> row)
         {
             row.Clear();
@@ -320,9 +305,7 @@ namespace LINQtoCSV
                     continue;
                 }
 
-                // ----
-
-                Object objValue = null;
+                object objValue = null;
 
                 if (tfi.memberInfo is PropertyInfo)
                 {
@@ -353,8 +336,6 @@ namespace LINQtoCSV
                     }
                 }
 
-                // -----
-
                 row.Add(resultString);
             }
         }
@@ -372,24 +353,21 @@ namespace LINQtoCSV
     {
         /// ///////////////////////////////////////////////////////////////////////
         /// FieldMapper
-        /// 
+        ///
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="fileDescription"></param>
         public FieldMapper_Reading(
-                    CsvFileDescription fileDescription, 
-                    string fileName,
+                    CsvFileDescription fileDescription,
                     bool writingFile)
-            : base(fileDescription, fileName, writingFile)
+            : base(fileDescription, writingFile)
         {
-
         }
-
 
         /// ///////////////////////////////////////////////////////////////////////
         /// ReadNames
-        /// 
+        ///
         /// <summary>
         /// Assumes that the fields in parameter row are field names.
         /// Reads the names into the objects internal structure.
@@ -397,7 +375,6 @@ namespace LINQtoCSV
         /// <param name="row"></param>
         /// <param name="firstRow"></param>
         /// <returns></returns>
-        ///
         public void ReadNames(IDataRow row)
         {
             // It is now the order of the field names that determines
@@ -405,39 +382,43 @@ namespace LINQtoCSV
             // the FieldIndex fields.
 
             // If there are more names in the file then fields in the type,
-            // and IgnoreUnknownColumns is set to `false` one of the names will 
+            // and IgnoreUnknownColumns is set to `false` one of the names will
             // not be found, causing an exception.
 
             int currentNameIndex = 0;
-            for (int i = 0; i < row.Count; i++) {
-                if (!m_NameToInfo.ContainsKey(row[i].Value)) {
+            for (int i = 0; i < row.Count; i++)
+            {
+                if (!m_NameToInfo.ContainsKey(row[i].Value))
+                {
                     //If we have to ignore this column
-                    if (m_fileDescription.IgnoreUnknownColumns) {
+                    if (m_fileDescription.IgnoreUnknownColumns)
+                    {
                         continue;
                     }
 
                     // name not found
-                    throw new NameNotInTypeException(typeof (T).ToString(), row[i].Value, m_fileName);
+                    throw new NameNotInTypeException(typeof(T).ToString(), row[i].Value);
                 }
-
-                // ----
 
                 //Map the column index in the CSV file with the column index of the business object.
                 _mappingIndexes.Add(i, currentNameIndex);
                 currentNameIndex++;
             }
 
-            //Loop to the 
-            for (int i = 0; i < row.Count; i++) {
-                if (!_mappingIndexes.ContainsKey(i)) {
+            //Loop to the
+            for (int i = 0; i < row.Count; i++)
+            {
+                if (!_mappingIndexes.ContainsKey(i))
+                {
                     continue;
                 }
 
                 m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[row[i].Value];
 
-                if (m_fileDescription.EnforceCsvColumnAttribute && (!m_IndexToInfo[i].hasColumnAttribute)) {
-                    // enforcing column attr, but this field/prop has no column attr.
-                    throw new MissingCsvColumnAttributeException(typeof (T).ToString(), row[i].Value, m_fileName);
+                if (m_fileDescription.EnforceCsvColumnAttribute && (!m_IndexToInfo[i].hasColumnAttribute))
+                {
+                    // enforcing column attribute, but this field/prop has no column attribute.
+                    throw new MissingCsvColumnAttributeException(typeof(T).ToString(), row[i].Value);
                 }
             }
         }
@@ -452,80 +433,80 @@ namespace LINQtoCSV
 
         /// ///////////////////////////////////////////////////////////////////////
         /// ReadObject
-        /// 
+        ///
         /// <summary>
         /// Creates an object of type T from the data in row and returns that object.
-        /// 
+        ///
         /// </summary>
         /// <param name="row"></param>
         /// <param name="firstRow"></param>
         /// <returns></returns>
-        public T ReadObject(IDataRow row, AggregatedException ae) {
+        public T ReadObject(IDataRow row, AggregatedException ae)
+        {
             //If there are more columns than the required
             if (row.Count > m_IndexToInfo.Length)
             {
                 //Are we ignoring unknown columns?
-                if (!m_fileDescription.IgnoreUnknownColumns) {
+                if (!m_fileDescription.IgnoreUnknownColumns)
+                {
                     // Too many fields
-                    throw new TooManyDataFieldsException(typeof (T).ToString(), row[0].LineNbr, m_fileName);
+                    throw new TooManyDataFieldsException(typeof(T).ToString(), row[0].LineNbr);
                 }
             }
-
-            // -----
 
             T obj = new T();
 
             //If we will be using the mappings, we just iterate through all the cells in this row
             int maxRowCount = _mappingIndexes.Count > 0 ? row.Count : Math.Min(row.Count, m_IndexToInfo.Length);
 
-            for (int i = 0; i < maxRowCount; i++) {
+            for (int i = 0; i < maxRowCount; i++)
+            {
                 TypeFieldInfo tfi;
                 //If there is some index mapping generated and the IgnoreUnknownColums is `true`
-                if (m_fileDescription.IgnoreUnknownColumns && _mappingIndexes.Count > 0) {
-                    if (!_mappingIndexes.ContainsKey(i)) {
+                if (m_fileDescription.IgnoreUnknownColumns && _mappingIndexes.Count > 0)
+                {
+                    if (!_mappingIndexes.ContainsKey(i))
+                    {
                         continue;
                     }
                     tfi = m_IndexToInfo[_mappingIndexes[i]];
                 }
-                else {
+                else
+                {
                     tfi = m_IndexToInfo[i];
                 }
 
                 if (m_fileDescription.EnforceCsvColumnAttribute &&
                         (!tfi.hasColumnAttribute))
                 {
-                    // enforcing column attr, but this field/prop has no column attr.
+                    // enforcing column attribute, but this field/prop has no column attribute.
                     // So there are too many fields in this record.
-                    throw new TooManyNonCsvColumnDataFieldsException(typeof(T).ToString(), row[i].LineNbr, m_fileName);
+                    throw new TooManyNonCsvColumnDataFieldsException(typeof(T).ToString(), row[i].LineNbr);
                 }
-
-                // -----
 
                 if ((!m_fileDescription.FirstLineHasColumnNames) &&
                         (tfi.index == CsvColumnAttribute.mc_DefaultFieldIndex))
                 {
-                    // First line in the file does not have field names, so we're 
+                    // First line in the file does not have field names, so we're
                     // depending on the FieldIndex of each field in the type
                     // to ensure each value is placed in the correct field.
                     // However, now hit a field where there is no FieldIndex.
-                    throw new MissingFieldIndexException(typeof(T).ToString(), row[i].LineNbr, m_fileName);
+                    throw new MissingFieldIndexException(typeof(T).ToString(), row[i].LineNbr);
                 }
-
-                // -----
 
                 if (m_fileDescription.UseFieldIndexForReadingData && (!m_fileDescription.FirstLineHasColumnNames) &&
                     (tfi.index > row.Count))
                 {
-                    // First line in the file does not have field names, so we're 
+                    // First line in the file does not have field names, so we're
                     // depending on the FieldIndex of each field in the type
                     // to ensure each value is placed in the correct field.
                     // However, now hit a field where the FieldIndex is bigger
                     // than the total number of items in a row generated by the separatorChar
-                    throw new WrongFieldIndexException(typeof(T).ToString(), row[i].LineNbr, m_fileName);
+                    throw new WrongFieldIndexException(typeof(T).ToString(), row[i].LineNbr);
                 }
 
                 int index = m_fileDescription.UseFieldIndexForReadingData ? tfi.index - 1 : i;
-                
+
                 // value to put in the object
                 string value = row[index].Value;
 
@@ -537,51 +518,66 @@ namespace LINQtoCSV
                             new MissingRequiredFieldException(
                                     typeof(T).ToString(),
                                     tfi.name,
-                                    row[i].LineNbr,
-                                    m_fileName));
+                                    row[i].LineNbr));
                     }
                 }
                 else
                 {
                     try
                     {
-                        Object objValue = null;
+                        object objValue = null;
 
-                        // Normally, either tfi.typeConverter is not null,
-                        // or tfi.parseNumberMethod is not null. 
-                        // 
-                        if (tfi.typeConverter != null)
-                        {
-                            objValue = tfi.typeConverter.ConvertFromString(
-                                           null,
-                                           m_fileDescription.FileCultureInfo,
-                                           value);
-                        }
-                        else if (tfi.parseExactMethod != null)
+                        if (tfi.parseExactMethod != null)
                         {
                             objValue =
                                 tfi.parseExactMethod.Invoke(
                                     tfi.fieldType,
-                                    new Object[] { 
-                                    value, 
-                                    tfi.outputFormat, 
-                                    m_fileDescription.FileCultureInfo });
-                        }   
+                                    new object[]
+                                    {
+                                        value,
+                                        tfi.outputFormat,
+                                        m_fileDescription.FileCultureInfo
+                                    });
+                        }
                         else if (tfi.parseNumberMethod != null)
                         {
                             objValue =
                                 tfi.parseNumberMethod.Invoke(
                                     tfi.fieldType,
-                                    new Object[] { 
-                                    value, 
-                                    tfi.inputNumberStyle, 
-                                    m_fileDescription.FileCultureInfo });
+                                    new object[]
+                                    {
+                                        value,
+                                        tfi.inputNumberStyle,
+                                        m_fileDescription.FileCultureInfo
+                                    });
+                        }
+                        else if (tfi.parseDateTimeMethod != null)
+                        {
+                            objValue =
+                                tfi.parseDateTimeMethod.Invoke(
+                                    tfi.fieldType,
+                                    new object[]
+                                    {
+                                        value,
+                                        m_fileDescription.FileCultureInfo,
+                                        tfi.inputDateTimeStyle
+                                    });
+                        }
+                        else if (tfi.parseBoolMethod != null)
+                        {
+                            objValue =
+                                tfi.parseBoolMethod.Invoke(
+                                    tfi.fieldType,
+                                    new object[]
+                                    {
+                                        value
+                                    });
                         }
                         else
                         {
                             // No TypeConverter and no Parse method available.
                             // Try direct approach.
-                            objValue = value;                          
+                            objValue = value;
                         }
 
                         if (tfi.memberInfo is PropertyInfo)
@@ -607,7 +603,6 @@ namespace LINQtoCSV
                                     tfi.name,
                                     value,
                                     row[i].LineNbr,
-                                    m_fileName,
                                     e);
                         }
 
@@ -633,8 +628,7 @@ namespace LINQtoCSV
                         new MissingRequiredFieldException(
                                 typeof(T).ToString(),
                                 tfi.name,
-                                row[row.Count - 1].LineNbr,
-                                m_fileName));
+                                row[row.Count - 1].LineNbr));
                 }
             }
 

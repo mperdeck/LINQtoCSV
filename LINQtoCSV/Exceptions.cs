@@ -21,13 +21,6 @@ namespace LINQtoCSV
                     string message) : base(message)
         {
         }
-
-        // ----
-
-        public static string FileNameMessage(string fileName)
-        {
-            return ((fileName == null) ? "" : " Reading file \"" + fileName + "\".");
-        }
     }
 
     /// ///////////////////////////////////////////////////////////////////////
@@ -141,16 +134,14 @@ namespace LINQtoCSV
     /// </summary>
     public class NameNotInTypeException : LINQtoCSVException
     {
-        public NameNotInTypeException(string typeName, string fieldName, string fileName) :
+        public NameNotInTypeException(string typeName, string fieldName) :
             base(string.Format(
-                    "The input file has column name \"{0}\" in the first record, but there is no field or property with that name in type \"{1}\"." +
-                    FileNameMessage(fileName),
+                    "The input file has column name \"{0}\" in the first record, but there is no field or property with that name in type \"{1}\".",
                     fieldName,
                     typeName))
         {
             Data["TypeName"] = typeName;
             Data["FieldName"] = fieldName;
-            Data["FileName"] = fileName;
         }
     }
 
@@ -161,16 +152,14 @@ namespace LINQtoCSV
     /// </summary>
     public class MissingCsvColumnAttributeException : LINQtoCSVException
     {
-        public MissingCsvColumnAttributeException(string typeName, string fieldName, string fileName):
+        public MissingCsvColumnAttributeException(string typeName, string fieldName):
             base(string.Format(
-                    "Field \"{0}\" in type \"{1}\" does not have the CsvColumn attribute." +
-                    FileNameMessage(fileName),
+                    "Field \"{0}\" in type \"{1}\" does not have the CsvColumn attribute.",
                     fieldName,
                     typeName))
         {
             Data["TypeName"] = typeName;
             Data["FieldName"] = fieldName;
-            Data["FileName"] = fileName;
         }
     }
 
@@ -185,16 +174,14 @@ namespace LINQtoCSV
     /// </summary>
     public class TooManyDataFieldsException : LINQtoCSVException
     {
-        public TooManyDataFieldsException(string typeName, int lineNbr, string fileName):
+        public TooManyDataFieldsException(string typeName, int lineNbr):
             base(string.Format(
-                    "Line {0} has more fields then are available in type \"{1}\"." +
-                    FileNameMessage(fileName),
+                    "Line {0} has more fields then are available in type \"{1}\".",
                     lineNbr,
                     typeName))
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
         }
     }
 
@@ -207,16 +194,14 @@ namespace LINQtoCSV
     /// </summary>
     public class TooManyNonCsvColumnDataFieldsException : LINQtoCSVException
     {
-        public TooManyNonCsvColumnDataFieldsException(string typeName, int lineNbr, string fileName):
+        public TooManyNonCsvColumnDataFieldsException(string typeName, int lineNbr):
             base(string.Format(
-                    "Line {0} has more fields then there are fields or properties in type \"{1}\" with the CsvColumn attribute set." +
-                    FileNameMessage(fileName),
+                    "Line {0} has more fields then there are fields or properties in type \"{1}\" with the CsvColumn attribute set.",
                     lineNbr,
                     typeName))
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
         }
     }
 
@@ -230,38 +215,34 @@ namespace LINQtoCSV
     /// </summary>
     public class MissingFieldIndexException : LINQtoCSVException
     {
-        public MissingFieldIndexException(string typeName, int lineNbr, string fileName):
+        public MissingFieldIndexException(string typeName, int lineNbr):
             base(string.Format(
-                "Line {0} has more fields then there are fields or properties in type \"{1}\" with a FieldIndex." +
-                FileNameMessage(fileName),
+                "Line {0} has more fields then there are fields or properties in type \"{1}\" with a FieldIndex.",
                 lineNbr,
                 typeName))
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
         }
     }
 
     /// <summary>
     /// Thrown when a type field/property has no corresponding field in the data for the corresponding FieldIndex.
-    /// This means that the FieldIndex valus is greater then the number of items in a data.
+    /// This means that the FieldIndex value is greater then the number of items in a data.
     /// 
     /// All WrongFieldIndexException get aggregated into
     /// an AggregatedException.
     /// </summary>
     public class WrongFieldIndexException : LINQtoCSVException
     {
-        public WrongFieldIndexException(string typeName, int lineNbr, string fileName) :
+        public WrongFieldIndexException(string typeName, int lineNbr) :
             base(string.Format(
-                 "Line {0} has less fields then the FieldIndex value is indicating in type \"{1}\" ." +
-                 FileNameMessage(fileName),
+                 "Line {0} has less fields then the FieldIndex value is indicating in type \"{1}\" .",
                  lineNbr,
                  typeName))
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
         }
     }
 
@@ -276,19 +257,16 @@ namespace LINQtoCSV
         public MissingRequiredFieldException(
                         string typeName, 
                         string fieldName, 
-                        int lineNbr, 
-                        string fileName): 
+                        int lineNbr): 
             base(
                 string.Format(
-                    "In line {0}, no value provided for required field or property \"{1}\" in type \"{2}\"." +
-                    FileNameMessage(fileName),
+                    "In line {0}, no value provided for required field or property \"{1}\" in type \"{2}\".",
                     lineNbr,
                     fieldName,
                     typeName))
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
             Data["FieldName"] = fieldName;
         }
     }
@@ -306,12 +284,10 @@ namespace LINQtoCSV
                         string fieldName, 
                         string fieldValue, 
                         int lineNbr, 
-                        string fileName, 
                         Exception innerExc): 
             base(
                 string.Format(
-                    "Value \"{0}\" in line {1} has the wrong format for field or property \"{2}\" in type \"{3}\"." +
-                    FileNameMessage(fileName),
+                    "Value \"{0}\" in line {1} has the wrong format for field or property \"{2}\" in type \"{3}\".",
                     fieldValue,
                     lineNbr,
                     fieldName,
@@ -320,7 +296,6 @@ namespace LINQtoCSV
         {
             Data["TypeName"] = typeName;
             Data["LineNbr"] = lineNbr;
-            Data["FileName"] = fileName;
             Data["FieldValue"] = fieldValue;
             Data["FieldName"] = fieldName;
         }
@@ -339,17 +314,15 @@ namespace LINQtoCSV
 
         // -----
 
-        public AggregatedException(string typeName, string fileName, int maximumNbrExceptions):
+        public AggregatedException(string typeName, int maximumNbrExceptions):
             base(string.Format(
-                "There were 1 or more exceptions while reading data using type \"{0}\"." +
-                FileNameMessage(fileName),
+                "There were 1 or more exceptions while reading data using type \"{0}\".",
                 typeName))
         {
             m_MaximumNbrExceptions = maximumNbrExceptions;
             m_InnerExceptionsList = new List<Exception>();
 
             Data["TypeName"] = typeName;
-            Data["FileName"] = fileName;
             Data["InnerExceptionsList"] = m_InnerExceptionsList;
         }
 
