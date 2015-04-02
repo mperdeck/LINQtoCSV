@@ -56,7 +56,10 @@ namespace LINQtoCSV.Tests
         public decimal retailPrice { get; set; }
         
         [CsvColumn(FieldIndex = 30)]
-        public string description;
+		public string description;
+
+		[CsvColumn(FieldIndex = 40)]
+		public Guid id;
 
 #pragma warning restore 0169, 0414, 0649
 
@@ -74,6 +77,7 @@ namespace LINQtoCSV.Tests
             Assert.AreEqual(other.onsale, onsale, "onsale");
             Assert.AreEqual(other.retailPrice, retailPrice, "retailPrice");
             Assert.AreEqual(Utils.NormalizeString(other.description), Utils.NormalizeString(description), "description");
+			Assert.AreEqual(other.id, id, "id");
         }
     }
 }

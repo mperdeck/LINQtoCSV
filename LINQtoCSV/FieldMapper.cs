@@ -340,7 +340,7 @@ namespace LINQtoCSV
                 string resultString = null;
                 if (objValue != null)
                 {
-                    if ((objValue is IFormattable))
+                    if ((objValue is IFormattable) && !(objValue is Guid))
                     {
                         resultString =
                             ((IFormattable)objValue).ToString(

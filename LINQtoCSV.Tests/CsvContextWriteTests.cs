@@ -16,9 +16,9 @@ namespace LINQtoCSV.Tests
             // Arrange
 
             List<ProductData> dataRows_Test = new List<ProductData>();
-            dataRows_Test.Add(new ProductData { retailPrice = 4.59M, name = "Wooden toy", startDate = new DateTime(2008, 2, 1), nbrAvailable = 67 });
-            dataRows_Test.Add(new ProductData { onsale = true, weight = 4.03, shopsAvailable = "Ashfield", description = "" });
-            dataRows_Test.Add(new ProductData { name = "Metal box", launchTime = new DateTime(2009, 11, 5, 4, 50, 0), description = "Great\nproduct" });
+            dataRows_Test.Add(new ProductData { id = Guid.NewGuid(), retailPrice = 4.59M, name = "Wooden toy", startDate = new DateTime(2008, 2, 1), nbrAvailable = 67 });
+			dataRows_Test.Add(new ProductData { id = Guid.NewGuid(), onsale = true, weight = 4.03, shopsAvailable = "Ashfield", description = "" });
+			dataRows_Test.Add(new ProductData { id = Guid.NewGuid(), name = "Metal box", launchTime = new DateTime(2009, 11, 5, 4, 50, 0), description = "Great\nproduct" });
 
             CsvFileDescription fileDescription_namesNl2 = new CsvFileDescription
             {
@@ -30,11 +30,11 @@ namespace LINQtoCSV.Tests
             };
 
             string expected =
-@"name,startDate,launchTime,weight,shopsAvailable,code,price,onsale,description,nbrAvailable,unusedField
-Wooden toy,1-2-2008,01 jan 00:00:00,""000,000"",,0,""€ 4,59"",False,,67,
-,1-1-0001,01 jan 00:00:00,""004,030"",Ashfield,0,""€ 0,00"",True,"""",0,
+@"name,startDate,launchTime,weight,shopsAvailable,code,price,onsale,description,id,nbrAvailable,unusedField
+Wooden toy,1-2-2008,01 jan 00:00:00,""000,000"",,0,""€ 4,59"",False,," + dataRows_Test[0].id + @",67,
+,1-1-0001,01 jan 00:00:00,""004,030"",Ashfield,0,""€ 0,00"",True,""""," + dataRows_Test[1].id + @",0,
 Metal box,1-1-0001,05 nov 04:50:00,""000,000"",,0,""€ 0,00"",False,""Great
-product"",0,
+product""," + dataRows_Test[2].id + @",0,
 ";
 
             // Act and Assert
