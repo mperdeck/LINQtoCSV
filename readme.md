@@ -4,7 +4,7 @@ This library makes it easy to use CSV files with LINQ queries. Its features incl
 
 * Follows the most common rules for CSV files. Correctly handles data fields that contain commas and line breaks.
 * In addition to comma, most delimiting characters can be used, including tab for tab delimited fields.
-* Can be used with an IEnumarable of an anonymous class - which is often returned by a LINQ query.
+* Can be used with an IEnumerable of an anonymous class - which is often returned by a LINQ query.
 * Supports deferred reading.
 * Supports processing files with international date and number formats.
 * Supports different character encodings if you need them.
