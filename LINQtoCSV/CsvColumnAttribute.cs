@@ -21,6 +21,7 @@ namespace LINQtoCSV
         public NumberStyles NumberStyle { get; set; }
         public string OutputFormat { get; set; }
         public int CharLength { get; set; }
+        public string RegexPattern { get; set; }
 
         public CsvColumnAttribute()
         {
