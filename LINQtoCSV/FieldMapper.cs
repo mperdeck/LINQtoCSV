@@ -267,7 +267,8 @@ namespace LINQtoCSV
             m_fileDescription = fileDescription;
             m_fileName = fileName;
 
-            m_NameToInfo = new Dictionary<string, TypeFieldInfo>();
+            //if case insensitive set then declare dictionary with ignorecase
+            m_NameToInfo = m_fileDescription.IgnoreCaseOnColumnNames ? new Dictionary<string, TypeFieldInfo>(StringComparer.InvariantCultureIgnoreCase) : new Dictionary<string, TypeFieldInfo>();
 
             AnalyzeType(
                 typeof(T), 
@@ -410,6 +411,7 @@ namespace LINQtoCSV
 
             int currentNameIndex = 0;
             for (int i = 0; i < row.Count; i++) {
+
                 if (!m_NameToInfo.ContainsKey(row[i].Value)) {
                     //If we have to ignore this column
                     if (m_fileDescription.IgnoreUnknownColumns) {
