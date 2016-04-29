@@ -110,7 +110,7 @@ class Product
         Create a <code>CsvFileDescription</code> object, and initialize it with details about the file that you're going to read. It will look like this:
 <pre lang="cs">CsvFileDescription inputFileDescription = new CsvFileDescription
 {
-    SeparatorChar = ',', 
+    SeparatorChar = ',',
     FirstLineHasColumnNames = true
 };</pre>
 
@@ -147,7 +147,7 @@ foreach (Product item in products) { .... }</pre>
 
 <pre lang="cs">CsvFileDescription inputFileDescription = new CsvFileDescription
 {
-    SeparatorChar = ',', 
+    SeparatorChar = ',',
     FirstLineHasColumnNames = true
 };
 CsvContext cc = new CsvContext();
@@ -268,7 +268,7 @@ var productsNetherlands =
 // Write contents of productsNetherlands to file
 cc.Write(
     productsNetherlands,
-    &quot;products-Netherlands.csv&quot;, 
+    &quot;products-Netherlands.csv&quot;,
     outputFileDescription);</pre>
 
 <p>Here, a LINQ query selects all products for &quot;Netherlands&quot; from the variable <code>products</code>, and returns an <code>IEnumerable</code> holding objects of some anonymous type that has the fields <code>Name</code>, <code>LaunchDate</code>, <code>Price</code>, and <code>Description</code>. The <code>Write</code> method then writes those objects to the file <em>products-Netherlands.csv</em>.</p>
@@ -452,6 +452,8 @@ internal class MyDataRow : List&lt;DataRowItem&gt;, IDataRow
     <li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
 
     <li><a href="#IgnoreUnknownColumns"><code>IgnoreUnknownColumns</code></a> </li>
+
+    <li><a href="#IgnoreCaseOnColumnNames"><code>IgnoreCaseOnColumnNames</code></a> </li>
 </ul>
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
@@ -879,7 +881,7 @@ cc.Write(data, &quot;file.csv&quot;, fd);</pre>
 <br>
 Suppose you have the following class:
 <pre lang="cs">
-class Person 
+class Person
 {
     [CsvColumn(Name = "Name")]
     public string Name { get ; set; }
@@ -898,6 +900,80 @@ class Person
     then the columns &quot;Id&quot; and &quot;City&quot; will be ignored without an exception.
 </p>
 
+<h3><a id="IgnoreCaseOnColumnNames"></a>IgnoreCaseOnColumnNames</h3>
+
+<table cellpadding="3">
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
+
+            <td><code lang="cs">bool</code></td>
+        </tr>
+
+        <tr>
+            <td><strong>Default:</strong></td>
+
+            <td>false</td>
+        </tr>
+
+        <tr>
+            <td><strong>Applies to:</strong></td>
+
+            <td>Reading only</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Example:</h4>
+<p>
+    If you dont want your class property name cases to match with the column names in the csv and do not want to use the additional name attribute just to match column names, you can set this attribute to true which will ignore casing in column name:
+</p>
+<table cellspacing="5" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>last Name</th>
+            <th>age</th>
+            <th>CITY</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>John</td>
+            <td>Doe</td>
+            <td>15</td>
+            <td>Washington</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Jane</td>
+            <td>Doe</td>
+            <td>20</td>
+            <td>New York</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+Suppose you have the following class:
+<pre lang="cs">
+class Person
+{
+    [CsvColumn]
+    public string Name { get ; set; }
+    [CsvColumn]
+    public string LastName { get; set; }
+    [CsvColumn]
+    public int Age { get; set; }
+}
+</pre>
+<p>
+    Note that the input file has different case for column names than the class members. This discrepancy would normally cause an exception.
+</p>
+<p>
+    However, if you set <pre lang="cs">fd.IgnoreCaseOnColumnNames = true;</pre>
+
+    then the columns will match without an exception.
+</p>
 
 
 <h2>CsvColumn Attribute<a id="CsvColumn_Attribute"></a></h2>
@@ -1820,6 +1896,15 @@ abc,   ,def</pre>
                 Courtesy of <a href="https://github.com/omederos" target="_blank">Oscar Mederos</a>.
             </td>
         </tr>
+        <tr>
+            <td valign="top">1.6</td>
+            <td valign="top">29 April 2016</td>
+            <td valign="top">
+                Introduced option to ignore case on column names in the input file.
+                Courtesy of <a href="https://github.com/woodenarmadillo" target="_blank">Shahzad Ahmad</a>.
+            </td>
+        </tr>
+
     </tbody>
 </table>
 
@@ -1829,9 +1914,3 @@ abc,   ,def</pre>
     Details:
     <a href="github.com/mperdeck/LINQtoCSV">https://github.com/mperdeck/LINQtoCSV</a>
 </p>
-
-
-
-
-
-
