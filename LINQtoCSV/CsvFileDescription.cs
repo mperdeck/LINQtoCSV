@@ -95,6 +95,8 @@ namespace LINQtoCSV
         /// If set to true, wil read only the fields specified as attributes, and will discard other fields in the CSV file
         /// </summary>
         public bool IgnoreUnknownColumns { get; set; }
+        
+        public int LinesToSkip { get; set; }
 
         // ---------------
 
@@ -112,6 +114,7 @@ namespace LINQtoCSV
             UseFieldIndexForReadingData = false;
             UseOutputFormatForParsingCsvValue = false;
             IgnoreUnknownColumns = false;
+            LinesToSkip = 0;
         }
     }
 }
