@@ -34,6 +34,26 @@ namespace TestConsoleApplication
 
             try
             {
+                var productFieldOverrides = new Dictionary<string, string>()
+                {
+                    { "name", "Name" },
+                    { "shopsAvailable", "ShopsAvailable" },
+                    { "code", "HexProductCode" },
+                    { "description", "Description" },
+                };
+
+                fileDescription_namesUs.IgnoreUnknownColumns = true;
+
+                var productDtos = cc.Read<ProductDataDto>("../../TestFiles/goodfile_us.csv", fileDescription_namesUs,
+                    productFieldOverrides);
+
+                foreach (var productDataDto in productDtos)
+                {
+                    Console.WriteLine($"{productDataDto.Name}, {productDataDto.Description}, {productDataDto.HexProductCode}, {productDataDto.ShopsAvailable}");
+                }
+
+                fileDescription_namesUs.IgnoreUnknownColumns = false;
+
                 dataRows_namesUs =
                     cc.Read<ProductData>("../../TestFiles/goodfile_us.csv", fileDescription_namesUs);
 
