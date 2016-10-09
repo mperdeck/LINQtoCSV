@@ -367,5 +367,55 @@ and a quoted ""string"""
             AssertRead(input, description, expected);
 
         }
+
+
+        [TestMethod()]
+        public void GoodFileShouldReadRawData()
+        {
+            var description = new CsvFileDescription
+            {
+                SeparatorChar = ',',
+                FirstLineHasColumnNames = false
+            };
+
+            string input =
+@"1,John,Doe,15,Washington
+2,Jane,Doe,20,New York
+";
+            var expected = new[]
+                               {
+                                   new TestDataRow
+                                       {
+                                           new DataRowItem("1", 1),
+                                           new DataRowItem("John", 1),
+                                           new DataRowItem("Doe", 1),
+                                           new DataRowItem("15", 1),
+                                           new DataRowItem("Washington", 1)
+                                       },
+                                   new TestDataRow
+                                       {
+                                           new DataRowItem("2", 2),
+                                           new DataRowItem("Jane", 2),
+                                           new DataRowItem("Doe", 2),
+                                           new DataRowItem("20", 2),
+                                           new DataRowItem("New York", 2)
+                                       }
+                               };
+
+            AssertRead(input, description, expected);
+
+        }
+
+        public class TestDataRow : List<DataRowItem>, IDataRow, IAssertable<TestDataRow>
+        {
+            public void AssertEqual(TestDataRow other)
+            {
+                for (var i = 0; i < this.Count; i++)
+                {
+                    Assert.AreEqual(other[i].Value, this[i].Value);
+                    Assert.AreEqual(other[i].LineNbr, this[i].LineNbr);
+                }
+            }
+        }
     }
 }
