@@ -50,7 +50,7 @@ namespace LINQtoCSV
 
         // IndexToInfo is used to quickly translate the index of a field
         // to its TypeFieldInfo.
-        protected TypeFieldInfo[] m_IndexToInfo = null;
+        protected List<TypeFieldInfo> m_IndexToInfo = null;
 
         /// <summary>
         /// Contains a mapping between the CSV column indexes that will read and the property indexes in the business object.
@@ -200,14 +200,14 @@ namespace LINQtoCSV
             // Initialize IndexToInfo
 
             int nbrTypeFields = m_NameToInfo.Keys.Count;
-            m_IndexToInfo = new TypeFieldInfo[nbrTypeFields];
+            m_IndexToInfo = new List<TypeFieldInfo>(nbrTypeFields);
 
             _mappingIndexes = new Dictionary<int, int>();
             
             int i=0;
             foreach (KeyValuePair<string, TypeFieldInfo> kvp in m_NameToInfo)
             {
-                m_IndexToInfo[i++] = kvp.Value;
+                m_IndexToInfo.Insert(i++,kvp.Value);
             }
 
             // Sort by FieldIndex. Fields without FieldIndex will 
@@ -221,7 +221,7 @@ namespace LINQtoCSV
             // Note that for reading from a file with field names in the 
             // first line, method ReadNames reworks IndexToInfo.
 
-            Array.Sort(m_IndexToInfo);
+            m_IndexToInfo.Sort();
 
             // ----------
             // Make sure there are no duplicate FieldIndices.
@@ -286,7 +286,7 @@ namespace LINQtoCSV
         {
             row.Clear();
 
-            for (int i = 0; i < m_IndexToInfo.Length; i++)
+            for (int i = 0; i < m_IndexToInfo.Count; i++)
             {
                 TypeFieldInfo tfi = m_IndexToInfo[i];
 
@@ -310,7 +310,7 @@ namespace LINQtoCSV
         {
             row.Clear();
 
-            for (int i = 0; i < m_IndexToInfo.Length; i++)
+            for (int i = 0; i < m_IndexToInfo.Count; i++)
             {
                 TypeFieldInfo tfi = m_IndexToInfo[i];
 
@@ -433,9 +433,12 @@ namespace LINQtoCSV
                     continue;
                 }
 
-                m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[row[i].Value];
+		TypeFieldInfo tfi = m_NameToInfo[row[i].Value];
+		m_IndexToInfo.Remove(tfi);
+		m_IndexToInfo.Insert(_mappingIndexes[i], tfi);
 
-                if (m_fileDescription.EnforceCsvColumnAttribute && (!m_IndexToInfo[i].hasColumnAttribute)) {
+		if (m_fileDescription.EnforceCsvColumnAttribute && !tfi.hasColumnAttribute)
+		{
                     // enforcing column attr, but this field/prop has no column attr.
                     throw new MissingCsvColumnAttributeException(typeof (T).ToString(), row[i].Value, m_fileName);
                 }
@@ -462,7 +465,7 @@ namespace LINQtoCSV
         /// <returns></returns>
         public T ReadObject(IDataRow row, AggregatedException ae) {
             //If there are more columns than the required
-            if (row.Count > m_IndexToInfo.Length)
+            if (row.Count > m_IndexToInfo.Count)
             {
                 //Are we ignoring unknown columns?
                 if (!m_fileDescription.IgnoreUnknownColumns) {
@@ -476,7 +479,7 @@ namespace LINQtoCSV
             T obj = new T();
 
             //If we will be using the mappings, we just iterate through all the cells in this row
-            int maxRowCount = _mappingIndexes.Count > 0 ? row.Count : Math.Min(row.Count, m_IndexToInfo.Length);
+            int maxRowCount = _mappingIndexes.Count > 0 ? row.Count : Math.Min(row.Count, m_IndexToInfo.Count);
 
             for (int i = 0; i < maxRowCount; i++) {
                 TypeFieldInfo tfi;
@@ -621,7 +624,7 @@ namespace LINQtoCSV
             // If only looking at fields with CsvColumn attribute, do ignore
             // fields that don't have that attribute.
 
-            for (int i = row.Count; i < m_IndexToInfo.Length; i++)
+            for (int i = row.Count; i < m_IndexToInfo.Count; i++)
             {
                 TypeFieldInfo tfi = m_IndexToInfo[i];
 
