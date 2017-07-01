@@ -125,6 +125,11 @@ namespace LINQtoCSV
 
                 stream.BaseStream.Seek(0, SeekOrigin.Begin);
             }
+            
+            for (int i = 0; i < fileDescription.LinesToSkip; i++)
+            {
+                stream.ReadLine();
+            }
 
             // ----------
 
