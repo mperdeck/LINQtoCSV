@@ -15,6 +15,10 @@ This library makes it easy to use CSV files with LINQ queries. Its features incl
 Full documentation is at
 http://www.codeproject.com/Articles/25133/LINQ-to-CSV-library
 
+# License
+
+[Apache License, Version 2.0](https://opensource.org/licenses/apache2.0.php)
+
 # Contributors welcome
 
 All contributions are welcome, whether those are new features or bug fixes.
