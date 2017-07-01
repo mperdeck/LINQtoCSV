@@ -96,6 +96,11 @@ namespace LINQtoCSV
         /// </summary>
         public bool IgnoreUnknownColumns { get; set; }
 
+        /// <summary>
+        /// If set to true, will read the column names while ignoring the case
+        /// </summary>
+        public bool IgnoreCaseOnColumnNames { get; set; }
+
         // ---------------
 
         public CsvFileDescription()
@@ -112,6 +117,7 @@ namespace LINQtoCSV
             UseFieldIndexForReadingData = false;
             UseOutputFormatForParsingCsvValue = false;
             IgnoreUnknownColumns = false;
+            IgnoreCaseOnColumnNames = false;
         }
     }
 }
