@@ -452,6 +452,8 @@ internal class MyDataRow : List&lt;DataRowItem&gt;, IDataRow
     <li><a href="#IgnoreTrailingSeparatorChar"><code>IgnoreTrailingSeparatorChar</code></a> </li>
 
     <li><a href="#IgnoreUnknownColumns"><code>IgnoreUnknownColumns</code></a> </li>
+
+    <li><a href="#IgnoreTrailingEmptyColumns"><code>IgnoreTrailingEmptyColumns</code></a> </li>
 </ul>
 
 <h3><a id="SeparatorChar">SeparatorChar</a></h3>
@@ -898,7 +900,45 @@ class Person
     then the columns &quot;Id&quot; and &quot;City&quot; will be ignored without an exception.
 </p>
 
+<h3><a id="IgnoreTrailingEmptyColumns"></a>IgnoreTrailingEmptyColumns</h3>
 
+<table cellpadding="3">
+    <tbody>
+        <tr>
+            <td><strong>Type:</strong></td>
+
+            <td><code lang="cs">bool</code></td>
+        </tr>
+
+        <tr>
+            <td><strong>Default:</strong></td>
+
+            <td>false</td>
+        </tr>
+
+        <tr>
+            <td><strong>Applies to:</strong></td>
+
+            <td>Reading only</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Example:</h4>
+<p>
+    When FirstLineHasColumnNames is enabled it's not allowed to have empty column names. This flag gives you the option to stop checking for more columns at the first occurence of an empty string or whitespace-only column name to prevent an EmptyNameException. Consider the following raw CSV file:
+</p>
+<pre>
+Id,Name,Last Name,Age,City, , , ,,,,
+1,John,Doe,15,Washington, , , , , 
+2,Jane,Doe,20,New York,, , ,
+</pre>
+<p>
+    Note that the input file has quite a few empty column names, this would normally cause an exception.
+</p>
+<p>
+    However, if you set <pre lang="cs">fd.IgnoreTrailingEmptyColumns = true;</pre> then the first five columns will be read without an exception.
+</p>
 
 <h2>CsvColumn Attribute<a id="CsvColumn_Attribute"></a></h2>
 
@@ -1829,9 +1869,3 @@ abc,   ,def</pre>
     Details:
     <a href="github.com/mperdeck/LINQtoCSV">https://github.com/mperdeck/LINQtoCSV</a>
 </p>
-
-
-
-
-
-

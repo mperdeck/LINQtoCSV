@@ -98,6 +98,8 @@ namespace LINQtoCSV
 
         // ---------------
 
+        public bool IgnoreTrailingEmptyColumns { get; set; }
+
         public CsvFileDescription()
         {
             m_cultureInfo = CultureInfo.CurrentCulture;
@@ -112,6 +114,7 @@ namespace LINQtoCSV
             UseFieldIndexForReadingData = false;
             UseOutputFormatForParsingCsvValue = false;
             IgnoreUnknownColumns = false;
+            IgnoreTrailingEmptyColumns = false;
         }
     }
 }
