@@ -10,6 +10,20 @@ namespace LINQtoCSV
     /// </summary>
     public class CsvContext
     {
+        private class DefaultEntityFactory : IEntityFactory
+        {
+            public T AllocateObject<T>() where T : class, new()
+            {
+                return default(T);
+            }
+
+            public void ReleaseObject<T>(T entity) where T : class, new()
+            {
+            }
+        }
+
+        private readonly IEntityFactory _entityFactory;
+
         /// ///////////////////////////////////////////////////////////////////////
         /// Read
         /// 
@@ -173,7 +187,7 @@ namespace LINQtoCSV
                     }
                     else
                     {
-                        T obj = default(T);
+                        T obj = _entityFactory.AllocateObject<T>();
                         try
                         {
                             if (readingRawDataRows)
@@ -294,6 +308,12 @@ namespace LINQtoCSV
         /// </summary>
         public CsvContext()
         {
+            _entityFactory = new DefaultEntityFactory();
+        }
+
+        public CsvContext(IEntityFactory entityFactory)
+        {
+            _entityFactory = entityFactory;
         }
     }
 }
