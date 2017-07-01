@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProductDataDto.cs" />
     <Compile Include="ProductData_MissingFieldIndex.cs" />
     <Compile Include="ProductData_DuplicateIndices.cs" />
     <Compile Include="ProductData.cs" />

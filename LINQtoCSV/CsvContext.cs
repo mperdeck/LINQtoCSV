@@ -30,9 +30,18 @@ namespace LINQtoCSV
         /// <param name="fileDescription">
         /// Additional information how the input file is to be interpreted, such as the culture of the input dates.
         /// </param>
+        /// <param name="fieldNameOverrides">Runtime overrides for field names in the CSV file</param>
         /// <returns>
         /// Values read from the stream or file.
         /// </returns>
+        public IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription, Dictionary<string, string> fieldNameOverrides) where T : class, new()
+        {
+            // Note that ReadData will not be called right away, but when the returned 
+            // IEnumerable<T> actually gets accessed.
+
+            IEnumerable<T> ie = ReadData<T>(fileName, null, fileDescription, fieldNameOverrides);
+            return ie;
+        }
         public IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
         {
             // Note that ReadData will not be called right away, but when the returned 
@@ -81,7 +90,8 @@ namespace LINQtoCSV
         private IEnumerable<T> ReadData<T>(
                     string fileName, 
                     StreamReader stream, 
-                    CsvFileDescription fileDescription) where T : class, new()
+                    CsvFileDescription fileDescription,
+                    Dictionary<string, string> fieldNameOverrides = null) where T : class, new()
         {
             // If T implements IDataRow, then we're reading raw data rows 
             bool readingRawDataRows = typeof(IDataRow).IsAssignableFrom(typeof(T));
@@ -169,7 +179,7 @@ namespace LINQtoCSV
 
                     if (firstRow && fileDescription.FirstLineHasColumnNames)
                     {
-                        if (!readingRawDataRows) { fm.ReadNames(row); }
+                        if (!readingRawDataRows) { fm.ReadNames(row, fieldNameOverrides); }
                     }
                     else
                     {

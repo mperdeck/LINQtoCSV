@@ -398,7 +398,7 @@ namespace LINQtoCSV
         /// <param name="firstRow"></param>
         /// <returns></returns>
         ///
-        public void ReadNames(IDataRow row)
+        public void ReadNames(IDataRow row, Dictionary<string, string> fieldNameOverrides = null)
         {
             // It is now the order of the field names that determines
             // the order of the elements in m_IndexToInfo, instead of
@@ -410,7 +410,7 @@ namespace LINQtoCSV
 
             int currentNameIndex = 0;
             for (int i = 0; i < row.Count; i++) {
-                if (!m_NameToInfo.ContainsKey(row[i].Value)) {
+                if (string.IsNullOrEmpty(row[i].Value) || !(m_NameToInfo.ContainsKey(row[i].Value) || (fieldNameOverrides != null && fieldNameOverrides.ContainsKey(row[i].Value) && m_NameToInfo.ContainsKey(fieldNameOverrides[row[i].Value]))))  {
                     //If we have to ignore this column
                     if (m_fileDescription.IgnoreUnknownColumns) {
                         continue;
@@ -433,7 +433,13 @@ namespace LINQtoCSV
                     continue;
                 }
 
-                m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[row[i].Value];
+                if (fieldNameOverrides == null || !fieldNameOverrides.ContainsKey(row[i].Value))
+                    m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[row[i].Value];
+                else
+                {
+                    m_IndexToInfo[_mappingIndexes[i]] = m_NameToInfo[fieldNameOverrides[row[i].Value]];
+                }
+
 
                 if (m_fileDescription.EnforceCsvColumnAttribute && (!m_IndexToInfo[i].hasColumnAttribute)) {
                     // enforcing column attr, but this field/prop has no column attr.
