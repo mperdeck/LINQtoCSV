@@ -178,7 +178,13 @@ namespace LINQtoCSV
                         {
                             if (readingRawDataRows)
                             {
-                                obj = row as T;
+                                var newRow = new T() as IDataRow;
+                                for (var i = 0; i < row.Count; i++)
+                                {
+                                    newRow.Add(row[i]);
+                                }
+
+                                obj = newRow as T;
                             }
                             else
                             {
