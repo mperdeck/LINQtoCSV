@@ -4,6 +4,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace LINQtoCSV
 {
@@ -32,6 +33,7 @@ namespace LINQtoCSV
             public MethodInfo parseNumberMethod = null;
             public MethodInfo parseExactMethod;
             public int charLength = 0;
+            public string RegexPattern { get; set; }
 
             // ----
 
@@ -131,7 +133,7 @@ namespace LINQtoCSV
                 {
                     tfi.name = cca.Name;
                 }
-
+                tfi.RegexPattern = cca.RegexPattern;
                 tfi.index = cca.FieldIndex;
                 tfi.hasColumnAttribute = true;
                 tfi.canBeNull = cca.CanBeNull;
@@ -545,6 +547,12 @@ namespace LINQtoCSV
                 {
                     try
                     {
+                        if (tfi.RegexPattern != null && !Regex.IsMatch(value, tfi.RegexPattern))
+                        {
+                            throw new WrongDataFormatException(typeof(T).ToString(), tfi.name, value, row[i].LineNbr, m_fileName, null);
+                        }
+
+
                         Object objValue = null;
 
                         // Normally, either tfi.typeConverter is not null,
