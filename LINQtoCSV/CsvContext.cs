@@ -37,33 +37,7 @@ namespace LINQtoCSV
         /// <returns>
         /// Values read from the stream or file.
         /// </returns>
-#if NETSTANDARD
-        public    IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
-
-        {
-            // Note that ReadData will not be called right away, but when the returned 
-            // IEnumerable<T> actually gets accessed.
-
-            IEnumerable<T> ie =  ReadData <T>(fileName, null, fileDescription);
-
-            return ie;
-        }
-
-        public IEnumerable<T> ReadData <T>(StreamReader stream) where T : class, new()
-        {
-            return   Read <T>(stream, new CsvFileDescription());
-        }
-
-        public IEnumerable<T> Read <T>(string fileName) where T : class, new()
-        {
-            return   Read<T>(fileName, new CsvFileDescription());
-        }
-
-        public   IEnumerable<T>  Read <T>(StreamReader stream, CsvFileDescription fileDescription) where T : class, new()
-        {
-            return   ReadData <T>(null, stream, fileDescription);
-        }
-#else
+ 
 
         public IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
  
@@ -90,7 +64,7 @@ namespace LINQtoCSV
         {
             return ReadData<T>(null, stream, fileDescription);
         }
-#endif
+ 
         /// ///////////////////////////////////////////////////////////////////////
         /// ReadData
         /// <summary>
