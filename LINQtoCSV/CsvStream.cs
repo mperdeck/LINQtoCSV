@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if NETSTANDARD
+using System.Threading.Tasks;
+#endif
 
 namespace LINQtoCSV
 {
@@ -39,12 +42,23 @@ namespace LINQtoCSV
         /// ///////////////////////////////////////////////////////////////////////
         /// WriteRow
         /// 
+#if NETSTANDARD
+        public async Task WriteRowAsync(List<string> row, bool quoteAllFields)
+#else
         public void WriteRow(List<string> row, bool quoteAllFields)
+#endif
         {
             bool firstItem = true;
             foreach (string item in row)
             {
-                if (!firstItem) { m_outStream.Write(m_SeparatorChar); }
+                if (!firstItem)
+                {
+#if NETSTANDARD
+                    await m_outStream.WriteAsync(m_SeparatorChar);
+#else
+                    m_outStream.Write(m_SeparatorChar);
+#endif
+                }
 
                 // If the item is null, don't write anything.
                 if (item != null)
@@ -57,11 +71,19 @@ namespace LINQtoCSV
                         (item.IndexOfAny(m_SpecialChars) > -1) ||
                         (item.Trim() == "")))
                     {
+#if NETSTANDARD
+                        await m_outStream.WriteAsync("\"" + item.Replace("\"", "\"\"") + "\"");
+#else
                         m_outStream.Write("\"" + item.Replace("\"", "\"\"") + "\"");
+#endif
                     }
                     else
                     {
+#if NETSTANDARD
+                        await m_outStream.WriteAsync(item);
+#else
                         m_outStream.Write(item);
+#endif
                     }
                 }
 
@@ -86,7 +108,11 @@ namespace LINQtoCSV
         /// True if a row was returned in parameter "row".
         /// False if no row returned. In that case, you're at the end of the file.
         /// </returns>
+#if NETSTANDARD
+        public async Task<bool> ReadRowAsync(IDataRow row, List<int> charactersLength = null)
+#else
         public bool ReadRow(IDataRow row, List<int> charactersLength = null)
+#endif
         {
             row.Clear();
 
@@ -114,7 +140,11 @@ namespace LINQtoCSV
 
                         if (!EOL)
                         {
+#if NETSTANDARD
+                            await AdvanceToEndOfLineAsync();
+#else
                             AdvanceToEndOfLine();
+#endif
                             moreAvailable = false;
                         }
                     }
@@ -135,12 +165,19 @@ namespace LINQtoCSV
         private bool EOL = false;
         private bool previousWasCr = false;
 
+#if NETSTANDARD
+        private async Task AdvanceToEndOfLineAsync()
+#else
         private void AdvanceToEndOfLine()
+#endif
         {
             while (true)
             {
+#if NETSTANDARD
+                char c = await GetNextCharAsync(true);
+#else
                 char c = GetNextChar(true);
-
+#endif
                 if (EOS)
                     break;
 
@@ -151,11 +188,20 @@ namespace LINQtoCSV
 
                     // we are at the end of the line, eat newline characters and exit
                     EOL = true;
+#if NETSTANDARD
+                    if (c == '\x0D' && (await GetNextCharAsync(false)) == '\x0A')
+                    {
+                        // new line sequence is 0D0A
+                        await GetNextCharAsync(true);
+                    }
+#else
                     if (c == '\x0D' && GetNextChar(false) == '\x0A')
                     {
                         // new line sequence is 0D0A
                         GetNextChar(true);
                     }
+
+#endif
                     EOL = false;
 
                     break;
@@ -164,6 +210,7 @@ namespace LINQtoCSV
         }
 
         private bool GetNextItem(ref string itemString, int? itemLength = null)
+
         {
             itemString = null;
             if (EOL)
@@ -188,8 +235,11 @@ namespace LINQtoCSV
                     return true;
                 }
 
-
+#if NETSTANDARD
+                char c = GetNextCharAsync(true).Result;
+#else
                 char c = GetNextChar(true);
+#endif
                 cnt++;
 
                 if (EOS)
@@ -225,7 +275,11 @@ namespace LINQtoCSV
                 {
                     if (m_IgnoreTrailingSeparatorChar)
                     {
+#if NETSTANDARD
+                        char nC = GetNextCharAsync(false).Result;
+#else
                         char nC = GetNextChar(false);
+#endif
                         if ((nC == '\x0A' || nC == '\x0D'))
                             continue;
                     }
@@ -238,12 +292,19 @@ namespace LINQtoCSV
                 {
                     // we are at the end of the line, eat newline characters and exit
                     EOL = true;
+#if NETSTANDARD
+                    if (c == '\x0D' && (  GetNextCharAsync(false).Result) == '\x0A')
+                    {
+                        // new line sequence is 0D0A
+                          GetNextCharAsync(true).Wait();
+                    }
+#else
                     if (c == '\x0D' && GetNextChar(false) == '\x0A')
                     {
                         // new line sequence is 0D0A
                         GetNextChar(true);
                     }
-
+#endif
                     if (itemFound) { itemString = item.ToString(); }
                     return true;
                 }
@@ -272,11 +333,19 @@ namespace LINQtoCSV
 
                 if (c == '"' && quoted)
                 {
+#if NETSTANDARD
+                    if (  GetNextCharAsync(false).Result == '"')
+                    {
+                        // double quotes within quoted string means add a quote       
+                        item.Append(GetNextCharAsync(true).Result);
+                    }
+#else
                     if (GetNextChar(false) == '"')
                     {
                         // double quotes within quoted string means add a quote       
                         item.Append(GetNextChar(true));
                     }
+#endif
                     else
                     {
                         // end-quote reached
@@ -295,11 +364,20 @@ namespace LINQtoCSV
         private int pos = 0;
         private int length = 0;
 
+#if NETSTANDARD
+        private async Task<char> GetNextCharAsync(bool eat)
+#else
         private char GetNextChar(bool eat)
+#endif
+
         {
             if (pos >= length)
             {
+#if NETSTANDARD
+                length = await m_instream.ReadBlockAsync(buffer, 0, buffer.Length);
+#else
                 length = m_instream.ReadBlock(buffer, 0, buffer.Length);
+#endif
                 if (length == 0)
                 {
                     EOS = true;

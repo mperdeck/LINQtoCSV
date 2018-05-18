@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 
+#if NETSTANDARD
+using System.Threading.Tasks;
+#endif
+
 namespace LINQtoCSV
 {
 
@@ -33,12 +37,42 @@ namespace LINQtoCSV
         /// <returns>
         /// Values read from the stream or file.
         /// </returns>
-        public IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
+#if NETSTANDARD
+        public    IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
+
         {
             // Note that ReadData will not be called right away, but when the returned 
             // IEnumerable<T> actually gets accessed.
 
+            IEnumerable<T> ie =  ReadData <T>(fileName, null, fileDescription);
+
+            return ie;
+        }
+
+        public IEnumerable<T> ReadData <T>(StreamReader stream) where T : class, new()
+        {
+            return   Read <T>(stream, new CsvFileDescription());
+        }
+
+        public IEnumerable<T> Read <T>(string fileName) where T : class, new()
+        {
+            return   Read<T>(fileName, new CsvFileDescription());
+        }
+
+        public   IEnumerable<T>  Read <T>(StreamReader stream, CsvFileDescription fileDescription) where T : class, new()
+        {
+            return   ReadData <T>(null, stream, fileDescription);
+        }
+#else
+
+        public IEnumerable<T> Read<T>(string fileName, CsvFileDescription fileDescription) where T : class, new()
+ 
+        {
+            // Note that ReadData will not be called right away, but when the returned 
+            // IEnumerable<T> actually gets accessed.
+ 
             IEnumerable<T> ie = ReadData<T>(fileName, null, fileDescription);
+ 
             return ie;
         }
 
@@ -56,7 +90,7 @@ namespace LINQtoCSV
         {
             return ReadData<T>(null, stream, fileDescription);
         }
-
+#endif
         /// ///////////////////////////////////////////////////////////////////////
         /// ReadData
         /// <summary>
@@ -78,9 +112,11 @@ namespace LINQtoCSV
         /// </param>
         /// <param name="fileDescription"></param>
         /// <returns></returns>
+ 
         private IEnumerable<T> ReadData<T>(
-                    string fileName, 
-                    StreamReader stream, 
+ 
+                    string fileName,
+                    StreamReader stream,
                     CsvFileDescription fileDescription) where T : class, new()
         {
             // If T implements IDataRow, then we're reading raw data rows 
@@ -110,7 +146,7 @@ namespace LINQtoCSV
             if (readingFile)
             {
                 stream = new StreamReader(
-                                    fileName, 
+                                    fileName,
                                     fileDescription.TextEncoding,
                                     fileDescription.DetectEncodingFromByteOrderMarks);
             }
@@ -129,7 +165,7 @@ namespace LINQtoCSV
             // ----------
 
             CsvStream cs = new CsvStream(stream, null, fileDescription.SeparatorChar, fileDescription.IgnoreTrailingSeparatorChar);
-            
+
             // If we're reading raw data rows, instantiate a T so we return objects
             // of the type specified by the caller.
             // Otherwise, instantiate a DataRow, which also implements IDataRow.
@@ -155,14 +191,18 @@ namespace LINQtoCSV
                 }
 
                 bool firstRow = true;
+#if NETSTANDARD
+                while (  cs.ReadRowAsync(row, charLengths).Result)
+#else
                 while (cs.ReadRow(row, charLengths))
+#endif
                 {
                     // Skip empty lines.
                     // Important. If there is a newline at the end of the last data line, the code
                     // thinks there is an empty line after that last data line.
-                    if ((row.Count == 1) && 
+                    if ((row.Count == 1) &&
                         ((row[0].Value == null) ||
-                         (string.IsNullOrEmpty(row[0].Value.Trim())) ))
+                         (string.IsNullOrEmpty(row[0].Value.Trim()))))
                     {
                         continue;
                     }
@@ -222,47 +262,85 @@ namespace LINQtoCSV
         /// ///////////////////////////////////////////////////////////////////////
         /// Write
         /// 
+#if NETSTANDARD
+        public async Task WriteAsync<T>(
+#else
         public void Write<T>(
-            IEnumerable<T> values, 
-            string fileName, 
-            CsvFileDescription fileDescription) 
+#endif
+            IEnumerable<T> values,
+            string fileName,
+            CsvFileDescription fileDescription)
         {
             using (StreamWriter sw = new StreamWriter(
                                                 fileName,
                                                 false,
                                                 fileDescription.TextEncoding))
             {
+#if NETSTANDARD
+                await WriteDataAsync<T>(values, fileName, sw, fileDescription);
+#else
                 WriteData<T>(values, fileName, sw, fileDescription);
+#endif
             }
         }
-
+#if NETSTANDARD
+        public async Task WriteAsync<T>(
+#else
         public void Write<T>(
+#endif
             IEnumerable<T> values,
-            TextWriter stream) 
+            TextWriter stream)
         {
+#if NETSTANDARD
+            await WriteAsync<T>(values, stream, new CsvFileDescription());
+#else
             Write<T>(values, stream, new CsvFileDescription());
+#endif
         }
 
+
+#if NETSTANDARD
+        public async Task WriteAsync<T>(
+#else
         public void Write<T>(
-            IEnumerable<T> values, 
-            string fileName) 
+#endif
+            IEnumerable<T> values,
+            string fileName)
         {
+#if NETSTANDARD
+            await WriteAsync<T>(values, fileName, new CsvFileDescription());
+#else
             Write<T>(values, fileName, new CsvFileDescription());
+#endif
         }
 
-        public void Write<T>(
+
+#if NETSTANDARD
+       public async Task WriteAsync<T>(
+#else
+       public void Write<T>(
+#endif
             IEnumerable<T> values,
             TextWriter stream,
-            CsvFileDescription fileDescription) 
+            CsvFileDescription fileDescription)
         {
+#if NETSTANDARD
+            await WriteDataAsync<T>(values, null, stream, fileDescription);
+#else
             WriteData<T>(values, null, stream, fileDescription);
+#endif
         }
 
+
+#if NETSTANDARD
+        private async Task WriteDataAsync<T>(
+#else
         private void WriteData<T>(
+#endif
             IEnumerable<T> values,
             string fileName,
-            TextWriter stream, 
-            CsvFileDescription fileDescription) 
+            TextWriter stream,
+            CsvFileDescription fileDescription)
         {
             FieldMapper<T> fm = new FieldMapper<T>(fileDescription, fileName, true);
             CsvStream cs = new CsvStream(null, stream, fileDescription.SeparatorChar, fileDescription.IgnoreTrailingSeparatorChar);
@@ -273,7 +351,11 @@ namespace LINQtoCSV
             if (fileDescription.FirstLineHasColumnNames)
             {
                 fm.WriteNames(row);
+#if NETSTANDARD
+                await cs.WriteRowAsync(row, fileDescription.QuoteAllFields);
+#else
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
+#endif
             }
 
             // -----
@@ -282,7 +364,11 @@ namespace LINQtoCSV
             {
                 // Convert obj to row
                 fm.WriteObject(obj, row);
+#if NETSTANDARD
+                await cs.WriteRowAsync(row, fileDescription.QuoteAllFields);
+#else
                 cs.WriteRow(row, fileDescription.QuoteAllFields);
+#endif
             }
         }
 
