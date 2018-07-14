@@ -267,7 +267,9 @@ namespace LINQtoCSV
             m_fileDescription = fileDescription;
             m_fileName = fileName;
 
-            m_NameToInfo = new Dictionary<string, TypeFieldInfo>();
+            m_NameToInfo = fileDescription.ColumnEqualityComparer != null ?
+                new Dictionary<string, TypeFieldInfo>(fileDescription.ColumnEqualityComparer) :
+                new Dictionary<string, TypeFieldInfo>();
 
             AnalyzeType(
                 typeof(T), 
