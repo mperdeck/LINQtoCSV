@@ -25,7 +25,7 @@ namespace TestConsoleApplication
         public DateTime launchTime;
 
         // Can use both fields and properties
-        [CsvColumn(FieldIndex = 4, CanBeNull = false, OutputFormat = "#,000.000")]
+        [CsvColumn(FieldIndex = 4, CanBeNull = false, OutputFormat = "#,000.000", Name = "Weight")]
         public double weight { get; set; }
 
         // Following field has no CsvColumn attribute.
