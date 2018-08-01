@@ -29,7 +29,8 @@ namespace TestConsoleApplication
                 SeparatorChar = ',', // default is ','
                 FirstLineHasColumnNames = true,
                 EnforceCsvColumnAttribute = false, // default is false
-                FileCultureName = "en-US" // default is the current culture
+                FileCultureName = "en-US", // default is the current culture
+                ColumnEqualityComparer = StringComparer.CurrentCultureIgnoreCase
             };
 
             try
