@@ -1,25 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApplication", "TestConsoleApplication\TestConsoleApplication.csproj", "{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApplication", "TestConsoleApplication\TestConsoleApplication.csproj", "{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQtoCSV", "LINQtoCSV\LINQtoCSV.csproj", "{07058BF9-6F86-40FF-AE33-2A4F89B5758A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LINQtoCSV", "LINQtoCSV\LINQtoCSV.csproj", "{07058BF9-6F86-40FF-AE33-2A4F89B5758A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCode", "SampleCode\SampleCode.csproj", "{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCode", "SampleCode\SampleCode.csproj", "{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQtoCSV.Tests", "LINQtoCSV.Tests\LINQtoCSV.Tests.csproj", "{04EE17CD-E7B3-4D58-BF84-E553F5332A14}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23664B5F-ED48-4718-94B7-C1A65CDA45EE}"
-	ProjectSection(SolutionItems) = preProject
-		LINQtoCSV.vsmdi = LINQtoCSV.vsmdi
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LINQtoCSV.Tests", "LINQtoCSV.Tests\LINQtoCSV.Tests.csproj", "{04EE17CD-E7B3-4D58-BF84-E553F5332A14}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = LINQtoCSV.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -44,5 +36,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A03A0CEB-0934-45AA-8B5D-2399B9EED8BC}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LINQtoCSV.vsmdi
 	EndGlobalSection
 EndGlobal

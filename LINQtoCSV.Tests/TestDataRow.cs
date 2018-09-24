@@ -1,8 +1,5 @@
-﻿using System;
+﻿using LINQtoCSV;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using LINQtoCSV;
 
 namespace TestConsoleApplication
 {

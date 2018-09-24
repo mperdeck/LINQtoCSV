@@ -1,16 +1,13 @@
-﻿using LINQtoCSV;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace LINQtoCSV.Tests
 {
-    [TestClass()]
     public class CsvContextWriteTests : Test
     {
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedNamesInFirstLineNLnl()
         {
             // Arrange

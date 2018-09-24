@@ -35,7 +35,7 @@ namespace TestConsoleApplication
             try
             {
                 dataRows_namesUs =
-                    cc.Read<ProductData>("../../TestFiles/goodfile_us.csv", fileDescription_namesUs);
+                    cc.Read<ProductData>("TestFiles/goodfile_us.csv", fileDescription_namesUs);
 
                 Utils.OutputData<ProductData>(dataRows_namesUs, "Good file, English US culture");
 
@@ -56,7 +56,7 @@ namespace TestConsoleApplication
                 // Read raw data rows
 
                 dataRows_namesUsRaw =
-                    cc.Read<TestDataRow>("../../TestFiles/goodfile_us.csv", fileDescription_namesUs);
+                    cc.Read<TestDataRow>("TestFiles/goodfile_us.csv", fileDescription_namesUs);
 
                 Utils.OutputData<TestDataRow>(dataRows_namesUsRaw, "Good file, English US culture, Raw data rows");
             }
@@ -84,7 +84,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData> dataRows_nonamesNl =
-                    cc.Read<ProductData>("../../TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
+                    cc.Read<ProductData>("TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
 
                 Utils.OutputData<ProductData>(dataRows_nonamesNl, "Good file, Dutch culture");
             }
@@ -112,7 +112,7 @@ namespace TestConsoleApplication
             try
             {
                 using (StreamReader sr =
-                    new StreamReader("../../TestFiles/goodfile_nl.csv", Encoding.UTF8))
+                    new StreamReader("TestFiles/goodfile_nl.csv", Encoding.UTF8))
                 {
                     IEnumerable<ProductData> dataRows_nonamesNl =
                         cc.Read<ProductData>(sr, fileDescription_nonamesNl_stream);
@@ -133,7 +133,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData_DuplicateIndices> dataRows2 =
-                    cc.Read<ProductData_DuplicateIndices>("../../TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
+                    cc.Read<ProductData_DuplicateIndices>("TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
 
                 Utils.OutputData<ProductData_DuplicateIndices>(dataRows2, "Good file, Dutch culture");
             }
@@ -147,7 +147,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData_MissingFieldIndex> dataRows2 =
-                    cc.Read<ProductData_MissingFieldIndex>("../../TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
+                    cc.Read<ProductData_MissingFieldIndex>("TestFiles/goodfile_nl.csv", fileDescription_nonamesNl);
 
                 Utils.OutputData<ProductData_MissingFieldIndex>(dataRows2, "Good file, Dutch culture");
             }
@@ -170,7 +170,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData> dataRows_nonamesNl_bad =
-                    cc.Read<ProductData>("../../TestFiles/goodfile_nl.csv", fileDescription_bad);
+                    cc.Read<ProductData>("TestFiles/goodfile_nl.csv", fileDescription_bad);
 
                 Utils.OutputData<ProductData>(dataRows_nonamesNl_bad, "Good file, Dutch culture");
             }
@@ -185,7 +185,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData> dataRows_namesUs_3 =
-                    cc.Read<ProductData>("../../TestFiles/badfile_unknownname.csv", fileDescription_namesUs);
+                    cc.Read<ProductData>("TestFiles/badfile_unknownname.csv", fileDescription_namesUs);
 
                 Utils.OutputData<ProductData>(dataRows_namesUs_3, "Bad file, English US culture, unknown name");
             }
@@ -210,7 +210,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData> dataRows_namesUs_2 =
-                    cc.Read<ProductData>("../../TestFiles/goodfile_us.csv", fileDescription_namesUs_enforceCsvColumn);
+                    cc.Read<ProductData>("TestFiles/goodfile_us.csv", fileDescription_namesUs_enforceCsvColumn);
 
                 Utils.OutputData<ProductData>(dataRows_namesUs_2, "Good file, English US culture");
             }
@@ -236,7 +236,7 @@ namespace TestConsoleApplication
             try
             {
                 IEnumerable<ProductData> dataRows_namesUs_dataerrors =
-                    cc.Read<ProductData>("../../TestFiles/badfile_us_dataerrors.csv", fileDescription_nonamesUs);
+                    cc.Read<ProductData>("TestFiles/badfile_us_dataerrors.csv", fileDescription_nonamesUs);
 
                 Utils.OutputData<ProductData>(
                         dataRows_namesUs_dataerrors,
@@ -273,7 +273,7 @@ namespace TestConsoleApplication
             {
                 cc.Write<ProductData>(
                             dataRows_Test,
-                            "../../TestFiles/output_newdata_names_nl.csv",
+                            "TestFiles/output_newdata_names_nl.csv",
                             fileDescription_namesNl2);
             }
             catch (Exception e)
@@ -297,7 +297,7 @@ namespace TestConsoleApplication
             {
                 cc.Write<ProductData>(
                             dataRows_namesUs, 
-                            "../../TestFiles/output_nonames_us.csv",
+                            "TestFiles/output_nonames_us.csv",
                             fileDescription_nonamesUs_output);
             }
             catch (Exception e)
@@ -322,7 +322,7 @@ namespace TestConsoleApplication
             {
                 cc.Write<ProductData>(
                             dataRows_namesUs, 
-                            "../../TestFiles/output_names_nl.csv",
+                            "TestFiles/output_names_nl.csv",
                             fileDescription_namesNl);
             }
             catch (Exception e)
@@ -357,7 +357,7 @@ namespace TestConsoleApplication
 
                 cc.Write(
                     query,
-                    "../../TestFiles/output_anon.csv",
+                    "TestFiles/output_anon.csv",
                     fileDescription_anon);
             }
             catch (Exception e)
@@ -377,7 +377,7 @@ namespace TestConsoleApplication
             {
                 cc.Write<ProductData>(
                             dataRows_namesUs, 
-                            "../../TestFiles/output_bad.csv",
+                            "TestFiles/output_bad.csv",
                             fileDescription_bad);
             }
             catch (Exception e)
@@ -404,7 +404,7 @@ namespace TestConsoleApplication
 
                 cc.Write<ProductData_MissingFieldIndex>(
                             emptyData,
-                            "../../TestFiles/output_bad.csv",
+                            "TestFiles/output_bad.csv",
                             fileDescription_nonamesNl_2);
             }
             catch (Exception e)
