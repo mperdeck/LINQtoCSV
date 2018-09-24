@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/.vs/LINQtoCSV/v15/Server/sqlite3/storage.ide-wal
+/.vs/LINQtoCSV/v15/Server/sqlite3/storage.ide-shm
+/.vs/LINQtoCSV/v15/Server/sqlite3/storage.ide
+/.vs/LINQtoCSV/v15/Server/sqlite3/db.lock

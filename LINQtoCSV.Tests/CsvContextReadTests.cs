@@ -1,15 +1,11 @@
-﻿using LINQtoCSV;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System;
+using Xunit;
 
 namespace LINQtoCSV.Tests
 {
-    [TestClass()]
     public class CsvContextReadTests : Test
     {
-        [TestMethod()]
+        [Fact]
         public void GoodFileUsingOutputFormatForParsingDatesCharUSEnglish()
         {
             // Arrange
@@ -45,7 +41,7 @@ namespace LINQtoCSV.Tests
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileNoSeparatorCharUseOutputFormatForParsingUSEnglish()
         {
             // Arrange
@@ -81,7 +77,7 @@ CCCCCCCC12.00012/23/08";
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileNoSeparatorCharUSEnglish()
         {
             // Arrange
@@ -117,7 +113,7 @@ CCCCCCCC12.00012/23/08";
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedUseFieldIndexForReadingDataCharUSEnglish()
         {
             // Arrange
@@ -154,7 +150,7 @@ CCCCCCCC12.00012/23/08";
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedUseFieldIndexForReadingDataCharUseOutputFormatForParsingUSEnglish()
         {
             // Arrange
@@ -194,7 +190,7 @@ CCCCCCCC12.00012/23/08";
         }
 
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedNamesInFirstLineUSEnglish()
         {
             // Arrange
@@ -242,7 +238,7 @@ and a quoted ""string"""
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileTabDelimitedNoNamesInFirstLineNLnl()
         {
             // Arrange
@@ -283,7 +279,7 @@ and a quoted ""string"""
             AssertRead(testInput, fileDescription_nonamesNl, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedWithTrailingSeparatorChars()
         {
             // Arrange
@@ -332,7 +328,7 @@ and a quoted ""string"""
             AssertRead(testInput, fileDescription_namesUs, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void FileWithUnknownColumns_ShouldDiscardColumns() {
             var description = new CsvFileDescription
                 {

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
-using LINQtoCSV;
+using Xunit;
 
 namespace LINQtoCSV.Tests
 {
-// Because the fields in this type are used only indirectly, the compiler
-// will warn they are unused or unassigned. Disable those warnings.
+    // Because the fields in this type are used only indirectly, the compiler
+    // will warn they are unused or unassigned. Disable those warnings.
 #pragma warning disable 0169, 0414, 0649
 
     internal class ProductDataSpecificFieldIndex : IAssertable<ProductDataSpecificFieldIndex>
@@ -29,11 +24,11 @@ namespace LINQtoCSV.Tests
 
         public void AssertEqual(ProductDataSpecificFieldIndex other)
         {
-            Assert.AreNotEqual(other, null);
+            Assert.NotNull(other);
 
-            Assert.AreEqual(other.name, name, "name");
-            Assert.AreEqual(other.startDate, startDate, "startDate");
-            Assert.AreEqual(other.weight, weight, "weight");
+            Assert.Equal(other.name, name);
+            Assert.Equal(other.startDate, startDate);
+            Assert.Equal(other.weight, weight);
         }
     }
 
@@ -54,11 +49,11 @@ namespace LINQtoCSV.Tests
 
         public void AssertEqual(ProductDataCharLength other)
         {
-            Assert.AreNotEqual(other, null);
+            Assert.NotNull(other);
 
-            Assert.AreEqual(other.name, name, "name");
-            Assert.AreEqual(other.startDate, startDate, "startDate");
-            Assert.AreEqual(other.weight, weight, "weight");
+            Assert.Equal(other.name, name);
+            Assert.Equal(other.startDate, startDate);
+            Assert.Equal(other.weight, weight);
         }
     }
 
@@ -75,10 +70,10 @@ namespace LINQtoCSV.Tests
 
         public void AssertEqual(ProductDataParsingOutputFormat other)
         {
-            Assert.AreNotEqual(other, null);
+            Assert.NotNull(other);
 
-            Assert.AreEqual(other.name, name, "name");
-            Assert.AreEqual(other.startDate, startDate, "startDate");
+            Assert.Equal(other.name, name);
+            Assert.Equal(other.startDate, startDate);
         }
     }
 }

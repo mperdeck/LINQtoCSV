@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Globalization;
-using LINQtoCSV;
 
 namespace LINQtoCSV.Tests
 {
-// Because the fields in this type are used only indirectly, the compiler
-// will warn they are unused or unassigned. Disable those warnings.
+    // Because the fields in this type are used only indirectly, the compiler
+    // will warn they are unused or unassigned. Disable those warnings.
 #pragma warning disable 0169, 0414, 0649
 
     class ProductData_DuplicateIndices
