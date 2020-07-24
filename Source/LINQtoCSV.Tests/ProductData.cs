@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Globalization;
 using LINQtoCSV;
 
@@ -62,18 +62,18 @@ namespace LINQtoCSV.Tests
 
         public void AssertEqual(ProductData other)
         {
-            Assert.AreNotEqual(other, null);
+            Assert.NotNull(other);
 
-            Assert.AreEqual(other.name, name, "name");
-            Assert.AreEqual(other.startDate, startDate, "startDate");
-            Assert.AreEqual(other.launchTime, launchTime, "launchTime");
-            Assert.AreEqual(other.weight, weight, "weight");
-            Assert.AreEqual(other.nbrAvailable, nbrAvailable, "nbrAvailable");
-            Assert.AreEqual(other.shopsAvailable, shopsAvailable, "shopsAvailable");
-            Assert.AreEqual(other.hexProductCode, hexProductCode, "hexProductCode");
-            Assert.AreEqual(other.onsale, onsale, "onsale");
-            Assert.AreEqual(other.retailPrice, retailPrice, "retailPrice");
-            Assert.AreEqual(Utils.NormalizeString(other.description), Utils.NormalizeString(description), "description");
+            Assert.Equal(other.name, name);
+            Assert.Equal(other.startDate, startDate);
+            Assert.Equal(other.launchTime, launchTime);
+            Assert.Equal(other.weight, weight);
+            Assert.Equal(other.nbrAvailable, nbrAvailable);
+            Assert.Equal(other.shopsAvailable, shopsAvailable);
+            Assert.Equal(other.hexProductCode, hexProductCode);
+            Assert.Equal(other.onsale, onsale);
+            Assert.Equal(other.retailPrice, retailPrice);
+            Assert.Equal(Utils.NormalizeString(other.description), Utils.NormalizeString(description));
         }
     }
 }

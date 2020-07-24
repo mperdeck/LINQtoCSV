@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LINQtoCSV.Tests
 {
@@ -15,9 +15,9 @@ namespace LINQtoCSV.Tests
         public int Age { get; set; }
 
         public void AssertEqual(Person other) {
-            Assert.AreEqual(other.Name, Name);
-            Assert.AreEqual(other.LastName, LastName);
-            Assert.AreEqual(other.Age, Age);
+            Assert.Equal(other.Name, Name);
+            Assert.Equal(other.LastName, LastName);
+            Assert.Equal(other.Age, Age);
         }
     }
 }

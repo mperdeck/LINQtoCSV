@@ -1,5 +1,5 @@
 ﻿using LINQtoCSV;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -7,10 +7,9 @@ using System.Text;
 
 namespace LINQtoCSV.Tests
 {
-    [TestClass()]
     public class CsvContextWriteTests : Test
     {
-        [TestMethod()]
+        [Fact]
         public void GoodFileCommaDelimitedNamesInFirstLineNLnl()
         {
             // Arrange
@@ -42,7 +41,7 @@ product"",0,
             AssertWrite(dataRows_Test, fileDescription_namesNl2, expected);
         }
 
-        [TestMethod()]
+        [Fact]
         public void OnlyIncludeFieldsSpecifiedInFieldsToIncludeInOutput()
         {
             // Arrange

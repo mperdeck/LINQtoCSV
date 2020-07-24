@@ -3,7 +3,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LINQtoCSV.Tests
 {
@@ -26,7 +26,7 @@ namespace LINQtoCSV.Tests
         protected void AssertCollectionsEqual<T>(IEnumerable<T> actual, IEnumerable<T> expected) where T : IAssertable<T>
         {
             int count = actual.Count();
-            Assert.AreEqual(count, expected.Count(), "counts");
+            Assert.Equal(count, expected.Count());
 
             for(int i = 0; i < count; i++)
             {
@@ -120,7 +120,7 @@ namespace LINQtoCSV.Tests
         public void AssertWrite<T>(IEnumerable<T> values, CsvFileDescription fileDescription, string expected) where T : class
         {
             string actual = TestWrite<T>(values, fileDescription);
-            Assert.AreEqual(Utils.NormalizeString(actual), Utils.NormalizeString(expected));
+            Assert.Equal(Utils.NormalizeString(actual), Utils.NormalizeString(expected));
         }
     }
 }
