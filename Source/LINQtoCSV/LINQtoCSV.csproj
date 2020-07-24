@@ -6,7 +6,7 @@
     <EmbedAllSources>true</EmbedAllSources>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <AssemblyName>LINQtoCSV.GR</AssemblyName>
+    <AssemblyName>GlobalRoam.LINQtoCSV</AssemblyName>
     <Authors>Global-Roam</Authors>
     <Description>Global-Roam fork of apparently abandoned https://github.com/mperdeck/LINQtoCSV project</Description>
   </PropertyGroup>
