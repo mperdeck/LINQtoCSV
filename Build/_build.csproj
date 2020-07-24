@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GlobalRoam.Build.Nuke" Version="1.1.0" />
+    <PackageReference Include="GlobalRoam.Build.Nuke" Version="1.1.18" />
     <PackageDownload Include="GitVersion.Tool" Version="[5.2.4]" />
     <PackageDownload Include="NuGetKeyVaultSignTool" Version="[3.0.3]" />
   </ItemGroup>
