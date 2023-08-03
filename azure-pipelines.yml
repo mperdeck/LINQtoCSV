@@ -60,5 +60,5 @@ steps:
       codeCoverageTool: Cobertura
       summaryFileLocation: $(Common.TestResultsDirectory)/coverage.cobertura.xml
       
-  - template: pipelines/common/workarounds/jobs/steps/pr-workaround-cleanup.pipeline.yml@templates
+  - template: pipeline/steps/pr-workaround-after.yml@templates
 
