@@ -26,9 +26,9 @@ steps:
   - checkout: self
     clean: true
 
-  - template: pipelines/common/authenticate/jobs/steps/nuget-and-npm.pipeline.yml@templates
+  - template: authentication/steps/package-managers-windows.yml@templates
 
-  - template: pipelines/common/workarounds/jobs/steps/pr-workaround-branch.pipeline.yml@templates
+  - template: pipeline/steps/pr-workaround-before.yml@templates
   
   - task: DotNetCoreInstaller@1
     displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
