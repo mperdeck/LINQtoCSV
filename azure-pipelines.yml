@@ -35,12 +35,6 @@ steps:
     inputs:
       version: '$(DOTNET_SDK_VERSION)'
 
-  - task: AzureKeyVault@1
-    displayName: Get service principal secrets from Azure key vault (gr-service-principals)
-    inputs:
-      azureSubscription: CI
-      keyVaultName: gr-service-principals
-
   - task: CmdLine@2
     displayName: 'Build and publish package'
     inputs:
