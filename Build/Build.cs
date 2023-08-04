@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NugetPackageBuild
 {
