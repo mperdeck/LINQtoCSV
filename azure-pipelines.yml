@@ -35,15 +35,7 @@ steps:
     inputs:
       version: '$(DOTNET_SDK_VERSION)'
 
-  - task: CmdLine@2
-    displayName: 'Build and publish package'
-    inputs:
-      script: './build.cmd Push -ArtifactsDirectory $(Build.ArtifactStagingDirectory) -TestResutsDirectory $(Common.TestResultsDirectory)'
-    env:
-      AZURE_DEVOPS_TOKEN: $(System.AccessToken)
-      ApplicationId: $(Production-client-id)
-      ApplicationPassword: $(Production-client-secret)
-      CertificateName: Global-Roam-Code-Signing
+  - template: pipeline/steps/build-and-push-nuke-package.yml@templates
 
   - task: PublishTestResults@2
     displayName: Publish test results
