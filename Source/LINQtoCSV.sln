@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApplication", "TestConsoleApplication\TestConsoleApplication.csproj", "{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LINQtoCSV", "LINQtoCSV\LINQtoCSV.csproj", "{07058BF9-6F86-40FF-AE33-2A4F89B5758A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCode", "SampleCode\SampleCode.csproj", "{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LINQtoCSV.Tests", "LINQtoCSV.Tests\LINQtoCSV.Tests.csproj", "{04EE17CD-E7B3-4D58-BF84-E553F5332A14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\Build\_build.csproj", "{7644DF60-1C4C-4534-9C9C-8F8D23584CFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3FE8ACB-688B-47E4-9E62-0EE09B0435E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07058BF9-6F86-40FF-AE33-2A4F89B5758A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07058BF9-6F86-40FF-AE33-2A4F89B5758A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07058BF9-6F86-40FF-AE33-2A4F89B5758A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07058BF9-6F86-40FF-AE33-2A4F89B5758A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFD875B-5D48-41F4-80FD-5FAE3725ED83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EE17CD-E7B3-4D58-BF84-E553F5332A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7644DF60-1C4C-4534-9C9C-8F8D23584CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7644DF60-1C4C-4534-9C9C-8F8D23584CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B7AB3E2-3B13-489A-901D-B424B7AFEEFE}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LINQtoCSV.vsmdi
+	EndGlobalSection
+EndGlobal

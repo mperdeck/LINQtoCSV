@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<RootNamespace></RootNamespace>
+		<NoWarn>CS0649;CS0169</NoWarn>
+		<NukeRootDirectory>..</NukeRootDirectory>
+		<NukeScriptDirectory>..</NukeScriptDirectory>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GlobalRoam.Build.Nuke" Version="7.0.27" />
+		<PackageDownload Include="GitVersion.Tool" Version="[5.11.1]" />
+		<PackageDownload Include="NuGetKeyVaultSignTool" Version="[3.2.3]" />
+	</ItemGroup>
+
+</Project>

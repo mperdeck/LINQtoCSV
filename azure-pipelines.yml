@@ -1,0 +1,56 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
+
+variables:
+  DOTNET_SDK_VERSION: '3.1.201'
+
+pool:
+  name: Global Roam Office Build-03
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: global-roam/devops-pipelines
+      endpoint: global-roam
+
+steps:
+  - checkout: self
+    clean: true
+
+  - template: authentication/steps/package-managers-windows.yml@templates
+
+  - template: pipeline/steps/pr-workaround-before.yml@templates
+  
+  - task: DotNetCoreInstaller@1
+    displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
+    inputs:
+      version: '$(DOTNET_SDK_VERSION)'
+
+  - template: pipeline/steps/build-and-push-nuke-package.yml@templates
+
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/*.trx'
+      searchFolder: $(Common.TestResultsDirectory)
+      mergeTestResults: true
+    condition: and(always(), not(canceled()))
+    continueOnError: true
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(Common.TestResultsDirectory)/coverage.cobertura.xml
+      
+  - template: pipeline/steps/pr-workaround-after.yml@templates
+
